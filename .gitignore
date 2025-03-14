@@ -1,6 +1,12 @@
 devtools_options.yaml
-*.env
 .metadata
+
+lib/firebase_options.dart
+
+firebase.json
+
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
 
 # Miscellaneous
 *.vscode/
@@ -10,9 +16,11 @@ devtools_options.yaml
 *.swp
 .DS_Store
 .atom/
+.build/
 .buildlog/
 .history
 .svn/
+.swiftpm/
 migrate_working_dir/
 
 # IntelliJ related

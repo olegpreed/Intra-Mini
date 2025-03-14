@@ -225,7 +225,7 @@ class CampusDataService {
         createUri(endpoint: '/cursus/$cursusId/cursus_users', queryParameters: {
           'range[level]':
               '${minMaxLevels.start},${minMaxLevels.end + 1 - 1e-10}',
-          'filter[campus_id]': '1',
+          'filter[campus_id]': campusId.toString(),
           'filter[has_coalition]': hasCoalition.toString(),
           'filter[active]': isActive.toString(),
           'sort': sort,

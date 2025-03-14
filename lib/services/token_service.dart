@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter_appauth/flutter_appauth.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:forty_two_planet/services/logger_service.dart';
+import 'package:forty_two_planet/services/remote_config_service.dart';
 import 'package:forty_two_planet/utils/http_utils.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -71,9 +71,10 @@ class TokenService {
   static Future<bool> refreshUserToken() async {
     final String? refreshToken =
         await _secureStorage.read(key: 'user_refresh_token');
-    final String? clientId = dotenv.env['CLIENT_ID'];
-    final String? redirectUrl = dotenv.env['REDIRECT_URI'];
-    if (refreshToken == null || clientId == null || redirectUrl == null) {
+    final String clientId = RemoteConfigService().uid;
+    final String redirectUrl = RemoteConfigService().redirectUri;
+    ;
+    if (refreshToken == null || clientId.isEmpty || redirectUrl.isEmpty) {
       logger.e('Missing refreshToken, clientId or redirectUrl');
       return false;
     }
@@ -93,13 +94,13 @@ class TokenService {
     AuthorizationTokenResponse response =
         await appAuth.authorizeAndExchangeCode(
       AuthorizationTokenRequest(
-        dotenv.env['CLIENT_ID']!,
-        dotenv.env['REDIRECT_URI']!,
+        RemoteConfigService().uid,
+        RemoteConfigService().redirectUri,
         serviceConfiguration: const AuthorizationServiceConfiguration(
           authorizationEndpoint: 'https://api.intra.42.fr/oauth/authorize',
           tokenEndpoint: 'https://api.intra.42.fr/oauth/token',
         ),
-        clientSecret: dotenv.env['CLIENT_SECRET'],
+        clientSecret: RemoteConfigService().clientSecret,
         scopes: <String>['public', 'profile', 'projects'],
       ),
     );
@@ -118,8 +119,8 @@ class TokenService {
       'Content-Type': 'application/x-www-form-urlencoded',
     }, body: {
       'grant_type': 'client_credentials',
-      'client_id': dotenv.env['CLIENT_ID']!,
-      'client_secret': dotenv.env['CLIENT_SECRET']!,
+      'client_id': RemoteConfigService().uid,
+      'client_secret': RemoteConfigService().clientSecret,
       'scope': 'public profile projects',
     });
     if (response.statusCode != 200) {

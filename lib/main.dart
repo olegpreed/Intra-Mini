@@ -1,9 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:forty_two_planet/core/auth_check.dart';
 import 'package:forty_two_planet/core/home_layout.dart';
+import 'package:forty_two_planet/firebase_options.dart';
 import 'package:forty_two_planet/services/campus_data_service.dart';
+import 'package:forty_two_planet/services/remote_config_service.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/settings/user_settings.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
@@ -20,8 +22,11 @@ void main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await precacheSvgPictures(['assets/icons/login.svg']);
-  await dotenv.load(fileName: ".env");
+  await RemoteConfigService().init(); 
   final themeProvider = SettingsProvider();
   final prefs = await SharedPreferences.getInstance();
   await themeProvider.loadASetting('themeMode', prefs);
