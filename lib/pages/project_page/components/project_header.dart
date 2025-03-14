@@ -14,14 +14,17 @@ class ProjectHeader extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(bottom: Layout.padding / 2),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(projectName ?? '',
-              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    color: selectedTeamIndex == -1
-                        ? Theme.of(context).primaryColor
-                        : context.myTheme.greyMain,
-                  )),
+          Expanded(
+            child: Text(projectName ?? '',
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      color: selectedTeamIndex == -1
+                          ? Theme.of(context).primaryColor
+                          : context.myTheme.greyMain,
+                    )),
+          ),
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {

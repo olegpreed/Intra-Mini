@@ -26,7 +26,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await precacheSvgPictures(['assets/icons/login.svg']);
-  await RemoteConfigService().init(); 
+  await RemoteConfigService().init();
   final themeProvider = SettingsProvider();
   final prefs = await SharedPreferences.getInstance();
   await themeProvider.loadASetting('themeMode', prefs);
