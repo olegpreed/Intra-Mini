@@ -16,9 +16,9 @@ class RemoteConfigService {
     await remoteConfig.fetchAndActivate();
   }
 
-  String get uid => remoteConfig.getString('uid');
-  String get clientSecret => remoteConfig.getString('client_secret');
-  String get redirectUri => remoteConfig.getString('redirect_uri');
+  String get uid => remoteConfig.getString('CLIENT_ID');
+  String get clientSecret => remoteConfig.getString('CLIENT_SECRET');
+  String get redirectUri => remoteConfig.getString('REDIRECT_URI');
 
   Future<void> refreshClientSecret() async {
     await remoteConfig.fetchAndActivate();
