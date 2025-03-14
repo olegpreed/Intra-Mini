@@ -43,6 +43,9 @@ class _TeamCardState extends State<TeamCard> {
       if (feedbacks.isNotEmpty) {
         return;
       }
+      if (!mounted) {
+        return;
+      }
       setState(() {
         isLoading = true;
       });
