@@ -299,10 +299,24 @@ class _TimeSlotPickerState extends State<TimeSlotPicker> {
                   onNotification: (notification) {
                     if (notification is ScrollEndNotification) {
                       setState(() {
-                        final targetPosition =
+                        double targetPosition =
                             (_scrollController.offset / timeDivisionWidth)
                                     .round() *
                                 timeDivisionWidth;
+                        if (targetPosition >=
+                            (widget.endTime
+                                            .difference(widget.startTime)
+                                            .inMinutes ~/
+                                        15) *
+                                    timeDivisionWidth -
+                                timeDivisionWidth * 2) {
+                          targetPosition = (widget.endTime
+                                          .difference(widget.startTime)
+                                          .inMinutes ~/
+                                      15) *
+                                  timeDivisionWidth -
+                              timeDivisionWidth * 3;
+                        }
                         slotStartTime = widget.startTime.add(Duration(
                             minutes:
                                 15 * (targetPosition ~/ timeDivisionWidth)));
