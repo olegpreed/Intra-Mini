@@ -93,8 +93,8 @@ class CustomRangeSliderTrackShape extends RangeSliderTrackShape {
   }) {
     final double trackHeight = sliderTheme.trackHeight! - 2;
     final double trackTop = (parentBox.size.height - trackHeight) / 2;
-    final double trackLeft = parentBox.size.width * 0.087;
-    final double trackRight = parentBox.size.width * 0.913;
+    const double trackLeft = 0;
+    final double trackRight = parentBox.size.width;
     return Rect.fromLTRB(
         trackLeft, trackTop, trackRight, trackTop + trackHeight);
   }
@@ -124,8 +124,8 @@ class CustomRangeSliderTrackShape extends RangeSliderTrackShape {
     final BorderRadius borderRadius = BorderRadius.circular(30);
 
     // Adjust the trackRect to add offset to left and right by 17.5
-    final adjustedTrackLeft = trackRect.left - 17.5;
-    final adjustedTrackRight = trackRect.right + 17.5;
+    final adjustedTrackLeft = trackRect.left;
+    final adjustedTrackRight = trackRect.right;
 
     // Create the new trackRect with adjusted size
     final adjustedTrackRect = Rect.fromLTRB(
