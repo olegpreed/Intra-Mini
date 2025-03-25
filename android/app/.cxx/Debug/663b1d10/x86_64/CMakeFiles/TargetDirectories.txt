@@ -1,0 +1,2 @@
+/Users/preed/code/Intra-Mini/android/app/.cxx/Debug/663b1d10/x86_64/CMakeFiles/edit_cache.dir
+/Users/preed/code/Intra-Mini/android/app/.cxx/Debug/663b1d10/x86_64/CMakeFiles/rebuild_cache.dir
