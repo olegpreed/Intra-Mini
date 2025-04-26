@@ -1,4 +1,4 @@
-package com.example.forty_two_planet
+package com.preed.IntraMini
 
 import io.flutter.embedding.android.FlutterActivity
 

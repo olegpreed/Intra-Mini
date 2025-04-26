@@ -366,25 +366,39 @@ class UserService {
     Map<String, dynamic> userDataAll = json.decode(response.body);
 
     double getLevel(List<dynamic> cursusUsers) {
-      var validCursus = cursusUsers.firstWhere(
-        (cursus) => cursus['grade'] != null,
-        orElse: () => null,
+      final match21 = cursusUsers.firstWhere(
+        (cursus) => cursus['cursus_id'] == 21,
+        orElse: () => {},
       );
-      return validCursus != null
-          ? (validCursus['level'] * 100).round() / 100
-          : 0;
+
+      final match = (match21.isNotEmpty)
+          ? match21
+          : cursusUsers.firstWhere(
+              (cursus) => cursus['cursus_id'] == 9,
+              orElse: () => {},
+            );
+
+      if (match.isEmpty) return 0;
+
+      final level = match['level'] as num? ?? 0;
+      return (level * 100).round() / 100;
     }
 
     Map<String, double> getSkills(List<dynamic> cursusUsers) {
       Map<String, double> skills = {};
-      var validCursus = cursusUsers.firstWhere(
-        (cursus) => cursus['grade'] != null,
-        orElse: () => null,
+      final match21 = cursusUsers.firstWhere(
+        (cursus) => cursus['cursus_id'] == 21,
+        orElse: () => {},
       );
-      if (validCursus == null) {
-        return skills;
-      }
-      for (var skill in validCursus['skills']) {
+
+      final match = (match21.isNotEmpty)
+          ? match21
+          : cursusUsers.firstWhere(
+              (cursus) => cursus['cursus_id'] == 9,
+              orElse: () => {},
+            );
+      if (match.isEmpty) return skills;
+      for (var skill in match['skills']) {
         skills[skill['name']] = (skill['level'] * 10).round() / 10;
       }
       return skills;

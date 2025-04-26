@@ -1,6 +1,22 @@
 devtools_options.yaml
 .metadata
 
+/build/
+/.dart_tool/
+/android/app/.cxx/
+*.iml
+.idea/
+.vscode/
+
+# Generated icons
+android/app/src/main/res/drawable-*/ic_launcher_*
+android/app/src/main/res/mipmap-*/launcher_icon.png
+
+# Signing keys / secrets
+upload-keystore.jks
+keystore.properties
+.env
+
 lib/firebase_options.dart
 
 firebase.json
