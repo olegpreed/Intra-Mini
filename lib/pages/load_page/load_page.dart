@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:forty_two_planet/core/home_layout.dart';
-import 'package:forty_two_planet/main.dart';
 import 'package:forty_two_planet/pages/load_page/components/rotating_logo.dart';
-import 'package:forty_two_planet/pages/login_page/login_page.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/settings/user_settings.dart';
 import 'package:forty_two_planet/utils/cache_utils.dart';
-import 'package:forty_two_planet/utils/ui_uitls.dart';
 import 'package:provider/provider.dart';
 
 class LoadPage extends StatefulWidget {
@@ -26,17 +23,7 @@ class _LoadPageState extends State<LoadPage> {
   }
 
   void load() async {
-    try {
-      await fetchData();
-    } catch (e) {
-      await showErrorDialog(e.toString());
-      navigatorKey.currentState?.pushReplacement(
-        MaterialPageRoute<void>(
-          builder: (BuildContext context) => const Login(),
-        ),
-      );
-      return;
-    }
+    await fetchData();
     SettingsProvider settingsProvider =
         Provider.of<SettingsProvider>(context, listen: false);
     await settingsProvider.loadSettings();

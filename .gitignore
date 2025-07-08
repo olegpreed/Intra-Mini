@@ -4,7 +4,11 @@ devtools_options.yaml
 /build/
 /.dart_tool/
 /android/app/.cxx/
+/android/.gradle/
+/android/app/.cxx/
+/android/build/
 *.iml
+*.lock
 .idea/
 .vscode/
 

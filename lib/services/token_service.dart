@@ -73,7 +73,6 @@ class TokenService {
         await _secureStorage.read(key: 'user_refresh_token');
     final String clientId = RemoteConfigService().uid;
     final String redirectUrl = RemoteConfigService().redirectUri;
-    ;
     if (refreshToken == null || clientId.isEmpty || redirectUrl.isEmpty) {
       logger.e('Missing refreshToken, clientId or redirectUrl');
       return false;

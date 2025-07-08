@@ -46,7 +46,7 @@ Future<http.Response> requestWithRetry(
   Uri url,
   bool isAppToken,
 ) async {
-  int retries = 5;
+  int retries = 20;
   int successCode = 200;
   String? token;
   if (isAppToken) {
