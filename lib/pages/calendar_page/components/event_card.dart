@@ -96,11 +96,14 @@ class EventCard extends StatelessWidget {
                         ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    DateFormat('h:mma').format(event.beginAt ?? DateTime.now()),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).primaryColor,
-                        ),
+                  FittedBox(
+                    child: Text(
+                      DateFormat('h:mma')
+                          .format(event.beginAt ?? DateTime.now()),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                    ),
                   ),
                 ],
               ),

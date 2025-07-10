@@ -84,18 +84,25 @@ String formatMinutes(int totalMinutes) {
 
 DateTime getFirstDayOfWeek(DateTime date) {
   final int daysToSubtract = date.weekday % 7;
-  return date.subtract(Duration(days: daysToSubtract));
+  return DateTime(
+    date.year,
+    date.month,
+    date.day - daysToSubtract,
+  );
 }
 
 DateTime getLastDayOfWeek(DateTime date) {
-  final int daysToAdd = (6 - date.weekday + 7) % 7;
-  return date.add(Duration(days: daysToAdd));
+  final int daysToAdd = 6 - (date.weekday % 7);
+  return DateTime(
+    date.year,
+    date.month,
+    date.day + daysToAdd,
+  );
 }
 
 Future<Map<DateTime, List<Pair<Duration, Duration>>>> convertLogData(
     String jsonResponse) async {
   final Map<String, dynamic> data = json.decode(jsonResponse);
-
   final DateTime now = DateTime.now();
   final List<DateTime> months = List.generate(4, (i) {
     final DateTime firstDayOfMonth = DateTime(now.year, now.month - 3 + i, 1);
@@ -104,17 +111,19 @@ Future<Map<DateTime, List<Pair<Duration, Duration>>>> convertLogData(
   final Map<DateTime, List<Pair<Duration, Duration>>> result = {
     for (final month in months) month: calculateWeekLogs(month, data),
   };
-
   return result;
 }
 
 List<Pair<Duration, Duration>> calculateWeekLogs(
     DateTime startDate, Map<String, dynamic> data) {
   final List<Pair<Duration, Duration>> weekLogs = [];
-  DateTime endDate = DateTime(startDate.year, startDate.month + 1, 0);
+  DateTime lastDayOfMonth =
+	  DateTime(startDate.year, startDate.month + 1, 0);
+  DateTime lastDayOfLastWeek =
+      getLastDayOfWeek(lastDayOfMonth);
   for (DateTime date = getFirstDayOfWeek(startDate);
-      date.isBefore(getLastDayOfWeek(endDate).add(const Duration(days: 1)));
-      date = date.add(const Duration(days: 1))) {
+      !date.isAfter(lastDayOfLastWeek);
+      date = DateTime(date.year, date.month, date.day + 1)) {
     final String formattedDate = DateFormat('yyyy-MM-dd').format(date);
     if (date.weekday == 7) {
       Duration time = data[formattedDate] != null
@@ -158,8 +167,7 @@ Duration calcAverageTime(
   int daysPassed = 0;
   if (month.month == now.month && month.year == now.year) {
     daysPassed = now.day;
-  }
-  else {
+  } else {
     daysPassed = DateTime(month.year, month.month + 1, 0).day;
   }
   return totalLogtime ~/ daysPassed;
@@ -168,6 +176,6 @@ Duration calcAverageTime(
 int getWeekNumber(DateTime date) {
   DateTime firstDayOfMonth = DateTime(date.year, date.month, 1);
   int firstWeekday = firstDayOfMonth.weekday % 7;
-  int daysOffset = date.day + firstWeekday - 1; 
+  int daysOffset = date.day + firstWeekday - 1;
   return (daysOffset ~/ 7) + 1;
 }

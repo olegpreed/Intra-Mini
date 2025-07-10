@@ -37,7 +37,7 @@ class TokenService {
         await _secureStorage.read(key: '${type}_expiry_date');
     if (expiryDateString != null &&
         DateTime.parse(expiryDateString)
-            .isAfter(DateTime.now().add(const Duration(seconds: bufferTime)))) {
+            .isAfter(DateTime.now().toUtc().add(const Duration(seconds: bufferTime)))) {
       return false;
     }
     logger.d('$type token is expired');
@@ -141,7 +141,7 @@ class TokenService {
           key: '${type}_refresh_token', value: refreshToken);
     }
     await _secureStorage.write(
-        key: '${type}_expiry_date', value: expiryDate.toIso8601String());
+        key: '${type}_expiry_date', value: expiryDate.toUtc().toIso8601String());
   }
 
   static Future<void> eraseStorage() async {
