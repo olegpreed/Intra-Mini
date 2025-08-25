@@ -42,6 +42,7 @@ class _ProjectPageState extends State<ProjectPage> {
       showErrorDialog(e.toString());
       Navigator.of(context).pop();
     }
+    if (!mounted) return;
     setState(() {
       _areTeamsLoading = false;
     });

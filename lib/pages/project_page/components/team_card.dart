@@ -53,11 +53,13 @@ class _TeamCardState extends State<TeamCard> {
         feedbacks =
             await UserService.fetchFeedbacks(widget.projectId, widget.team.id!);
       } catch (e) {
+        if (!mounted) return;
         showErrorDialog(e.toString());
         setState(() {
           isExpanded = false;
         });
       }
+      if (!mounted) return;
       setState(() {
         isLoading = false;
       });
