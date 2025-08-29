@@ -408,6 +408,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fullscreen_image_viewer:
+    dependency: "direct main"
+    description:
+      name: fullscreen_image_viewer
+      sha256: "65554c909fdd216a2ce00d62425032b545db329469fc24567a0595e6fe8c98e0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   google_fonts:
     dependency: "direct main"
     description:

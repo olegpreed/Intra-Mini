@@ -409,7 +409,7 @@ class UserService {
     userData.login = userDataAll['login'];
     userData.firstName = userDataAll['first_name'];
     userData.lastName = userDataAll['last_name'];
-    userData.imageUrlBig = userDataAll['image']['versions']['medium'];
+    userData.imageUrlBig = userDataAll['image']['link'];
     userData.imageUrlSmall = userDataAll['image']['versions']['small'];
     userData.location = userDataAll['location'];
     userData.wallet = userDataAll['wallet'];
