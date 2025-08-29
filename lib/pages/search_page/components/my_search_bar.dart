@@ -190,13 +190,28 @@ class _MySearchBarState extends State<MySearchBar> {
                                 ),
                               ),
                             )
-                          : SvgPicture.asset(
-                              'assets/icons/searchbar.svg',
-                              fit: BoxFit.none,
-                              colorFilter: ColorFilter.mode(
-                                  context.myTheme.greySecondary,
-                                  BlendMode.srcIn),
-                            ),
+                          : (widget.controller!.text.isNotEmpty &&
+                                  !widget.isSearchByProject)
+                              ? GestureDetector(
+                                  behavior: HitTestBehavior.translucent,
+                                  onTap: () {
+                                    widget.controller!.clear();
+                                  },
+                                  child: SvgPicture.asset(
+                                    'assets/icons/x.svg',
+                                    fit: BoxFit.none,
+                                    colorFilter: ColorFilter.mode(
+                                        context.myTheme.greySecondary,
+                                        BlendMode.srcIn),
+                                  ),
+                                )
+                              : SvgPicture.asset(
+                                  'assets/icons/searchbar.svg',
+                                  fit: BoxFit.none,
+                                  colorFilter: ColorFilter.mode(
+                                      context.myTheme.greySecondary,
+                                      BlendMode.srcIn),
+                                ),
                       prefixIconConstraints: const BoxConstraints(
                         minWidth: 48,
                         minHeight: 20,
