@@ -9,6 +9,7 @@ import 'package:forty_two_planet/utils/ui_uitls.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EventInfo extends StatefulWidget {
   const EventInfo({super.key, required this.event});
@@ -65,9 +66,10 @@ class _EventInfoState extends State<EventInfo> {
 
   @override
   Widget build(BuildContext context) {
-    bool isSubscribed = Provider.of<MyProfileStore>(context, listen: true)
-        .eventIds
-        .containsKey(widget.event.id);
+    bool isSubscribed = !widget.event.isExam &&
+        Provider.of<MyProfileStore>(context, listen: true)
+            .eventIds
+            .containsKey(widget.event.id);
     return Column(
       children: [
         Padding(
@@ -103,52 +105,56 @@ class _EventInfoState extends State<EventInfo> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (!widget.event.isExam)
-                    GestureDetector(
-                      onTap: () => eventAction(isSubscribed),
-                      behavior: HitTestBehavior.translucent,
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        height: 30,
-                        constraints: BoxConstraints(
-                          minWidth: MediaQuery.of(context).size.width *
-                              0.3, // Set minimum width
-                        ),
-                        decoration: BoxDecoration(
-                          color: isSubscribed
-                              ? context.myTheme.fail.withOpacity(0.4)
-                              : context.myTheme.intra.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: isLoading
-                              ? FractionallySizedBox(
-                                  heightFactor: 0.7,
-                                  child: LoadingIndicator(
-                                    indicatorType: Indicator.lineSpinFadeLoader,
-                                    colors: [
-                                      isSubscribed
+                  GestureDetector(
+                    onTap: !widget.event.isExam
+                        ? () => eventAction(isSubscribed)
+                        : () => launchUrl(
+                            Uri.parse(
+                                'https://profile.intra.42.fr/exams/${widget.event.id}'),
+                            mode: LaunchMode.inAppWebView),
+                    behavior: HitTestBehavior.translucent,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      height: 30,
+                      constraints: BoxConstraints(
+                        minWidth: MediaQuery.of(context).size.width *
+                            0.3, // Set minimum width
+                      ),
+                      decoration: BoxDecoration(
+                        color: isSubscribed
+                            ? context.myTheme.fail.withOpacity(0.4)
+                            : context.myTheme.intra.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: isLoading
+                            ? FractionallySizedBox(
+                                heightFactor: 0.7,
+                                child: LoadingIndicator(
+                                  indicatorType: Indicator.lineSpinFadeLoader,
+                                  colors: [
+                                    isSubscribed
+                                        ? context.myTheme.fail
+                                        : context.myTheme.intra
+                                  ],
+                                ),
+                              )
+                            : Text(isSubscribed ? 'unsubscribe' : 'subscribe',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: isSubscribed
                                           ? context.myTheme.fail
-                                          : context.myTheme.intra
-                                    ],
-                                  ),
-                                )
-                              : Text(isSubscribed ? 'unsubscribe' : 'subscribe',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.copyWith(
-                                        color: isSubscribed
-                                            ? context.myTheme.fail
-                                            : context.myTheme.intra,
-                                        // : Theme.of(context).primaryColor,
-                                      )),
-                        ),
+                                          : context.myTheme.intra,
+                                      // : Theme.of(context).primaryColor,
+                                    )),
                       ),
                     ),
-                  if (!widget.event.isExam) const SizedBox(width: 10),
+                  ),
+                  const SizedBox(width: 10),
                   IconText(
                       svgPath: 'assets/icons/clock.svg',
                       text: getEventTime(
