@@ -251,7 +251,7 @@ class CampusDataService {
         ..location = cadet['user']['location']
         ..wallet = cadet['user']['wallet']
         ..evalPoints = cadet['user']['correction_point']
-        ..level = (cadet['level'] * 100).round() / 100
+        ..cursusLevels = {cursusId: (cadet['level'] * 100).round() / 100}
         ..poolYear = cadet['user']['pool_year']
         ..poolMonth = cadet['user']['pool_month']
         ..isActive = cadet['user']['active?'];

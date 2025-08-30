@@ -23,7 +23,7 @@ class ProfileProjects extends StatefulWidget {
 }
 
 class _ProfileProjectsState extends State<ProfileProjects> {
-  late String? _selectedCursus = '42cursus';
+  late int _selectedCursus = 21;
   List<ProjectData> _displayedProjects = [];
   final ScrollController _projectsScrollController = ScrollController();
   final TextEditingController searchController = TextEditingController();
@@ -31,21 +31,22 @@ class _ProfileProjectsState extends State<ProfileProjects> {
   @override
   void initState() {
     super.initState();
-    if (widget.userData.projects.isEmpty) {
+    if (widget.userData.projectsByCursusId.isEmpty) {
       return;
     }
-    if (widget.userData.projects.containsKey('42cursus')) {
-      _selectedCursus = '42cursus';
+    if (widget.userData.projectsByCursusId.containsKey(21)) {
+      _selectedCursus = 21;
     } else {
-      _selectedCursus = widget.userData.projects.keys.first;
+      _selectedCursus = widget.userData.projectsByCursusId.keys.first;
     }
-    _displayedProjects = widget.userData.projects[_selectedCursus]!;
+    _displayedProjects = widget.userData.projectsByCursusId[_selectedCursus]!;
     searchController.addListener(() {
       if (searchController.text.isNotEmpty) {
         _projectsScrollController.jumpTo(0);
       }
       setState(() {
-        _displayedProjects = widget.userData.projects[_selectedCursus]!
+        _displayedProjects = widget
+            .userData.projectsByCursusId[_selectedCursus]!
             .where((project) => project.name!
                 .toLowerCase()
                 .contains(searchController.text.toLowerCase()))
@@ -54,10 +55,13 @@ class _ProfileProjectsState extends State<ProfileProjects> {
     });
   }
 
-  void _onCursusChanged(String? selected) {
+  void _onCursusChanged(String? cursusName) {
     setState(() {
-      _selectedCursus = selected;
-      _displayedProjects = widget.userData.projects[_selectedCursus]!;
+      _selectedCursus = widget.userData.cursusNames.keys.firstWhere(
+          (key) => widget.userData.cursusNames[key] == cursusName,
+          orElse: () => -1);
+      _displayedProjects =
+          widget.userData.projectsByCursusId[_selectedCursus] ?? [];
     });
   }
 
@@ -125,8 +129,12 @@ class _ProfileProjectsState extends State<ProfileProjects> {
                       ? Container()
                       : CursusSwitcher(
                           selectedCursus: _selectedCursus,
-                          onCursusChanged: _onCursusChanged,
-                          cursusList: widget.userData.projects.keys.toList(),
+                          onCursusChanged: (selectedCursus) {
+                            _onCursusChanged(selectedCursus);
+                            projectsListProvider
+                                .setSelectedCursus(_selectedCursus);
+                          },
+                          cursusNames: widget.userData.cursusNames,
                         ),
                 ),
               ],
@@ -187,6 +195,12 @@ class _ProfileProjectsState extends State<ProfileProjects> {
 
 class ProjectListState extends ChangeNotifier {
   bool isExpanded = false;
+  int selectedCursus = 21;
+
+  void setSelectedCursus(int cursusId) {
+    selectedCursus = cursusId;
+    notifyListeners();
+  }
 
   void expand() {
     isExpanded = true;

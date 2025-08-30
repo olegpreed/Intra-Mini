@@ -17,7 +17,8 @@ class UserData {
   String? login;
   String firstName = '';
   String lastName = '';
-  double? level;
+  Map<int, double> cursusLevels = {};
+  Map<int, String> cursusNames = {};
   String? imageUrlSmall;
   String? imageUrlBig;
   int wallet = 0;
@@ -30,7 +31,7 @@ class UserData {
   String? poolYear;
   bool? isActive;
   bool? isStaff;
-  Map<String, List<ProjectData>> projects = {};
+  Map<int, List<ProjectData>> projectsByCursusId = {};
   Map<String, double> skills = {};
   UserData({this.login});
   Map<DateTime, List<Pair<Duration, Duration>>> weeklyLogTimesByMonth = {};
@@ -365,23 +366,12 @@ class UserService {
     Map<int, List<ProjectData>> projectsByCursusId = {};
     Map<String, dynamic> userDataAll = json.decode(response.body);
 
-    double getLevel(List<dynamic> cursusUsers) {
-      final match21 = cursusUsers.firstWhere(
-        (cursus) => cursus['cursus_id'] == 21,
-        orElse: () => {},
-      );
-
-      final match = (match21.isNotEmpty)
-          ? match21
-          : cursusUsers.firstWhere(
-              (cursus) => cursus['cursus_id'] == 9,
-              orElse: () => {},
-            );
-
-      if (match.isEmpty) return 0;
-
-      final level = match['level'] as num? ?? 0;
-      return (level * 100).round() / 100;
+    Map<int, double> getLevels(List<dynamic> cursusUsers) {
+      Map<int, double> levels = {};
+      for (var cursus in cursusUsers) {
+        levels[cursus['cursus_id']] = (cursus['level'] * 100).round() / 100;
+      }
+      return levels;
     }
 
     Map<String, double> getSkills(List<dynamic> cursusUsers) {
@@ -418,7 +408,10 @@ class UserService {
     userData.poolYear = userDataAll['pool_year'];
     userData.isActive = userDataAll['active?'];
     userData.isStaff = userDataAll['staff?'];
-    userData.level = getLevel(userDataAll['cursus_users'] as List<dynamic>);
+    userData.cursusLevels = getLevels(userDataAll['cursus_users'] as List<dynamic>);
+    for (var cursus in userDataAll['cursus_users']) {
+      userData.cursusNames[cursus['cursus_id']] = cursus['cursus']['name'];
+    }
     if (isHomeView) {
       userData.campusId = userDataAll['campus'].last['id'];
     }
@@ -440,23 +433,9 @@ class UserService {
         projectsByCursusId[cursusId]?.add(projectData);
       }
     }
+    userData.projectsByCursusId = projectsByCursusId;
     userData.skills = getSkills(userDataAll['cursus_users'] as List<dynamic>);
-    userData.projects = await projectsByIdToName(projectsByCursusId);
     return userData;
-  }
-
-  static Future<Map<String, List<ProjectData>>> projectsByIdToName(
-      Map<int, List<ProjectData>> projectsByCursusId) async {
-    Map<String, List<ProjectData>> projectsByCursusName = {};
-
-    for (int cursusId in projectsByCursusId.keys) {
-      final cursusResponse = await requestWithRetry(
-          HttpMethod.get, createUri(endpoint: '/cursus/$cursusId'), false);
-      String cursusName = json.decode(cursusResponse.body)['name'];
-      projectsByCursusName[cursusName] = projectsByCursusId[cursusId]!;
-    }
-
-    return projectsByCursusName;
   }
 
   static Future<List<TeamData>> fetchProjectTeams(

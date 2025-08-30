@@ -134,7 +134,7 @@ class CadetCard extends StatelessWidget {
                                 maxWidth: double.infinity,
                                 maxHeight: double.infinity,
                                 child: Text(
-                                  '${cadetData.level?.truncate()}',
+                                  '${cadetData.cursusLevels[21]?.truncate()}',
                                   textAlign: TextAlign.end,
                                   style: TextStyle(
                                       fontSize: 105,

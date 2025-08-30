@@ -1,5 +1,6 @@
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
 
 class CircularProgress extends StatelessWidget {
@@ -21,7 +22,7 @@ class CircularProgress extends StatelessWidget {
       backgroundColor: backgroundColor,
       foregroundStrokeWidth: Layout.cellWidth * 0.09,
       backgroundStrokeWidth: Layout.cellWidth * 0.09,
-      animation: false,
+      animation: true,
       animationDuration: const Duration(milliseconds: 500),
       animationCurve: Curves.easeInOut,
       foregroundGapSize: 5,
@@ -30,12 +31,25 @@ class CircularProgress extends StatelessWidget {
       backgroundDashSize: 5,
       corners: StrokeCap.butt,
       child: Align(
-        alignment: Alignment.center,
-        child: Text(
-          level.toString(),
-          style: Theme.of(context).textTheme.headlineLarge,
-        ),
-      ),
+          alignment: Alignment.center,
+          child: RichText(
+            text: TextSpan(
+              style: Theme.of(context).textTheme.headlineLarge,
+              children: [
+                TextSpan(
+                  text: level.truncate().toString(),
+                ),
+                if (level - level.truncate() > 0)
+                  TextSpan(
+                    text: ".${level.toStringAsFixed(2).split('.')[1]}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: context.myTheme.greyMain),
+                  ),
+              ],
+            ),
+          )),
     );
   }
 }

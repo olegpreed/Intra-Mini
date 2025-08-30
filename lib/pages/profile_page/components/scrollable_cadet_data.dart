@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:forty_two_planet/pages/profile_page/components/bento_box.dart';
 import 'package:forty_two_planet/pages/profile_page/components/bento_icon.dart';
 import 'package:forty_two_planet/pages/profile_page/components/circular_progress.dart';
+import 'package:forty_two_planet/pages/profile_page/components/profile_projects.dart';
 import 'package:forty_two_planet/pages/profile_page/components/skills_widget.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ScrollableCadetData extends StatefulWidget {
@@ -36,10 +38,16 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
 
   @override
   Widget build(BuildContext context) {
+    ProjectListState projectsListProvider =
+        Provider.of<ProjectListState>(context);
     if (!widget.isLoading) {
       contentsPage1 = [
         CircularProgress(
-          level: widget.cadetData.level ?? 0,
+          level: widget.cadetData.cursusLevels.isNotEmpty
+              ? widget.cadetData
+                      .cursusLevels[projectsListProvider.selectedCursus] ??
+                  0.0
+              : 0.0,
           color: widget.cadetData.coalitionColor,
         ),
         Column(

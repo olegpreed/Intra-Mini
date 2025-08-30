@@ -231,8 +231,8 @@ class _SearchPageState extends State<SearchPage> {
       bool matchesOnline = !onlyOnline || cadet.location != null;
       bool matchesLevel = true;
       if (!isSearchByProject) {
-        matchesLevel = cadet.level!.floor() >= levelValues.start &&
-            cadet.level!.floor() <= levelValues.end;
+        matchesLevel = cadet.cursusLevels[21]!.floor() >= levelValues.start &&
+            cadet.cursusLevels[21]!.floor() <= levelValues.end;
         matchesSearch = cadet.login!.toLowerCase().startsWith(searchText);
       }
       return matchesSearch && matchesOnline && matchesLevel;

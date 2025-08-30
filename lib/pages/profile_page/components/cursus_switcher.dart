@@ -9,10 +9,10 @@ class CursusSwitcher extends StatelessWidget {
       {super.key,
       required this.selectedCursus,
       required this.onCursusChanged,
-      required this.cursusList});
-  final String? selectedCursus;
+      required this.cursusNames});
+  final int? selectedCursus;
   final Function(String?) onCursusChanged;
-  final List<String> cursusList;
+  final Map<int, String> cursusNames;
 
   @override
   Widget build(BuildContext context) {
@@ -37,16 +37,16 @@ class CursusSwitcher extends StatelessWidget {
           ?.copyWith(color: context.myTheme.greyMain),
       dropdownColor: Theme.of(context).scaffoldBackgroundColor,
       borderRadius: BorderRadius.circular(Layout.cellWidth / 4),
-      value: selectedCursus,
+      value: cursusNames[selectedCursus],
       onChanged: onCursusChanged,
-      items: cursusList.map((String cursusName) {
+      items: cursusNames.entries.map((entry) {
         return DropdownMenuItem<String>(
-          value: cursusName,
+          value: entry.value,
           child: Container(
             alignment: Alignment.centerRight,
             width: Layout.cellWidth,
             child: MarqueeText(
-              text: TextSpan(text: cursusName),
+              text: TextSpan(text: entry.value),
               speed: 20,
             ),
           ),
