@@ -18,7 +18,8 @@ class Campus {
   int ?usersCount;
   String? city;
   String? country;
-  String? address;
+  String? website;
+  bool? isActive;
 }
 
 class UserData {
@@ -34,7 +35,8 @@ class UserData {
   int evalPoints = 0;
   String? location;
   Color? coalitionColor;
-  Campus? campusData;
+  List<Campus> campuses = [];
+  int ?currentCampusId;
   DateTime? lastSeen;
   String? poolMonth;
   String? poolYear;
@@ -403,14 +405,34 @@ class UserService {
       return skills;
     }
 
-    Campus getCampusData(List<dynamic> campusList) {
-      return Campus()
-        ..id = campusList.last['id']
-        ..name = campusList.last['name']
-        ..country = campusList.last['country']
-        ..city = campusList.last['city']
-        ..usersCount = campusList.last['users_count']
-        ..address = campusList.last['address'];
+    List<Campus> getCampuses(List<dynamic> campusList, int currentCampusId) {
+      List<Campus> campuses = [];
+      for (var campus in campusList) {
+        Campus camp = Campus()
+          ..id = campus['id']
+          ..name = campus['name']
+          ..country = campus['country']
+          ..city = campus['city']
+          ..usersCount = campus['users_count']
+          ..isActive = campus['active']
+          ..website = campus['website'];
+        campuses.add(camp);
+      }
+      campuses.sort((a, b) {
+        if (a.id == currentCampusId) return -1;
+        if (b.id == currentCampusId) return 1;
+        return a.name!.compareTo(b.name!);
+      });
+      return campuses;
+    }
+
+    int getCurrentCampusId(List<dynamic> campusUsers) {
+      for (var campusUser in campusUsers) {
+        if (campusUser['is_primary'] == true) {
+          return campusUser['campus_id'];
+        }
+      }
+      return campusUsers.last['campus_id'];
     }
 
     UserData userData = UserData();
@@ -432,7 +454,8 @@ class UserService {
     for (var cursus in userDataAll['cursus_users']) {
       userData.cursusNames[cursus['cursus_id']] = cursus['cursus']['name'];
     }
-    userData.campusData = getCampusData(userDataAll['campus']);
+    userData.currentCampusId = getCurrentCampusId(userDataAll['campus_users']);
+    userData.campuses = getCampuses(userDataAll['campus'], userData.currentCampusId!);
     for (var project in userDataAll['projects_users']) {
       List<int> cursusIds = List<int>.from(project['cursus_ids']);
       ProjectData projectData = ProjectData()

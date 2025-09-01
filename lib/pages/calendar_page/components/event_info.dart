@@ -50,7 +50,7 @@ class _EventInfoState extends State<EventInfo> {
         await UserService.subscribeToEvent(widget.event.id!, myId);
       }
       final campusEvents = await CampusDataService.fetchEvents(
-          profileStore.userData.campusData!.id!, includeExams);
+          profileStore.userData.currentCampusId!, includeExams);
       campusStore.setEvents(campusEvents);
       Map<int, int> updatedEventIds =
           await UserService.fetchSubscribedEventIds(myId);

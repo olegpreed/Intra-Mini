@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forty_two_planet/pages/profile_page/components/bento_box.dart';
 import 'package:forty_two_planet/pages/profile_page/components/bento_icon.dart';
+import 'package:forty_two_planet/pages/profile_page/components/campuses_widget.dart';
 import 'package:forty_two_planet/pages/profile_page/components/circular_progress.dart';
 import 'package:forty_two_planet/pages/profile_page/components/profile_projects.dart';
 import 'package:forty_two_planet/pages/profile_page/components/skills_widget.dart';
@@ -128,6 +129,12 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
                   },
               children: [
                 Padding(
+                    padding: EdgeInsets.symmetric(horizontal: Layout.padding),
+                    child: CampusesWidget(
+                        isLoading: widget.isLoading,
+                        isShimmerFinished: widget.isShimmerFinished,
+                        campuses: widget.cadetData.campuses)),
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: Layout.padding),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -165,7 +172,7 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
           padding: EdgeInsets.symmetric(vertical: Layout.gutter),
           child: SmoothPageIndicator(
             controller: _pageController,
-            count: 3,
+            count: 4,
             effect: ColorTransitionEffect(
               dotColor: context.myTheme.greySecondary,
               activeDotColor: Theme.of(context).primaryColor,
