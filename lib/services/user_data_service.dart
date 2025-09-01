@@ -12,6 +12,15 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class Campus {
+  int? id;
+  String? name;
+  int ?usersCount;
+  String? city;
+  String? country;
+  String? address;
+}
+
 class UserData {
   int? id;
   String? login;
@@ -25,7 +34,7 @@ class UserData {
   int evalPoints = 0;
   String? location;
   Color? coalitionColor;
-  int? campusId;
+  Campus? campusData;
   DateTime? lastSeen;
   String? poolMonth;
   String? poolYear;
@@ -394,6 +403,16 @@ class UserService {
       return skills;
     }
 
+    Campus getCampusData(List<dynamic> campusList) {
+      return Campus()
+        ..id = campusList.last['id']
+        ..name = campusList.last['name']
+        ..country = campusList.last['country']
+        ..city = campusList.last['city']
+        ..usersCount = campusList.last['users_count']
+        ..address = campusList.last['address'];
+    }
+
     UserData userData = UserData();
     userData.id = userDataAll['id'];
     userData.login = userDataAll['login'];
@@ -408,13 +427,12 @@ class UserService {
     userData.poolYear = userDataAll['pool_year'];
     userData.isActive = userDataAll['active?'];
     userData.isStaff = userDataAll['staff?'];
-    userData.cursusLevels = getLevels(userDataAll['cursus_users'] as List<dynamic>);
+    userData.cursusLevels =
+        getLevels(userDataAll['cursus_users'] as List<dynamic>);
     for (var cursus in userDataAll['cursus_users']) {
       userData.cursusNames[cursus['cursus_id']] = cursus['cursus']['name'];
     }
-    if (isHomeView) {
-      userData.campusId = userDataAll['campus'].last['id'];
-    }
+    userData.campusData = getCampusData(userDataAll['campus']);
     for (var project in userDataAll['projects_users']) {
       List<int> cursusIds = List<int>.from(project['cursus_ids']);
       ProjectData projectData = ProjectData()

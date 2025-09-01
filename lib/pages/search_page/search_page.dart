@@ -162,7 +162,7 @@ class _SearchPageState extends State<SearchPage> {
     Map<UserData, SearchProjectData> cadetsFromPage = {};
     try {
       cadetsFromPage = await CampusDataService.fetchProjectCadets(
-        profileStore.userData.campusId!,
+        profileStore.userData.campusData!.id!,
         projectsByIds[projectName]!,
         projectStatus!,
       );
@@ -192,7 +192,7 @@ class _SearchPageState extends State<SearchPage> {
     try {
       while (currentPage <= totalPages[0] && isLoading) {
         final cadetsFromPage = await CampusDataService.fetchCampusCadets(
-            profileStore.userData.campusId!,
+            profileStore.userData.campusData!.id!,
             currentPage,
             totalPages,
             levelValues);

@@ -48,7 +48,7 @@ class _CalendarPageState extends State<CalendarPage> {
             profileStore.userData.id!);
         profileStore.setEventIds(eventIds);
         final events = await CampusDataService.fetchEvents(
-            profileStore.userData.campusId!, includeExams);
+            profileStore.userData.campusData!.id!, includeExams);
         campusStore.setEvents(events);
       }
       if (isLoading || (!isLoading && !isEvents)) {
