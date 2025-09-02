@@ -66,9 +66,9 @@ class _CampusesWidgetState extends State<CampusesWidget> {
                 ? LinearGradient(
                     colors: (countryColors[country] ??
                             [Theme.of(context).cardColor])
-                        .map((color) => color.withOpacity(0.1))
+                        .map((color) => color.withOpacity(0.2))
                         .toList(),
-                    begin: Alignment.topCenter,
+                    begin: Alignment.topLeft,
                     end: Alignment.bottomRight)
                 : LinearGradient(colors: [
                     Theme.of(context).cardColor,

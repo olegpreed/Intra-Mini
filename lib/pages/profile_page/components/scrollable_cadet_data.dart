@@ -26,10 +26,10 @@ class ScrollableCadetData extends StatefulWidget {
 }
 
 class _ScrollableCadetDataState extends State<ScrollableCadetData> {
-  final PageController _pageController = PageController();
+  final PageController _pageController = PageController(initialPage: 1);
   List<Widget?> contentsPage1 = [null, null, null];
   List<Widget?> contentsPage2 = [null, null, null];
-  int currentPage = 0;
+  int currentPage = 1;
 
   @override
   void dispose() {
@@ -149,7 +149,7 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: Layout.padding),
                   child: SkillsWidget(
-                      isCurrentPage: currentPage != 0,
+                      isCurrentPage: currentPage != 1,
                       isLoading: widget.isLoading,
                       isShimmerFinished: widget.isShimmerFinished,
                       skills: widget.isLoading ? {} : widget.cadetData.skills),

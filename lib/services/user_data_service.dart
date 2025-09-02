@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Campus {
   int? id;
   String? name;
-  int ?usersCount;
+  int? usersCount;
   String? city;
   String? country;
   String? website;
@@ -36,7 +36,7 @@ class UserData {
   String? location;
   Color? coalitionColor;
   List<Campus> campuses = [];
-  int ?currentCampusId;
+  int? currentCampusId;
   DateTime? lastSeen;
   String? poolMonth;
   String? poolYear;
@@ -455,7 +455,8 @@ class UserService {
       userData.cursusNames[cursus['cursus_id']] = cursus['cursus']['name'];
     }
     userData.currentCampusId = getCurrentCampusId(userDataAll['campus_users']);
-    userData.campuses = getCampuses(userDataAll['campus'], userData.currentCampusId!);
+    userData.campuses =
+        getCampuses(userDataAll['campus'], userData.currentCampusId!);
     for (var project in userDataAll['projects_users']) {
       List<int> cursusIds = List<int>.from(project['cursus_ids']);
       ProjectData projectData = ProjectData()

@@ -111,7 +111,7 @@ class _EventInfoState extends State<EventInfo> {
                         : () => launchUrl(
                             Uri.parse(
                                 'https://profile.intra.42.fr/exams/${widget.event.id}'),
-                            mode: LaunchMode.inAppWebView),
+                            mode: LaunchMode.inAppBrowserView),
                     behavior: HitTestBehavior.translucent,
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forty_two_planet/data/country_flags.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
-import 'package:forty_two_planet/theme/app_theme.dart';
+import 'package:forty_two_planet/utils/ui_uitls.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CampusPage extends StatelessWidget {
   const CampusPage({super.key, required this.campusData});
@@ -9,38 +10,49 @@ class CampusPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        if (campusData.website == null) return;
+        launchUrl(Uri.parse(campusData.website!),
+            mode: LaunchMode.inAppBrowserView);
+      },
+      child: Stack(children: [
+        Padding(
+          padding: EdgeInsets.only(right: Layout.gutter),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Opacity(
+                      opacity: 0.3,
+                      child: Text('campus',
+                          style: Theme.of(context).textTheme.bodyMedium)),
+                  Text(
+                      '${campusData.name ?? ''} ${countryFlags[campusData.country ?? ''] ?? ''}',
+                      style: Theme.of(context).textTheme.headlineMedium),
+                ],
+              ),
               Opacity(
-                  opacity: 0.5,
-                  child: Text('campus',
-                      style: Theme.of(context).textTheme.bodyMedium)),
-              Text(
-                  '${campusData.name ?? ''} ${countryFlags[campusData.country ?? ''] ?? ''}',
-                  style: Theme.of(context).textTheme.headlineMedium),
+                opacity: 0.3,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(campusData.city ?? '',
+                        style: Theme.of(context).textTheme.bodyMedium),
+                    Text(campusData.country ?? '',
+                        style: Theme.of(context).textTheme.bodyMedium),
+                  ],
+                ),
+              )
             ],
           ),
-          Opacity(
-            opacity: 0.5,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(campusData.city ?? '',
-                    style: Theme.of(context).textTheme.bodyMedium),
-                Text(campusData.country ?? '',
-                    style: Theme.of(context).textTheme.bodyMedium),
-              ],
-            ),
-          )
-        ],
-      ),
-    ]);
+        ),
+      ]),
+    );
   }
 }
