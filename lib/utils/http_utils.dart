@@ -101,3 +101,10 @@ Future<http.Response> requestWithRetry(
 
   throw Exception('Failed after 3 attempts due to rate limit');
 }
+
+String normalizeUrl(String url) {
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    return 'https://$url';
+  }
+  return url;
+}

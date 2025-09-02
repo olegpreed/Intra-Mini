@@ -415,7 +415,7 @@ class UserService {
           ..city = campus['city']
           ..usersCount = campus['users_count']
           ..isActive = campus['active']
-          ..website = campus['website'];
+          ..website = normalizeUrl(campus['website'] ?? '');
         campuses.add(camp);
       }
       campuses.sort((a, b) {

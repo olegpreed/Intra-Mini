@@ -14,8 +14,12 @@ class CampusPage extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onTap: () {
         if (campusData.website == null) return;
-        launchUrl(Uri.parse(campusData.website!),
-            mode: LaunchMode.inAppBrowserView);
+        try {
+          launchUrl(Uri.parse(campusData.website!),
+              mode: LaunchMode.inAppBrowserView);
+        } catch (e) {
+          return;
+        }
       },
       child: Stack(children: [
         Padding(
