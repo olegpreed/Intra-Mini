@@ -23,30 +23,40 @@ class CampusPage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Opacity(
-                      opacity: 0.3,
-                      child: Text('campus',
-                          style: Theme.of(context).textTheme.bodyMedium)),
-                  Text(
-                      '${campusData.name ?? ''} ${countryFlags[campusData.country ?? ''] ?? ''}',
-                      style: Theme.of(context).textTheme.headlineMedium),
-                ],
-              ),
-              Opacity(
-                opacity: 0.3,
+              Expanded(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(campusData.city ?? '',
-                        style: Theme.of(context).textTheme.bodyMedium),
-                    Text(campusData.country ?? '',
-                        style: Theme.of(context).textTheme.bodyMedium),
+                    Opacity(
+                        opacity: 0.3,
+                        child: Text('campus',
+                            style: Theme.of(context).textTheme.bodyMedium)),
+                    Text(
+                        '${campusData.name ?? ''} ${countryFlags[campusData.country ?? ''] ?? ''}',
+                        style: Theme.of(context).textTheme.headlineMedium),
                   ],
+                ),
+              ),
+              Expanded(
+                child: Opacity(
+                  opacity: 0.3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(campusData.city ?? '',
+                            style: Theme.of(context).textTheme.bodyMedium),
+                      ),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(campusData.country ?? '',
+                            style: Theme.of(context).textTheme.bodyMedium),
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],

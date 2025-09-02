@@ -53,27 +53,35 @@ class _CampusesWidgetState extends State<CampusesWidget> {
 
     return Stack(alignment: Alignment.centerRight, children: [
       AnimatedContainer(
-          duration: const Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 500),
+        padding: EdgeInsets.symmetric(horizontal: Layout.padding),
+        height: Layout.cellWidth,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(Layout.cellWidth / 4),
+        ),
+        foregroundDecoration: BoxDecoration(
+          gradient: (!widget.isLoading && widget.isShimmerFinished)
+              ? LinearGradient(
+                  colors:
+                      (countryColors[country] ?? [Theme.of(context).cardColor])
+                          .map((color) => color.withOpacity(0.2))
+                          .toList(),
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight)
+              : LinearGradient(colors: [
+                  Theme.of(context).cardColor,
+                  Theme.of(context).cardColor
+                ]),
+          borderRadius: BorderRadius.circular(Layout.cellWidth / 4),
+        ),
+      ),
+      Container(
           padding: EdgeInsets.symmetric(horizontal: Layout.padding),
           height: Layout.cellWidth,
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(Layout.cellWidth / 4),
-          ),
-          foregroundDecoration: BoxDecoration(
-            gradient: (!widget.isLoading && widget.isShimmerFinished)
-                ? LinearGradient(
-                    colors: (countryColors[country] ??
-                            [Theme.of(context).cardColor])
-                        .map((color) => color.withOpacity(0.2))
-                        .toList(),
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight)
-                : LinearGradient(colors: [
-                    Theme.of(context).cardColor,
-                    Theme.of(context).cardColor
-                  ]),
             borderRadius: BorderRadius.circular(Layout.cellWidth / 4),
           ),
           child: AnimatedOpacity(
