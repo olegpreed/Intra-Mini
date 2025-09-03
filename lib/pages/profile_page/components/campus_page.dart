@@ -21,7 +21,16 @@ class CampusPage extends StatelessWidget {
           return;
         }
       },
-      child: Stack(children: [
+      child: Stack(alignment: Alignment.topCenter, children: [
+        Padding(
+          padding: EdgeInsets.only(top: Layout.gutter),
+          child: Opacity(
+            opacity: 0.3,
+            child: Text(campusData.enrollmentDate != null
+                ? campusData.enrollmentDate!.year.toString()
+                : ''),
+          ),
+        ),
         Padding(
           padding: EdgeInsets.only(right: Layout.gutter),
           child: Row(

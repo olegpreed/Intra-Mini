@@ -19,6 +19,7 @@ class Campus {
   String? city;
   String? country;
   String? website;
+  DateTime? enrollmentDate;
   bool? isActive;
 }
 
@@ -405,9 +406,17 @@ class UserService {
       return skills;
     }
 
-    List<Campus> getCampuses(List<dynamic> campusList, int currentCampusId) {
+    List<Campus> getCampuses(
+        List<dynamic> campusList, List<dynamic> campusUsers) {
       List<Campus> campuses = [];
       for (var campus in campusList) {
+        DateTime? enrollmentDate;
+        for (var campusUser in campusUsers) {
+          if (campusUser['campus_id'] == campus['id']) {
+            enrollmentDate = DateTime.parse(campusUser['created_at']);
+            break;
+          }
+        }
         Campus camp = Campus()
           ..id = campus['id']
           ..name = campus['name']
@@ -415,13 +424,20 @@ class UserService {
           ..city = campus['city']
           ..usersCount = campus['users_count']
           ..isActive = campus['active']
+          ..enrollmentDate = enrollmentDate
           ..website = normalizeUrl(campus['website'] ?? '');
         campuses.add(camp);
       }
       campuses.sort((a, b) {
-        if (a.id == currentCampusId) return -1;
-        if (b.id == currentCampusId) return 1;
-        return a.name!.compareTo(b.name!);
+        if (a.enrollmentDate != null && b.enrollmentDate != null) {
+          return b.enrollmentDate!.compareTo(a.enrollmentDate!);
+        } else if (a.enrollmentDate != null) {
+          return -1;
+        } else if (b.enrollmentDate != null) {
+          return 1;
+        } else {
+          return 0;
+        }
       });
       return campuses;
     }
@@ -456,7 +472,7 @@ class UserService {
     }
     userData.currentCampusId = getCurrentCampusId(userDataAll['campus_users']);
     userData.campuses =
-        getCampuses(userDataAll['campus'], userData.currentCampusId!);
+        getCampuses(userDataAll['campus'], userDataAll['campus_users']);
     for (var project in userDataAll['projects_users']) {
       List<int> cursusIds = List<int>.from(project['cursus_ids']);
       ProjectData projectData = ProjectData()
