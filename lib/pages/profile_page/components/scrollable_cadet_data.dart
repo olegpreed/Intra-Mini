@@ -56,7 +56,11 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
           children: [
             const BentoIcon(iconPath: 'assets/icons/eval.svg'),
             Text(widget.cadetData.evalPoints.toString(),
-                style: Theme.of(context).textTheme.headlineLarge),
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      color: widget.cadetData.evalPoints < 3
+                          ? context.myTheme.fail
+                          : null,
+                    )),
           ],
         ),
         Column(
@@ -64,7 +68,10 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
           children: [
             const BentoIcon(iconPath: 'assets/icons/wallet.svg'),
             Text(widget.cadetData.wallet.toString(),
-                style: Theme.of(context).textTheme.headlineLarge),
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      decoration: TextDecoration.underline,
+                      decorationColor: Theme.of(context).primaryColor,
+                    )),
           ],
         ),
       ];
