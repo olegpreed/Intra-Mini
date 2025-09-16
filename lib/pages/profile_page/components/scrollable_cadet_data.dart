@@ -5,6 +5,7 @@ import 'package:forty_two_planet/pages/profile_page/components/campuses_widget.d
 import 'package:forty_two_planet/pages/profile_page/components/circular_progress.dart';
 import 'package:forty_two_planet/pages/profile_page/components/profile_projects.dart';
 import 'package:forty_two_planet/pages/profile_page/components/skills_widget.dart';
+import 'package:forty_two_planet/pages/store_page/store_page.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
@@ -67,11 +68,18 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             const BentoIcon(iconPath: 'assets/icons/wallet.svg'),
-            Text(widget.cadetData.wallet.toString(),
-                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      decoration: TextDecoration.underline,
-                      decorationColor: Theme.of(context).primaryColor,
-                    )),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: ((context) {
+                  return StorePage(walletPoints: widget.cadetData.wallet);
+                })));
+              },
+              child: Text(widget.cadetData.wallet.toString(),
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                        decoration: TextDecoration.underline,
+                        decorationColor: Theme.of(context).primaryColor,
+                      )),
+            ),
           ],
         ),
       ];

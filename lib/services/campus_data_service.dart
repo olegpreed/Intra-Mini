@@ -18,6 +18,15 @@ class Event {
   DateTime? endAt;
 }
 
+class ShopItem {
+  int? id;
+  String? name;
+  String? description;
+  int? price;
+  String? imageUrl;
+  int quantity = 0;
+}
+
 class CampusStore extends ChangeNotifier {
   List<Event> _events = [];
 
@@ -39,6 +48,52 @@ class CampusDataService {
     final prefs = await SharedPreferences.getInstance();
     final colorValue = prefs.getInt('coalition$coalitionId');
     return colorValue != null ? Color(colorValue) : null;
+  }
+
+  static Future<List<ShopItem>> fetchShopItems(int campusId) async {
+    List<ShopItem> shopItems = [];
+    int pageNumber = 1;
+    int totalPages = 1;
+
+    String? correctUrl(String url) {
+      if (url.startsWith('/uploads/')) {
+        return url.replaceFirst('/uploads/', 'https://cdn.intra.42.fr/');
+      } else if (url.startsWith('https://cdn.intra.42.fr/')) {
+        return url;
+      } else {
+        return null;
+      }
+    }
+
+    while (pageNumber <= totalPages) {
+      final response = await requestWithRetry(
+          HttpMethod.get,
+          createUri(endpoint: '/campus/$campusId/products', queryParameters: {
+            'page[number]': pageNumber.toString(),
+            'page[size]': '100',
+            'sort': 'price',
+          }),
+          true);
+      if (pageNumber == 1) {
+        totalPages = getPagesNumberFromHeader(response);
+      }
+
+      List<dynamic> responseData = json.decode(response.body);
+
+      List<ShopItem> itemsData = responseData.map<ShopItem>((item) {
+        return ShopItem()
+          ..id = item['id']
+          ..name = item['name']
+          ..description = item['description']
+          ..price = item['price']
+          ..imageUrl = correctUrl(item['image']['url']);
+      }).toList();
+
+      shopItems.addAll(itemsData);
+      pageNumber++;
+    }
+
+    return shopItems;
   }
 
   static Future<List<Event>> fetchEvents(
