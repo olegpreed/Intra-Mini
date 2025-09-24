@@ -274,6 +274,9 @@ class CampusDataService {
     List<UserData> favCadets = [];
     String sort = 'level';
     int pageSize = 100;
+    if (favouriteIds.isEmpty) {
+      return favCadets;
+    }
     final response = await requestWithRetry(
         HttpMethod.get,
         createUri(endpoint: '/cursus/$cursusId/cursus_users', queryParameters: {
