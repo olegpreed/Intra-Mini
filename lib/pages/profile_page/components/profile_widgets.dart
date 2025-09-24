@@ -4,6 +4,7 @@ import 'package:forty_two_planet/pages/profile_page/components/scrollable_cadet_
 import 'package:forty_two_planet/pages/profile_page/components/profile_projects.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
+import 'package:forty_two_planet/components/shimmer_loading.dart';
 import 'package:provider/provider.dart';
 
 class ProfileWidgets extends StatelessWidget {
@@ -30,14 +31,17 @@ class ProfileWidgets extends StatelessWidget {
             isLoading: isLoading,
             isShimmerFinished: isShimmerFinished,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: Layout.padding),
-            child: LogBox(
-              isMe: userData.id ==
-                  Provider.of<MyProfileStore>(context).userData.id,
-              isLoading: isLoading,
-              isShimmerFinished: isShimmerFinished,
-              logtime: userData.weeklyLogTimesByMonth,
+          ShimmerLoading(
+            isLoading: isLoading,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: Layout.padding),
+              child: LogBox(
+                isMe: userData.id ==
+                    Provider.of<MyProfileStore>(context).userData.id,
+                isLoading: isLoading,
+                isShimmerFinished: isShimmerFinished,
+                logtime: userData.weeklyLogTimesByMonth,
+              ),
             ),
           ),
         ],

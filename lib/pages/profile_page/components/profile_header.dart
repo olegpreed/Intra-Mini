@@ -46,13 +46,10 @@ class ProfileHeader extends StatelessWidget {
                 ),
                 child: AspectRatio(
                   aspectRatio: 1,
-                  child: isLoading
-                      ? Container()
-                      : ProfileAvatar(
-                          imageUrl: userData.imageUrlBig,
-                          isShimmerFinished: isShimmerFinished,
-                          isHomeView: isHomeView,
-                        ),
+                  child: ProfileAvatar(
+                    imageUrl: userData.imageUrlBig,
+                    isHomeView: isHomeView,
+                  ),
                 )),
             SizedBox(width: Layout.gutter),
             Expanded(
@@ -64,52 +61,39 @@ class ProfileHeader extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: AnimatedOpacity(
-                          duration: const Duration(milliseconds: 300),
-                          opacity: !isShimmerFinished ? 0 : 1,
-                          child: isLoading
-                              ? null
-                              : ProfileName(
-                                  firstName: userData.firstName,
-                                  lastName: userData.lastName),
-                        ),
+                        child: ProfileName(
+                            firstName: userData.firstName,
+                            lastName: userData.lastName),
                       ),
                       CornerButton(
                         isHomeView: isHomeView,
                       ),
                     ],
                   ),
-                  if (!isLoading)
-                    AnimatedOpacity(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                      opacity:
-                          !isShimmerFinished || isProjectsListExpanded ? 0 : 1,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              if (!isHomeView && userData.id != null)
-                                Heart(userId: userData.id!),
-                              if (userData.isActive == false)
-                                const ProfileStatusTag(
-                                  status: 'inactive',
-                                ),
-                              if (userData.isStaff == true)
-                                const ProfileStatusTag(
-                                  status: 'staff',
-                                ),
-                            ],
-                          ),
-                          ProfileOnlineStatus(
-                            lastSeen: userData.lastSeen,
-                            location: userData.location,
-                          ),
+                          if (!isHomeView && userData.id != null)
+                            Heart(userId: userData.id!),
+                          if (userData.isActive == false)
+                            const ProfileStatusTag(
+                              status: 'inactive',
+                            ),
+                          if (userData.isStaff == true)
+                            const ProfileStatusTag(
+                              status: 'staff',
+                            ),
                         ],
                       ),
-                    ),
+                      ProfileOnlineStatus(
+                        lastSeen: userData.lastSeen,
+                        location: userData.location,
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

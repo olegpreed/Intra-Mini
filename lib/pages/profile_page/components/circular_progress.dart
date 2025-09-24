@@ -18,7 +18,7 @@ class CircularProgress extends StatelessWidget {
       progress: (level - level.truncate()) * 100,
       startAngle: 0,
       sweepAngle: 360,
-      foregroundColor: color!,
+      foregroundColor: color ?? context.myTheme.intra,
       backgroundColor: backgroundColor,
       foregroundStrokeWidth: Layout.cellWidth * 0.09,
       backgroundStrokeWidth: Layout.cellWidth * 0.09,

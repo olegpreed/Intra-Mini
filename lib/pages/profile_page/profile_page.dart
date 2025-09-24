@@ -79,43 +79,43 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Scaffold(
         body: SafeArea(
           bottom: false,
-          child: Shimmer(
-            linearGradient: shimmerGradient([
-              Theme.of(context).cardColor,
-              context.myTheme.shimmer,
-              Theme.of(context).cardColor,
-            ]),
-            child: ShimmerLoading(
-              isLoading: _isLoading,
-              child: Padding(
-                padding: EdgeInsets.only(
-                    top: Layout.hasScreenBuffers ? 0 : Layout.gutter),
-                child: Column(
-                  children: [
-                    ProfileHeader(
-                        isLoading: _isLoading,
-                        userData: _userData,
-                        isHomeView: widget.isHomeView,
-                        isShimmerFinished: _isShimmerFinished),
-                    Expanded(
-                      child: Stack(
-                        children: [
-                          ProfileWidgets(
+          child: Padding(
+            padding: EdgeInsets.only(
+                top: Layout.hasScreenBuffers ? 0 : Layout.gutter),
+            child: Shimmer(
+              linearGradient: shimmerGradient([
+                Theme.of(context).cardColor,
+                context.myTheme.shimmer,
+                Theme.of(context).cardColor,
+              ]),
+              child: Column(
+                children: [
+                  ProfileHeader(
+                      isLoading: _isLoading,
+                      userData: _userData,
+                      isHomeView: widget.isHomeView,
+                      isShimmerFinished: _isShimmerFinished),
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        ProfileWidgets(
+                          userData: _userData,
+                          isLoading: _isLoading,
+                          isShimmerFinished: _isShimmerFinished,
+                        ),
+                        Positioned.fill(
+                            child: ShimmerLoading(
+                          isLoading: _isLoading,
+                          child: ProfileProjects(
                             userData: _userData,
                             isLoading: _isLoading,
                             isShimmerFinished: _isShimmerFinished,
                           ),
-                          Positioned.fill(
-                              child: ProfileProjects(
-                            userData: _userData,
-                            isLoading: _isLoading,
-                            isShimmerFinished: _isShimmerFinished,
-                          )),
-                        ],
-                      ),
+                        )),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

@@ -5,8 +5,10 @@ import 'package:forty_two_planet/pages/profile_page/components/campuses_widget.d
 import 'package:forty_two_planet/pages/profile_page/components/circular_progress.dart';
 import 'package:forty_two_planet/pages/profile_page/components/profile_projects.dart';
 import 'package:forty_two_planet/pages/profile_page/components/skills_widget.dart';
+import 'package:forty_two_planet/pages/profile_page/components/widgets_row_one.dart';
 import 'package:forty_two_planet/pages/store_page/store_page.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
+import 'package:forty_two_planet/components/shimmer_loading.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +30,6 @@ class ScrollableCadetData extends StatefulWidget {
 
 class _ScrollableCadetDataState extends State<ScrollableCadetData> {
   final PageController _pageController = PageController(initialPage: 1);
-  List<Widget?> contentsPage1 = [null, null, null];
   List<Widget?> contentsPage2 = [null, null, null];
   int currentPage = 1;
 
@@ -42,48 +43,6 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
   Widget build(BuildContext context) {
     ProjectListState projectsListProvider =
         Provider.of<ProjectListState>(context);
-    if (!widget.isLoading) {
-      contentsPage1 = [
-        CircularProgress(
-          level: widget.cadetData.cursusLevels.isNotEmpty
-              ? widget.cadetData
-                      .cursusLevels[projectsListProvider.selectedCursus] ??
-                  0.0
-              : 0.0,
-          color: widget.cadetData.coalitionColor,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            const BentoIcon(iconPath: 'assets/icons/eval.svg'),
-            Text(widget.cadetData.evalPoints.toString(),
-                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      color: widget.cadetData.evalPoints < 3
-                          ? context.myTheme.fail
-                          : null,
-                    )),
-          ],
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            const BentoIcon(iconPath: 'assets/icons/wallet.svg'),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: ((context) {
-                  return StorePage(walletPoints: widget.cadetData.wallet);
-                })));
-              },
-              child: Text(widget.cadetData.wallet.toString(),
-                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                        decoration: TextDecoration.underline,
-                        decorationColor: Theme.of(context).primaryColor,
-                      )),
-            ),
-          ],
-        ),
-      ];
-    }
     contentsPage2 = [
       Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -131,72 +90,75 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
       ),
     ];
 
-    return Column(
-      children: [
-        SizedBox(
-          height: Layout.cellWidth,
-          child: PageView(
-              controller: _pageController,
-              onPageChanged: (value) => {
-                    setState(() {
-                      currentPage = value;
-                    })
-                  },
-              children: [
-                Padding(
+    return ShimmerLoading(
+      isLoading: widget.cadetData.cursusLevels.isEmpty && widget.isLoading,
+      child: Column(
+        children: [
+          SizedBox(
+            height: Layout.cellWidth,
+            child: PageView(
+                physics: widget.isLoading
+                    ? const NeverScrollableScrollPhysics()
+                    : null,
+                controller: _pageController,
+                onPageChanged: (value) => {
+                      setState(() {
+                        currentPage = value;
+                      })
+                    },
+                children: [
+                  Padding(
+                      padding: EdgeInsets.symmetric(horizontal: Layout.padding),
+                      child: CampusesWidget(
+                          isLoading: widget.isLoading,
+                          isShimmerFinished: widget.isShimmerFinished,
+                          campuses: widget.cadetData.campuses)),
+                  Padding(
+                      padding: EdgeInsets.symmetric(horizontal: Layout.padding),
+                      child: WidgetsRowOne(
+                        cadetData: widget.cadetData,
+                        isShimmerFinished:
+                            widget.cadetData.cursusLevels.isNotEmpty ||
+                                widget.isShimmerFinished,
+                      )),
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: Layout.padding),
-                    child: CampusesWidget(
+                    child: SkillsWidget(
+                        isCurrentPage: currentPage != 1,
                         isLoading: widget.isLoading,
                         isShimmerFinished: widget.isShimmerFinished,
-                        campuses: widget.cadetData.campuses)),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: Layout.padding),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: contentsPage1.map((content) {
-                      return BentoBox(
-                        isShimmerFinished: widget.isShimmerFinished,
-                        content: content,
-                      );
-                    }).toList(),
+                        skills:
+                            widget.isLoading ? {} : widget.cadetData.skills),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: Layout.padding),
-                  child: SkillsWidget(
-                      isCurrentPage: currentPage != 1,
-                      isLoading: widget.isLoading,
-                      isShimmerFinished: widget.isShimmerFinished,
-                      skills: widget.isLoading ? {} : widget.cadetData.skills),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: Layout.padding),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: contentsPage2.map((content) {
-                      return BentoBox(
-                        isShimmerFinished: widget.isShimmerFinished,
-                        content: content,
-                      );
-                    }).toList(),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: Layout.padding),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: contentsPage2.map((content) {
+                        return BentoBox(
+                          isShimmerFinished: widget.isShimmerFinished,
+                          content: content,
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
-              ]),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: Layout.gutter),
-          child: SmoothPageIndicator(
-            controller: _pageController,
-            count: 4,
-            effect: ColorTransitionEffect(
-              dotColor: context.myTheme.greySecondary,
-              activeDotColor: Theme.of(context).primaryColor,
-              dotHeight: Layout.gutter / 1.5,
-              dotWidth: Layout.gutter / 1.5,
+                ]),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: Layout.gutter),
+            child: SmoothPageIndicator(
+              controller: _pageController,
+              count: 4,
+              effect: ColorTransitionEffect(
+                dotColor: context.myTheme.greySecondary,
+                activeDotColor: Theme.of(context).primaryColor,
+                dotHeight: Layout.gutter / 1.5,
+                dotWidth: Layout.gutter / 1.5,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
