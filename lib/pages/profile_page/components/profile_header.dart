@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forty_two_planet/pages/profile_page/components/heart.dart';
 import 'package:forty_two_planet/pages/profile_page/components/profile_corner_btn.dart';
 import 'package:forty_two_planet/pages/profile_page/components/profile_name.dart';
 import 'package:forty_two_planet/pages/profile_page/components/profile_online_status.dart';
@@ -86,19 +87,22 @@ class ProfileHeader extends StatelessWidget {
                           !isShimmerFinished || isProjectsListExpanded ? 0 : 1,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment:
-                            (!userData.isActive! || userData.isStaff!)
-                                ? MainAxisAlignment.spaceBetween
-                                : MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          if (userData.isActive == false)
-                            const ProfileStatusTag(
-                              status: 'inactive',
-                            ),
-                          if (userData.isStaff == true)
-                            const ProfileStatusTag(
-                              status: 'staff',
-                            ),
+                          Row(
+                            children: [
+                              if (!isHomeView && userData.id != null)
+                                Heart(userId: userData.id!),
+                              if (userData.isActive == false)
+                                const ProfileStatusTag(
+                                  status: 'inactive',
+                                ),
+                              if (userData.isStaff == true)
+                                const ProfileStatusTag(
+                                  status: 'staff',
+                                ),
+                            ],
+                          ),
                           ProfileOnlineStatus(
                             lastSeen: userData.lastSeen,
                             location: userData.location,

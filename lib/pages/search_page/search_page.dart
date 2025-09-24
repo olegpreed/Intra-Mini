@@ -9,6 +9,7 @@ import 'package:forty_two_planet/components/sort_btn.dart';
 import 'package:forty_two_planet/data/project_ids.dart';
 import 'package:forty_two_planet/pages/profile_page/profile_page.dart';
 import 'package:forty_two_planet/services/campus_data_service.dart';
+import 'package:forty_two_planet/services/favourites_service.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/settings/user_settings.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
@@ -25,6 +26,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController controller = TextEditingController();
   bool onlyOnline = false;
+  bool onlyFavourites = false;
   bool newCadetsFirst = true;
   RangeValues levelValues = const RangeValues(0, 21);
   bool isLoading = false;
@@ -70,6 +72,12 @@ class _SearchPageState extends State<SearchPage> {
   void toggleOnline() {
     setState(() {
       onlyOnline = !onlyOnline;
+    });
+  }
+
+  void toggleFavourites() {
+    setState(() {
+      onlyFavourites = !onlyFavourites;
     });
   }
 
@@ -191,11 +199,14 @@ class _SearchPageState extends State<SearchPage> {
     });
     try {
       while (currentPage <= totalPages[0] && isLoading) {
-        final cadetsFromPage = await CampusDataService.fetchCampusCadets(
-            profileStore.userData.currentCampusId!,
-            currentPage,
-            totalPages,
-            levelValues);
+        final cadetsFromPage = !onlyFavourites
+            ? await CampusDataService.fetchCampusCadets(
+                profileStore.userData.currentCampusId!,
+                currentPage,
+                totalPages,
+                levelValues)
+            : await CampusDataService.fetchFavouriteCadets(
+                currentPage, totalPages, profileStore.favouriteIds);
         currentPage++;
 
         if (mounted && isLoading) {
@@ -223,6 +234,8 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final profileStore = Provider.of<MyProfileStore>(context);
+    List<String> favouriteIds = profileStore.favouriteIds;
     String searchText = controller.text.toLowerCase();
     List<UserData> fromCadets =
         isSearchByProject ? projectCadets.keys.toList() : cadets;
@@ -230,6 +243,11 @@ class _SearchPageState extends State<SearchPage> {
       bool matchesSearch = true;
       bool matchesOnline = !onlyOnline || cadet.location != null;
       bool matchesLevel = true;
+      bool matchesFavourites =
+          !onlyFavourites || favouriteIds.contains(cadet.id.toString());
+      if (onlyFavourites && !matchesFavourites) {
+        return false;
+      }
       if (!isSearchByProject) {
         matchesLevel = cadet.cursusLevels[21]!.floor() >= levelValues.start &&
             cadet.cursusLevels[21]!.floor() <= levelValues.end;
@@ -278,9 +296,15 @@ class _SearchPageState extends State<SearchPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         MyToggleBtn(
-                          text: 'onsite',
+                          svgPath: 'assets/icons/comp.svg',
                           onPressed: toggleOnline,
                           isPressed: onlyOnline,
+                        ),
+                        SizedBox(width: Layout.padding / 2),
+                        MyToggleBtn(
+                          svgPath: 'assets/icons/heart_small.svg',
+                          onPressed: toggleFavourites,
+                          isPressed: onlyFavourites,
                         ),
                         SizedBox(width: Layout.padding / 2),
                         Expanded(

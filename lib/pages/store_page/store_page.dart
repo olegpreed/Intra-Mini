@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:forty_two_planet/pages/store_page/components/shop_item_card.dart';
 import 'package:forty_two_planet/pages/store_page/components/shop_item_detail.dart';
 import 'package:forty_two_planet/pages/store_page/components/store_header.dart';
@@ -53,36 +52,58 @@ class _StorePageState extends State<StorePage> {
           padding: EdgeInsets.symmetric(horizontal: Layout.padding),
           child: Column(children: [
             const StoreHeader(),
-            StoreKart(
-                walletPoints: widget.walletPoints, spentPoints: spentPoints),
-            isLoading
-                ? const CircularProgressIndicator()
-                : Expanded(
-                    child: GridView.builder(
-                        itemCount: shopItems.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 0.85,
-                            mainAxisSpacing: Layout.gutter * 2,
-                            crossAxisSpacing: Layout.gutter,
-                            crossAxisCount: 2),
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                  backgroundColor: context.myTheme.greyMain,
-                                  context: context,
-                                  builder: (context) {
-                                    return ShopItemDetail(
-                                        shopItem: shopItems[index],
-                                        onAdded: (int quantity) {
-                                          shopItems[index].quantity = quantity;
-                                        });
+            StoreKart(walletPoints: widget.walletPoints, spentPoints: spentPoints, onRevert: () {
+              setState(() {
+                spentPoints = 0;
+                for (var item in shopItems) {
+                  item.quantity = 0;
+                }
+              });
+            },),
+            Expanded(
+              child: GridView.builder(
+                  padding: EdgeInsets.only(bottom: 200),
+                  itemCount: isLoading ? 10 : shopItems.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 0.85,
+                      mainAxisSpacing: Layout.gutter * 2,
+                      crossAxisSpacing: Layout.gutter,
+                      crossAxisCount: 2),
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        if (isLoading) return;
+                        showModalBottomSheet(
+                            backgroundColor: context.myTheme.greyMain,
+                            context: context,
+                            builder: (context) {
+                              return ShopItemDetail(
+                                  shopItem: shopItems[index],
+                                  onChanged: (int quantity) {
+                                    shopItems[index].quantity = quantity;
+                                    setState(() {
+                                      spentPoints = shopItems.fold(
+                                          0,
+                                          (sum, item) =>
+                                              sum +
+                                              (item.quantity *
+                                                  (item.price ?? 0)));
+                                    });
                                   });
-                            },
-                            child: ShopItemCard(shopItem: shopItems[index]),
-                          );
-                        }),
-                  )
+                            });
+                      },
+                      child: ShopItemCard(
+                          isAffordable: shopItems.isEmpty
+                              ? true
+                              : widget.walletPoints -
+                                      spentPoints -
+                                      (shopItems[index].price ?? 0) >
+                                  0,
+                          shopItem: shopItems.isEmpty ? null : shopItems[index],
+                          isLoading: isLoading),
+                    );
+                  }),
+            )
           ]),
         ),
       ),

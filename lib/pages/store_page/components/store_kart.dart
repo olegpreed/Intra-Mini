@@ -1,31 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:forty_two_planet/pages/store_page/components/icon_points.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class StoreKart extends StatelessWidget {
   const StoreKart(
-      {super.key, required this.walletPoints, required this.spentPoints});
+      {super.key,
+      required this.walletPoints,
+      required this.spentPoints,
+      required this.onRevert});
   final int walletPoints;
   final int spentPoints;
+  final VoidCallback onRevert;
 
   @override
   Widget build(BuildContext context) {
+    int resultPoints = walletPoints - spentPoints;
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: Layout.padding),
+      padding: EdgeInsets.symmetric(vertical: Layout.padding / 2),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              IconPoints(
-                  points: walletPoints, svgPath: 'assets/icons/wallet.svg'),
-              const SizedBox(width: 20),
-              IconPoints(points: spentPoints, svgPath: 'assets/icons/kart.svg'),
+              Text('${(resultPoints).toString()} ₳',
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      color: resultPoints >= 0
+                          ? context.myTheme.success
+                          : context.myTheme.fail)),
+              if (spentPoints > 0) ...[
+                GestureDetector(
+                  onTap: onRevert,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: SvgPicture.asset(
+                      'assets/icons/revert.svg',
+                      colorFilter: ColorFilter.mode(
+                        context.myTheme.greyMain,
+                        BlendMode.srcIn,
+                      ),
+                      width: 24,
+                      height: 24,
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
-          IconPoints(
-              points: walletPoints - spentPoints,
-              svgPath: 'assets/icons/resultArrow.svg'),
+          GestureDetector(
+            onTap: () async {
+              final Uri url = Uri.parse('https://shop.intra.42.fr/');
+              if (await canLaunchUrl(url)) {
+                await launchUrl(url, mode: LaunchMode.inAppBrowserView);
+              } else {
+                return;
+              }
+            },
+            child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                decoration: BoxDecoration(
+                  color: context.myTheme.intra.withAlpha(50),
+                  borderRadius: const BorderRadius.all(Radius.circular(200)),
+                ),
+                child: Text('Buy',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineMedium
+                        ?.copyWith(color: context.myTheme.intra))),
+          ),
         ],
       ),
     );

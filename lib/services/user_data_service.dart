@@ -112,6 +112,14 @@ class MyProfileStore extends ChangeNotifier {
   UserData userData = UserData();
   Map<int, int> eventIds = {};
   List<Slot> slots = [];
+  List<String> _favouriteIds = [];
+
+  List<String> get favouriteIds => List.unmodifiable(_favouriteIds);
+
+  void setFavouriteIds(List<String> ids) {
+    _favouriteIds = ids;
+    notifyListeners();
+  }
 
   void setProfile(UserData fetchedUserData) {
     userData = fetchedUserData;

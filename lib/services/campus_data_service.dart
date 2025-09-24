@@ -268,6 +268,44 @@ class CampusDataService {
     return cadetProjectMap;
   }
 
+  static Future<List<UserData>> fetchFavouriteCadets(
+      int pageNumber, List<int> totalPages, List<String> favouriteIds) async {
+    int cursusId = 21;
+    List<UserData> favCadets = [];
+    String sort = 'level';
+    int pageSize = 100;
+    final response = await requestWithRetry(
+        HttpMethod.get,
+        createUri(endpoint: '/cursus/$cursusId/cursus_users', queryParameters: {
+          'filter[user_id]': favouriteIds.join(','),
+          'sort': sort,
+          'page[size]': pageSize.toString(),
+          'page[number]': pageNumber.toString(),
+        }),
+        false);
+    if (pageNumber == 1) {
+      totalPages[0] = getPagesNumberFromHeader(response);
+    }
+    List<dynamic> responseData = json.decode(response.body);
+    favCadets = responseData.map<UserData>((cadet) {
+      return UserData()
+        ..id = cadet['user']['id']
+        ..login = cadet['user']['login']
+        ..firstName = cadet['user']['first_name']
+        ..lastName = cadet['user']['last_name']
+        ..imageUrlSmall = cadet['user']['image']['versions']['small']
+        ..imageUrlBig = cadet['user']['image']['link']
+        ..location = cadet['user']['location']
+        ..wallet = cadet['user']['wallet']
+        ..evalPoints = cadet['user']['correction_point']
+        ..cursusLevels = {cursusId: (cadet['level'] * 100).round() / 100}
+        ..poolYear = cadet['user']['pool_year']
+        ..poolMonth = cadet['user']['pool_month']
+        ..isActive = cadet['user']['active?'];
+    }).toList();
+    return favCadets;
+  }
+
   static Future<List<UserData>> fetchCampusCadets(int campusId, int pageNumber,
       List<int> totalPages, RangeValues minMaxLevels) async {
     int cursusId = 21;

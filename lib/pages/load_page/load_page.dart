@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forty_two_planet/core/home_layout.dart';
 import 'package:forty_two_planet/pages/load_page/components/rotating_logo.dart';
+import 'package:forty_two_planet/services/favourites_service.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/settings/user_settings.dart';
 import 'package:forty_two_planet/utils/cache_utils.dart';
@@ -82,6 +83,9 @@ class _LoadPageState extends State<LoadPage> {
         await UserService.fetchMonthLogtime(profileData.login!);
     final profileStore = Provider.of<MyProfileStore>(context, listen: false);
     profileStore.setProfile(profileData);
+    List<String> favs = await FavouriteStorage.loadFavourites(
+        profileStore.userData.id.toString());
+    profileStore.setFavouriteIds(favs);
   }
 
   @override

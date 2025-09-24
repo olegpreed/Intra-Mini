@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 
 class MyToggleBtn extends StatelessWidget {
   const MyToggleBtn({
     super.key,
-    this.text,
+    required this.svgPath,
     required this.onPressed,
     required this.isPressed,
   });
-  final String? text;
+  final String? svgPath;
   final void Function() onPressed;
   final bool isPressed;
 
@@ -20,7 +21,7 @@ class MyToggleBtn extends StatelessWidget {
         alignment: Alignment.center,
         duration: const Duration(milliseconds: 200),
         height: 35,
-        width: MediaQuery.of(context).size.width * 0.25,
+        width: 35,
         decoration: BoxDecoration(
           color:
               !isPressed ? Colors.transparent : Theme.of(context).primaryColor,
@@ -32,15 +33,7 @@ class MyToggleBtn extends StatelessWidget {
             width: 2,
           ),
         ),
-        child: AnimatedDefaultTextStyle(
-          duration: const Duration(milliseconds: 200),
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: !isPressed
-                      ? context.myTheme.greyMain
-                      : Theme.of(context).cardColor) ??
-              const TextStyle(),
-          child: Text('$text'),
-        ),
+        child: SvgPicture.asset(svgPath!),
       ),
     );
   }
