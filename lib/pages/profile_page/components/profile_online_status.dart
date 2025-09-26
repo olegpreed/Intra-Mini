@@ -19,7 +19,7 @@ class ProfileOnlineStatus extends StatelessWidget {
                     ? ''
                     : '${timeAgoShort(
                         lastSeen!,
-                      )} ago'),
+                      )}'),
             style: location == null
                 ? Theme.of(context)
                     .textTheme

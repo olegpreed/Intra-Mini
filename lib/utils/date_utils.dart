@@ -8,24 +8,24 @@ String timeAgoShort(DateTime dateTime) {
 
   if (difference.inDays >= 365) {
     final years = (difference.inDays / 365).floor();
-    return '$years${years > 1 ? 'Y' : 'Y'}';
+    return '$years${years > 1 ? 'Y' : 'Y'} ago';
   }
 
   if (difference.inDays >= 30) {
     final months = (difference.inDays / 30).floor();
-    return '$months${months > 1 ? 'M' : 'M'}';
+    return '$months${months > 1 ? 'M' : 'M'} ago';
   }
 
   if (difference.inDays >= 1) {
-    return '${difference.inDays}d';
+    return '${difference.inDays}d ago';
   }
 
   if (difference.inHours >= 1) {
-    return '${difference.inHours}h';
+    return '${difference.inHours}h ago';
   }
 
   if (difference.inMinutes >= 1) {
-    return '${difference.inMinutes}m';
+    return '${difference.inMinutes}m ago';
   }
 
   return 'Just now';
@@ -117,10 +117,8 @@ Future<Map<DateTime, List<Pair<Duration, Duration>>>> convertLogData(
 List<Pair<Duration, Duration>> calculateWeekLogs(
     DateTime startDate, Map<String, dynamic> data) {
   final List<Pair<Duration, Duration>> weekLogs = [];
-  DateTime lastDayOfMonth =
-	  DateTime(startDate.year, startDate.month + 1, 0);
-  DateTime lastDayOfLastWeek =
-      getLastDayOfWeek(lastDayOfMonth);
+  DateTime lastDayOfMonth = DateTime(startDate.year, startDate.month + 1, 0);
+  DateTime lastDayOfLastWeek = getLastDayOfWeek(lastDayOfMonth);
   for (DateTime date = getFirstDayOfWeek(startDate);
       !date.isAfter(lastDayOfLastWeek);
       date = DateTime(date.year, date.month, date.day + 1)) {
