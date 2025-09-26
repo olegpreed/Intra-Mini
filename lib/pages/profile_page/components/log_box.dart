@@ -9,11 +9,9 @@ class LogBox extends StatefulWidget {
   const LogBox(
       {super.key,
       required this.logtime,
-      required this.isShimmerFinished,
       required this.isLoading,
       required this.isMe});
   final Map<DateTime, List<Pair<Duration, Duration>>> logtime;
-  final bool isShimmerFinished;
   final bool isLoading;
   final bool isMe;
 
@@ -45,7 +43,7 @@ class _LogBoxState extends State<LogBox> {
               ? null
               : AnimatedOpacity(
                   duration: const Duration(milliseconds: 500),
-                  opacity: widget.isShimmerFinished ? 1 : 0,
+                  opacity: !widget.isLoading ? 1 : 0,
                   child: PageView.builder(
                     scrollDirection: Axis.vertical,
                     controller: _pageController,

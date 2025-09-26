@@ -9,13 +9,9 @@ import 'package:provider/provider.dart';
 
 class ProfileWidgets extends StatelessWidget {
   const ProfileWidgets(
-      {super.key,
-      required this.userData,
-      required this.isLoading,
-      required this.isShimmerFinished});
+      {super.key, required this.userData, required this.isLoading});
   final UserData userData;
   final bool isLoading;
-  final bool isShimmerFinished;
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +22,7 @@ class ProfileWidgets extends StatelessWidget {
       opacity: isProjectsListExpanded ? 0 : 1,
       child: Column(
         children: [
-          ScrollableCadetData(
-            cadetData: userData,
-            isLoading: isLoading,
-            isShimmerFinished: isShimmerFinished,
-          ),
+          ScrollableCadetData(cadetData: userData, isLoading: isLoading),
           ShimmerLoading(
             isLoading: isLoading,
             child: Padding(
@@ -39,7 +31,6 @@ class ProfileWidgets extends StatelessWidget {
                 isMe: userData.id ==
                     Provider.of<MyProfileStore>(context).userData.id,
                 isLoading: isLoading,
-                isShimmerFinished: isShimmerFinished,
                 logtime: userData.weeklyLogTimesByMonth,
               ),
             ),

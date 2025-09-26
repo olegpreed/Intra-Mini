@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forty_two_planet/components/shimmer_loading.dart';
 import 'package:forty_two_planet/pages/profile_page/components/heart.dart';
 import 'package:forty_two_planet/pages/profile_page/components/profile_corner_btn.dart';
 import 'package:forty_two_planet/pages/profile_page/components/profile_name.dart';
@@ -11,16 +12,15 @@ import 'package:forty_two_planet/utils/ui_uitls.dart';
 import 'package:provider/provider.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader(
-      {super.key,
-      required this.isLoading,
-      required this.userData,
-      required this.isHomeView,
-      required this.isShimmerFinished});
+  const ProfileHeader({
+    super.key,
+    required this.isLoading,
+    required this.userData,
+    required this.isHomeView,
+  });
   final bool isLoading;
   final UserData userData;
   final bool isHomeView;
-  final bool isShimmerFinished;
 
   @override
   Widget build(BuildContext context) {
@@ -37,20 +37,23 @@ class ProfileHeader extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-                height: double.infinity,
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(Layout.cellWidth / 4),
-                ),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: ProfileAvatar(
-                    imageUrl: userData.imageUrlBig,
-                    isHomeView: isHomeView,
+            ShimmerLoading(
+              isLoading: userData.imageUrlBig == null,
+              child: Container(
+                  height: double.infinity,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(Layout.cellWidth / 4),
                   ),
-                )),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: ProfileAvatar(
+                      imageUrl: userData.imageUrlBig,
+                      isHomeView: isHomeView,
+                    ),
+                  )),
+            ),
             SizedBox(width: Layout.gutter),
             Expanded(
               child: Column(
@@ -74,23 +77,40 @@ class ProfileHeader extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          if (!isHomeView && userData.id != null)
-                            Heart(userId: userData.id!),
-                          if (userData.isActive == false)
-                            const ProfileStatusTag(
-                              status: 'inactive',
-                            ),
-                          if (userData.isStaff == true)
-                            const ProfileStatusTag(
-                              status: 'staff',
-                            ),
-                        ],
-                      ),
-                      ProfileOnlineStatus(
-                        lastSeen: userData.lastSeen,
-                        location: userData.location,
+                      if (!isHomeView && userData.id != null)
+                        AnimatedOpacity(
+                            opacity: isProjectsListExpanded ? 0 : 1,
+                            duration: const Duration(milliseconds: 300),
+                            child: Heart(userId: userData.id!)),
+                      Expanded(
+                        child: AnimatedOpacity(
+                          duration: const Duration(milliseconds: 300),
+                          opacity: isLoading || isProjectsListExpanded ? 0 : 1,
+                          child: Row(
+                            mainAxisAlignment: userData.isActive == true ||
+                                    userData.isStaff == true
+                                ? MainAxisAlignment.spaceBetween
+                                : MainAxisAlignment.end,
+                            children: [
+                              Row(
+                                children: [
+                                  if (userData.isActive == false)
+                                    const ProfileStatusTag(
+                                      status: 'inactive',
+                                    ),
+                                  if (userData.isStaff == true)
+                                    const ProfileStatusTag(
+                                      status: 'staff',
+                                    ),
+                                ],
+                              ),
+                              ProfileOnlineStatus(
+                                lastSeen: userData.lastSeen,
+                                location: userData.location,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),

@@ -10,13 +10,9 @@ import 'package:provider/provider.dart';
 
 class ProfileProjects extends StatefulWidget {
   const ProfileProjects(
-      {super.key,
-      required this.userData,
-      required this.isLoading,
-      required this.isShimmerFinished});
+      {super.key, required this.userData, required this.isLoading});
   final UserData userData;
   final bool isLoading;
-  final bool isShimmerFinished;
 
   @override
   State<ProfileProjects> createState() => _ProfileProjectsState();
@@ -101,7 +97,7 @@ class _ProfileProjectsState extends State<ProfileProjects> {
           child: AnimatedOpacity(
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
-            opacity: !widget.isShimmerFinished ? 0 : 1,
+            opacity: widget.isLoading ? 0 : 1,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -153,7 +149,7 @@ class _ProfileProjectsState extends State<ProfileProjects> {
             ),
             child: AnimatedOpacity(
               duration: const Duration(milliseconds: 300),
-              opacity: !widget.isShimmerFinished ? 0 : 1,
+              opacity: widget.isLoading ? 0 : 1,
               child: Stack(
                 children: [
                   Positioned.fill(

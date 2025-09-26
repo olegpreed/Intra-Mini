@@ -13,12 +13,13 @@ class CircularProgress extends StatelessWidget {
   Widget build(BuildContext context) {
     Color? backgroundColor = Theme.of(context).scaffoldBackgroundColor;
     return DashedCircularProgressBar.aspectRatio(
+      key: ValueKey(color),
       aspectRatio: 1,
       valueNotifier: _valueNotifier,
       progress: (level - level.truncate()) * 100,
       startAngle: 0,
       sweepAngle: 360,
-      foregroundColor: color ?? context.myTheme.intra,
+      foregroundColor: color ?? Colors.transparent,
       backgroundColor: backgroundColor,
       foregroundStrokeWidth: Layout.cellWidth * 0.09,
       backgroundStrokeWidth: Layout.cellWidth * 0.09,

@@ -10,11 +10,9 @@ class CampusesWidget extends StatefulWidget {
   const CampusesWidget(
       {super.key,
       required this.campuses,
-      required this.isLoading,
-      required this.isShimmerFinished});
+      required this.isLoading});
   final List<Campus> campuses;
   final bool isLoading;
-  final bool isShimmerFinished;
 
   @override
   State<CampusesWidget> createState() => _CampusesWidgetState();
@@ -62,7 +60,7 @@ class _CampusesWidgetState extends State<CampusesWidget> {
           borderRadius: BorderRadius.circular(Layout.cellWidth / 4),
         ),
         foregroundDecoration: BoxDecoration(
-          gradient: (!widget.isLoading && widget.isShimmerFinished)
+          gradient: (!widget.isLoading)
               ? LinearGradient(
                   colors:
                       (countryColors[country] ?? [Theme.of(context).cardColor])
@@ -86,7 +84,7 @@ class _CampusesWidgetState extends State<CampusesWidget> {
           ),
           child: AnimatedOpacity(
               duration: const Duration(milliseconds: 500),
-              opacity: widget.isShimmerFinished ? 1 : 0,
+              opacity: !widget.isLoading ? 1 : 0,
               child: widget.isLoading
                   ? null
                   : widget.campuses.isEmpty

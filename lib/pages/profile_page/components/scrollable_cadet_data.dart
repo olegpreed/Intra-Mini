@@ -1,28 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:forty_two_planet/pages/profile_page/components/bento_box.dart';
-import 'package:forty_two_planet/pages/profile_page/components/bento_icon.dart';
 import 'package:forty_two_planet/pages/profile_page/components/campuses_widget.dart';
-import 'package:forty_two_planet/pages/profile_page/components/circular_progress.dart';
-import 'package:forty_two_planet/pages/profile_page/components/profile_projects.dart';
 import 'package:forty_two_planet/pages/profile_page/components/skills_widget.dart';
 import 'package:forty_two_planet/pages/profile_page/components/widgets_row_one.dart';
-import 'package:forty_two_planet/pages/store_page/store_page.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/components/shimmer_loading.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
-import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ScrollableCadetData extends StatefulWidget {
   const ScrollableCadetData(
-      {super.key,
-      required this.cadetData,
-      required this.isLoading,
-      required this.isShimmerFinished});
+      {super.key, required this.cadetData, required this.isLoading});
   final UserData cadetData;
   final bool isLoading;
-  final bool isShimmerFinished;
 
   @override
   State<ScrollableCadetData> createState() => _ScrollableCadetDataState();
@@ -41,8 +32,6 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
 
   @override
   Widget build(BuildContext context) {
-    ProjectListState projectsListProvider =
-        Provider.of<ProjectListState>(context);
     contentsPage2 = [
       Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -111,7 +100,6 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
                       padding: EdgeInsets.symmetric(horizontal: Layout.padding),
                       child: CampusesWidget(
                           isLoading: widget.isLoading,
-                          isShimmerFinished: widget.isShimmerFinished,
                           campuses: widget.cadetData.campuses)),
                   Padding(
                       padding: EdgeInsets.symmetric(horizontal: Layout.padding),
@@ -119,14 +107,14 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
                         cadetData: widget.cadetData,
                         isShimmerFinished:
                             widget.cadetData.cursusLevels.isNotEmpty ||
-                                widget.isShimmerFinished,
+                                !widget.isLoading,
                       )),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: Layout.padding),
                     child: SkillsWidget(
                         isCurrentPage: currentPage != 1,
                         isLoading: widget.isLoading,
-                        isShimmerFinished: widget.isShimmerFinished,
+                        isShimmerFinished: !widget.isLoading,
                         skills:
                             widget.isLoading ? {} : widget.cadetData.skills),
                   ),
@@ -136,7 +124,7 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: contentsPage2.map((content) {
                         return BentoBox(
-                          isShimmerFinished: widget.isShimmerFinished,
+                          isShimmerFinished: !widget.isLoading,
                           content: content,
                         );
                       }).toList(),
@@ -146,14 +134,23 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: Layout.gutter),
-            child: SmoothPageIndicator(
-              controller: _pageController,
-              count: 4,
-              effect: ColorTransitionEffect(
-                dotColor: context.myTheme.greySecondary,
-                activeDotColor: Theme.of(context).primaryColor,
-                dotHeight: Layout.gutter / 1.5,
-                dotWidth: Layout.gutter / 1.5,
+            child: AnimatedCrossFade(
+              alignment: Alignment.center,
+              duration: const Duration(milliseconds: 300),
+              crossFadeState: widget.isLoading
+                  ? CrossFadeState.showFirst
+                  : CrossFadeState.showSecond,
+              firstChild:
+                  SizedBox(height: Layout.gutter / 1.5, width: double.infinity),
+              secondChild: SmoothPageIndicator(
+                controller: _pageController,
+                count: 4,
+                effect: ColorTransitionEffect(
+                  dotColor: context.myTheme.greySecondary,
+                  activeDotColor: Theme.of(context).primaryColor,
+                  dotHeight: Layout.gutter / 1.5,
+                  dotWidth: Layout.gutter / 1.5,
+                ),
               ),
             ),
           ),

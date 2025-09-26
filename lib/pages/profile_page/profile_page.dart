@@ -24,7 +24,6 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   bool _isLoading = true;
-  bool _isShimmerFinished = false;
   UserData _userData = UserData();
 
   @override
@@ -46,12 +45,6 @@ class _ProfilePageState extends State<ProfilePage> {
     if (!mounted) return;
     setState(() {
       _isLoading = false;
-    });
-    Future.delayed(const Duration(milliseconds: 100), () {
-      if (!mounted) return;
-      setState(() {
-        _isShimmerFinished = true;
-      });
     });
   }
 
@@ -91,17 +84,16 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 children: [
                   ProfileHeader(
-                      isLoading: _isLoading,
-                      userData: _userData,
-                      isHomeView: widget.isHomeView,
-                      isShimmerFinished: _isShimmerFinished),
+                    isLoading: _isLoading,
+                    userData: _userData,
+                    isHomeView: widget.isHomeView,
+                  ),
                   Expanded(
                     child: Stack(
                       children: [
                         ProfileWidgets(
                           userData: _userData,
                           isLoading: _isLoading,
-                          isShimmerFinished: _isShimmerFinished,
                         ),
                         Positioned.fill(
                             child: ShimmerLoading(
@@ -109,7 +101,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: ProfileProjects(
                             userData: _userData,
                             isLoading: _isLoading,
-                            isShimmerFinished: _isShimmerFinished,
                           ),
                         )),
                       ],
