@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:forty_two_planet/pages/profile_page/components/bento_box.dart';
 import 'package:forty_two_planet/pages/profile_page/components/bento_icon.dart';
 import 'package:forty_two_planet/pages/profile_page/components/circular_progress.dart';
@@ -23,48 +24,58 @@ class WidgetsRowOne extends StatelessWidget {
       children: [
         BentoBox(
           isShimmerFinished: isShimmerFinished,
-          content: CircularProgress(
-            level:
-                cadetData.cursusLevels[projectsListProvider.selectedCursus] ??
-                    0.0,
-            color: cadetData.coalitionColor,
+          content: FadeIn(
+            duration: const Duration(milliseconds: 300),
+            child: CircularProgress(
+              level:
+                  cadetData.cursusLevels[projectsListProvider.selectedCursus] ??
+                      0.0,
+              color: cadetData.coalitionColor,
+            ),
           ),
         ),
         BentoBox(
           isShimmerFinished: isShimmerFinished,
-          content: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const BentoIcon(iconPath: 'assets/icons/eval.svg'),
-              Text(cadetData.evalPoints.toString(),
-                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                        color: cadetData.evalPoints < 3
-                            ? context.myTheme.fail
-                            : null,
-                      )),
-            ],
-          ),
-        ),
-        BentoBox(
-          isShimmerFinished: isShimmerFinished,
-          content: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const BentoIcon(iconPath: 'assets/icons/wallet.svg'),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) {
-                    return StorePage(walletPoints: cadetData.wallet);
-                  })));
-                },
-                child: Text(cadetData.wallet.toString(),
+          content: FadeIn(
+            duration: const Duration(milliseconds: 300),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const BentoIcon(iconPath: 'assets/icons/eval.svg'),
+                Text(cadetData.evalPoints.toString(),
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                          decoration: TextDecoration.underline,
-                          decorationColor: Theme.of(context).primaryColor,
+                          color: cadetData.evalPoints < 3
+                              ? context.myTheme.fail
+                              : null,
                         )),
-              ),
-            ],
+              ],
+            ),
+          ),
+        ),
+        BentoBox(
+          isShimmerFinished: isShimmerFinished,
+          content: FadeIn(
+            duration: const Duration(milliseconds: 300),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const BentoIcon(iconPath: 'assets/icons/wallet.svg'),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: ((context) {
+                      return StorePage(walletPoints: cadetData.wallet);
+                    })));
+                  },
+                  child: Text(cadetData.wallet.toString(),
+                      style:
+                          Theme.of(context).textTheme.headlineLarge?.copyWith(
+                                decoration: TextDecoration.underline,
+                                decorationColor: Theme.of(context).primaryColor,
+                              )),
+                ),
+              ],
+            ),
           ),
         ),
       ],

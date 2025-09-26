@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:forty_two_planet/pages/profile_page/components/project_item.dart';
 import 'package:forty_two_planet/pages/profile_page/components/search_project_bar.dart';
 import 'package:forty_two_planet/pages/profile_page/components/cursus_switcher.dart';
@@ -150,36 +151,39 @@ class _ProfileProjectsState extends State<ProfileProjects> {
             child: AnimatedOpacity(
               duration: const Duration(milliseconds: 300),
               opacity: widget.isLoading ? 0 : 1,
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      controller: _projectsScrollController,
-                      child: Container(
-                        margin: EdgeInsets.only(
-                            bottom: 70 + Layout.screenHeight * 0.05,
-                            top: Layout.gutter * 2),
-                        child: Column(
-                          children: _displayedProjects.map((project) {
-                            return ProjectItem(
-                                projectData: project,
-                                userId: widget.userData.id!,
-                                isLast: project == _displayedProjects.last);
-                          }).toList(),
+              child: FadeIn(
+                duration: const Duration(milliseconds: 300),
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        controller: _projectsScrollController,
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              bottom: 70 + Layout.screenHeight * 0.05,
+                              top: Layout.gutter * 2),
+                          child: Column(
+                            children: _displayedProjects.map((project) {
+                              return ProjectItem(
+                                  projectData: project,
+                                  userId: widget.userData.id!,
+                                  isLast: project == _displayedProjects.last);
+                            }).toList(),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  if (!projectsListProvider.isExpanded)
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onVerticalDragUpdate: (details) => {
-                        if (details.primaryDelta! < 0 && !widget.isLoading)
-                          {projectsListProvider.expand()}
-                      },
-                    )
-                ],
+                    if (!projectsListProvider.isExpanded)
+                      GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onVerticalDragUpdate: (details) => {
+                          if (details.primaryDelta! < 0 && !widget.isLoading)
+                            {projectsListProvider.expand()}
+                        },
+                      )
+                  ],
+                ),
               ),
             ),
           ),
