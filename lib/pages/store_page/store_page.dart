@@ -10,8 +10,10 @@ import 'package:forty_two_planet/utils/ui_uitls.dart';
 import 'package:provider/provider.dart';
 
 class StorePage extends StatefulWidget {
-  const StorePage({super.key, required this.walletPoints});
+  const StorePage(
+      {super.key, required this.walletPoints, required this.campusId});
   final int walletPoints;
+  final int? campusId;
 
   @override
   State<StorePage> createState() => _StorePageState();
@@ -29,13 +31,13 @@ class _StorePageState extends State<StorePage> {
   }
 
   void _fetchStoreData() async {
-    final profileStore = Provider.of<MyProfileStore>(context, listen: false);
-    int? campusId = profileStore.userData.currentCampusId;
-    if (campusId == null) {
-      showErrorDialog('Campus ID is null');
+    if (widget.campusId == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showErrorDialog('Campus ID is null');
+      });
       return;
     }
-    shopItems = await CampusDataService.fetchShopItems(campusId);
+    shopItems = await CampusDataService.fetchShopItems(widget.campusId!);
     if (!mounted) return;
     setState(() {
       isLoading = false;
@@ -52,14 +54,18 @@ class _StorePageState extends State<StorePage> {
           padding: EdgeInsets.symmetric(horizontal: Layout.padding),
           child: Column(children: [
             const StoreHeader(),
-            StoreKart(walletPoints: widget.walletPoints, spentPoints: spentPoints, onRevert: () {
-              setState(() {
-                spentPoints = 0;
-                for (var item in shopItems) {
-                  item.quantity = 0;
-                }
-              });
-            },),
+            StoreKart(
+              walletPoints: widget.walletPoints,
+              spentPoints: spentPoints,
+              onRevert: () {
+                setState(() {
+                  spentPoints = 0;
+                  for (var item in shopItems) {
+                    item.quantity = 0;
+                  }
+                });
+              },
+            ),
             Expanded(
               child: GridView.builder(
                   padding: EdgeInsets.only(bottom: 200),

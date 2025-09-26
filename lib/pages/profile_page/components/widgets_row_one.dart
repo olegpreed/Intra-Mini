@@ -11,9 +11,13 @@ import 'package:provider/provider.dart';
 
 class WidgetsRowOne extends StatelessWidget {
   const WidgetsRowOne(
-      {super.key, required this.cadetData, required this.isShimmerFinished});
+      {super.key,
+      required this.cadetData,
+      required this.isShimmerFinished,
+      required this.isLoading});
   final UserData cadetData;
   final bool isShimmerFinished;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -62,17 +66,23 @@ class WidgetsRowOne extends StatelessWidget {
                 const BentoIcon(iconPath: 'assets/icons/wallet.svg'),
                 GestureDetector(
                   onTap: () {
+                    if (isShimmerFinished == false) return;
                     Navigator.push(context,
                         MaterialPageRoute(builder: ((context) {
-                      return StorePage(walletPoints: cadetData.wallet);
+                      return StorePage(
+                          walletPoints: cadetData.wallet,
+                          campusId: cadetData.currentCampusId);
                     })));
                   },
                   child: Text(cadetData.wallet.toString(),
-                      style:
-                          Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                decoration: TextDecoration.underline,
-                                decorationColor: Theme.of(context).primaryColor,
-                              )),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineLarge
+                          ?.copyWith(
+                            decoration:
+                                !isLoading ? TextDecoration.underline : null,
+                            decorationColor: Theme.of(context).primaryColor,
+                          )),
                 ),
               ],
             ),
