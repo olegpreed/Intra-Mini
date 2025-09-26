@@ -8,9 +8,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class CampusesWidget extends StatefulWidget {
   const CampusesWidget(
-      {super.key,
-      required this.campuses,
-      required this.isLoading});
+      {super.key, required this.campuses, required this.isLoading});
   final List<Campus> campuses;
   final bool isLoading;
 

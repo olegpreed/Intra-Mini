@@ -80,7 +80,7 @@ class _StorePageState extends State<StorePage> {
                       onTap: () {
                         if (isLoading) return;
                         showModalBottomSheet(
-                            backgroundColor: context.myTheme.greyMain,
+                            backgroundColor: context.myTheme.greySecondary,
                             context: context,
                             builder: (context) {
                               return ShopItemDetail(

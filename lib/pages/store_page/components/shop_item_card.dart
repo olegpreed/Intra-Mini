@@ -29,7 +29,7 @@ class ShopItemCard extends StatelessWidget {
             width: double.infinity,
             height: Layout.cellWidth,
             decoration: BoxDecoration(
-              color: context.myTheme.greyMain,
+              color: context.myTheme.greySecondary,
               borderRadius: BorderRadius.circular(12),
             ),
           ),
@@ -48,7 +48,7 @@ class ShopItemCard extends StatelessWidget {
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: context.myTheme.greyMain,
+                  color: context.myTheme.greySecondary,
                 ),
                 child: shopItem != null
                     ? CachedNetworkImage(
@@ -56,7 +56,7 @@ class ShopItemCard extends StatelessWidget {
                         fit: BoxFit.cover,
                         fadeInDuration: const Duration(milliseconds: 300),
                         placeholder: (context, url) => Container(
-                          color: context.myTheme.greyMain,
+                          color: context.myTheme.greySecondary,
                         ),
                         errorWidget: (context, error, stackTrace) =>
                             const Icon(Icons.broken_image),

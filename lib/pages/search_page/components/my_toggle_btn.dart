@@ -16,25 +16,32 @@ class MyToggleBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed,
-      child: AnimatedContainer(
-        alignment: Alignment.center,
-        duration: const Duration(milliseconds: 200),
-        height: 35,
-        width: 35,
-        decoration: BoxDecoration(
-          color:
-              !isPressed ? Colors.transparent : Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.circular(30),
-          border: Border.all(
+        onTap: onPressed,
+        child: AnimatedContainer(
+          alignment: Alignment.center,
+          duration: const Duration(milliseconds: 200),
+          height: 35,
+          width: 35,
+          decoration: BoxDecoration(
             color: !isPressed
-                ? Theme.of(context).scaffoldBackgroundColor
-                : Colors.transparent,
-            width: 2,
+                ? Colors.transparent
+                : Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.circular(30),
+            border: Border.all(
+              color: !isPressed
+                  ? Theme.of(context).scaffoldBackgroundColor
+                  : Colors.transparent,
+              width: 2,
+            ),
           ),
-        ),
-        child: SvgPicture.asset(svgPath!),
-      ),
-    );
+          child: SvgPicture.asset(
+            svgPath!,
+            colorFilter: ColorFilter.mode(
+                !isPressed
+                    ? context.myTheme.greyMain
+                    : Theme.of(context).scaffoldBackgroundColor,
+                BlendMode.srcIn),
+          ),
+        ));
   }
 }
