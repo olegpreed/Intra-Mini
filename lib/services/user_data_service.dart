@@ -75,12 +75,15 @@ class TeamData {
 }
 
 class FeedbackData {
-  int mark = 0;
-  String corrector = '';
-  String comment = '';
-  String feedback = '';
-  bool isFailed = false;
-  DateTime time = DateTime.now();
+  int? mark;
+  String? corrector;
+  TeamData correctedTeam = TeamData();
+  int? projectId;
+  String? comment;
+  String? feedback;
+  bool? isFailed;
+  DateTime? startTime = DateTime.now();
+  DateTime? endTime = DateTime.now();
 }
 
 class Slot {
@@ -504,6 +507,47 @@ class UserService {
     return userData;
   }
 
+  static Future<List<FeedbackData>> fetchUserFeedbacks(int userId) async {
+    List<FeedbackData> feedbacks = [];
+    final response = await requestWithRetry(
+        HttpMethod.get,
+        createUri(
+          endpoint: '/users/$userId/scale_teams/as_corrector',
+          queryParameters: {
+            'page[size]': '100',
+          },
+        ),
+        false);
+    List<dynamic> resp = json.decode(response.body);
+    for (var feedback in resp) {
+      TeamData team = TeamData()
+        ..id = feedback['team']['id']
+        ..name = feedback['team']['name']
+        ..finalMark = feedback['team']['final_mark']
+        ..isFailed = feedback['team']['validated?'] == false;
+      List<dynamic> members = feedback['team']['users'];
+      for (var member in members) {
+        team.members[member['login']] = member['leader'];
+      }
+      FeedbackData feedbackItem = FeedbackData()
+        ..mark = feedback['final_mark']
+        ..corrector = feedback['corrector']['login']
+        ..comment = feedback['comment']
+        ..feedback = feedback['feedback']
+        ..isFailed = feedback['team']['validated?']
+        ..startTime = feedback['begin_at'] != null
+            ? DateTime.parse(feedback['begin_at'])
+            : null
+        ..endTime = feedback['filled_at'] != null
+            ? DateTime.parse(feedback['filled_at'])
+            : null
+        ..projectId = feedback['team']['project_id']
+        ..correctedTeam = team;
+      feedbacks.add(feedbackItem);
+    }
+    return feedbacks;
+  }
+
   static Future<List<TeamData>> fetchProjectTeams(
       int projectId, int userId) async {
     final response = await requestWithRetry(
@@ -544,13 +588,25 @@ class UserService {
     List<dynamic> feedbacks = json.decode(response.body);
     List<FeedbackData> feedbackData = [];
     for (var feedback in feedbacks) {
+      TeamData team = TeamData()
+        ..id = feedback['team']['id']
+        ..name = feedback['team']['name']
+        ..finalMark = feedback['team']['final_mark']
+        ..isFailed = feedback['team']['validated?'] == false;
+      List<dynamic> members = feedback['team']['users'];
+      for (var member in members) {
+        team.members[member['login']] = member['leader'];
+      }
       FeedbackData feedbackItem = FeedbackData()
         ..mark = feedback['final_mark'] ?? 0
         ..corrector = feedback['corrector']['login'] ?? ''
         ..comment = feedback['comment'] ?? ''
         ..feedback = feedback['feedback'] ?? ''
         ..isFailed = feedback['team']['validated?'] == false
-        ..time = DateTime.parse(feedback['created_at']);
+        ..startTime = DateTime.parse(feedback['begin_at'])
+        ..endTime = DateTime.parse(feedback['filled_at'])
+        ..projectId = feedback['team']['project_id']
+        ..correctedTeam = team;
       feedbackData.add(feedbackItem);
     }
     return feedbackData;

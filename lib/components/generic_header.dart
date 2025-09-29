@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 
-class StoreHeader extends StatelessWidget {
-  const StoreHeader({super.key});
+class GenericHeader extends StatelessWidget {
+  const GenericHeader({super.key, required this.title});
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Text('Intra shop', style: Theme.of(context).textTheme.headlineLarge),
+      Text(title, style: Theme.of(context).textTheme.headlineLarge),
       GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {

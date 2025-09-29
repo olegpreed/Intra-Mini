@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
+import 'package:forty_two_planet/pages/evals_page/evals_page.dart';
 import 'package:forty_two_planet/pages/profile_page/components/bento_box.dart';
 import 'package:forty_two_planet/pages/profile_page/components/bento_icon.dart';
 import 'package:forty_two_planet/pages/profile_page/components/circular_progress.dart';
@@ -38,53 +39,56 @@ class WidgetsRowOne extends StatelessWidget {
             ),
           ),
         ),
-        BentoBox(
-          isShimmerFinished: isShimmerFinished,
-          content: FadeIn(
-            duration: const Duration(milliseconds: 300),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const BentoIcon(iconPath: 'assets/icons/eval.svg'),
-                Text(cadetData.evalPoints.toString(),
-                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                          color: cadetData.evalPoints < 3
-                              ? context.myTheme.fail
-                              : null,
-                        )),
-              ],
+        GestureDetector(
+          onTap: () {
+            if (isShimmerFinished == false || cadetData.id == null) {
+              return;
+            }
+            Navigator.push(context, MaterialPageRoute(builder: ((context) {
+              return EvalsPage(userId: cadetData.id!);
+            })));
+          },
+          child: BentoBox(
+            isShimmerFinished: isShimmerFinished,
+            content: FadeIn(
+              duration: const Duration(milliseconds: 300),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const BentoIcon(iconPath: 'assets/icons/eval.svg'),
+                  Text(cadetData.evalPoints.toString(),
+                      style:
+                          Theme.of(context).textTheme.headlineLarge?.copyWith(
+                                color: cadetData.evalPoints < 3
+                                    ? context.myTheme.fail
+                                    : null,
+                              )),
+                ],
+              ),
             ),
           ),
         ),
-        BentoBox(
-          isShimmerFinished: isShimmerFinished,
-          content: FadeIn(
-            duration: const Duration(milliseconds: 300),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const BentoIcon(iconPath: 'assets/icons/wallet.svg'),
-                GestureDetector(
-                  onTap: () {
-                    if (isShimmerFinished == false) return;
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: ((context) {
-                      return StorePage(
-                          walletPoints: cadetData.wallet,
-                          campusId: cadetData.currentCampusId);
-                    })));
-                  },
-                  child: Text(cadetData.wallet.toString(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineLarge
-                          ?.copyWith(
-                            decoration:
-                                !isLoading ? TextDecoration.underline : null,
-                            decorationColor: Theme.of(context).primaryColor,
-                          )),
-                ),
-              ],
+        GestureDetector(
+          onTap: () {
+            if (isShimmerFinished == false) return;
+            Navigator.push(context, MaterialPageRoute(builder: ((context) {
+              return StorePage(
+                  walletPoints: cadetData.wallet,
+                  campusId: cadetData.currentCampusId);
+            })));
+          },
+          child: BentoBox(
+            isShimmerFinished: isShimmerFinished,
+            content: FadeIn(
+              duration: const Duration(milliseconds: 300),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const BentoIcon(iconPath: 'assets/icons/wallet.svg'),
+                  Text(cadetData.wallet.toString(),
+                      style: Theme.of(context).textTheme.headlineLarge),
+                ],
+              ),
             ),
           ),
         ),

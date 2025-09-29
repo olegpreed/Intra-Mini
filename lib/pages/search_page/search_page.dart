@@ -9,7 +9,6 @@ import 'package:forty_two_planet/components/sort_btn.dart';
 import 'package:forty_two_planet/data/project_ids.dart';
 import 'package:forty_two_planet/pages/profile_page/profile_page.dart';
 import 'package:forty_two_planet/services/campus_data_service.dart';
-import 'package:forty_two_planet/services/favourites_service.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/settings/user_settings.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';

@@ -31,6 +31,23 @@ String timeAgoShort(DateTime dateTime) {
   return 'Just now';
 }
 
+String formatDuration(DateTime start, DateTime end) {
+  final diff = end.difference(start);
+
+  final days = diff.inDays;
+  final hours = diff.inHours % 24;
+  final minutes = diff.inMinutes % 60;
+
+  if (days > 0) {
+    return "${days}d${hours}h${minutes}m";
+  } else if (hours > 0) {
+    return "${hours}h${minutes}m";
+  } else {
+    return "${minutes}m";
+  }
+}
+
+
 String timeAgoDetailed(DateTime dateTime) {
   final now = DateTime.now();
   final difference = now.difference(dateTime);

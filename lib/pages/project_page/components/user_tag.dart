@@ -26,7 +26,7 @@ class UserTag extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
-            color: context.myTheme.greySecondary,
+            color: context.myTheme.greySecondary.withAlpha(80),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Text(user),

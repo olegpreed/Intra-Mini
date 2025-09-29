@@ -155,7 +155,7 @@ class _TeamCardState extends State<TeamCard> {
                 child: !isLoading && isExpanded
                     ? Column(children: [
                         for (final feedback in feedbacks)
-                          FeedbackChat(feedback: feedback)
+                          FeedbackChat(feedback: feedback, isProjectView: true),
                       ])
                     : const SizedBox.shrink(),
               ),

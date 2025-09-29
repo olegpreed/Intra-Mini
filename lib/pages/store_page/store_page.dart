@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:forty_two_planet/pages/store_page/components/shop_item_card.dart';
 import 'package:forty_two_planet/pages/store_page/components/shop_item_detail.dart';
-import 'package:forty_two_planet/pages/store_page/components/store_header.dart';
+import 'package:forty_two_planet/components/generic_header.dart';
 import 'package:forty_two_planet/pages/store_page/components/store_kart.dart';
 import 'package:forty_two_planet/services/campus_data_service.dart';
-import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
-import 'package:provider/provider.dart';
 
 class StorePage extends StatefulWidget {
   const StorePage(
@@ -53,7 +51,7 @@ class _StorePageState extends State<StorePage> {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: Layout.padding),
           child: Column(children: [
-            const StoreHeader(),
+            const GenericHeader(title: 'Intra shop'),
             StoreKart(
               walletPoints: widget.walletPoints,
               spentPoints: spentPoints,
