@@ -48,6 +48,8 @@ class _SearchPageState extends State<SearchPage> {
     super.initState();
     levelValues =
         Provider.of<SettingsProvider>(context, listen: false).get('levelRange');
+    onlyFavourites = Provider.of<SettingsProvider>(context, listen: false)
+        .get('onlyFavorites');
     controller.addListener(() {
       setState(() {});
     });
@@ -76,6 +78,8 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void toggleFavourites() {
+    Provider.of<SettingsProvider>(context, listen: false)
+        .saveASetting('onlyFavorites', !onlyFavourites);
     setState(() {
       onlyFavourites = !onlyFavourites;
     });

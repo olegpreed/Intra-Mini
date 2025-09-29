@@ -7,6 +7,7 @@ class SettingsProvider extends ChangeNotifier {
     'themeMode': ThemeMode.system,
     'fetchExams': true,
     'levelRange': const RangeValues(0, 21),
+    'onlyFavorites': false,
     'logtimeGoal': 30,
   };
 
