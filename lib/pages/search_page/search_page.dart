@@ -35,8 +35,8 @@ class _SearchPageState extends State<SearchPage> {
   int currentPage = 1;
   List<int> totalPages = [1];
   String? projectName;
-  String? projectStatus = 'creating_group,searching_a_group';
-  int projectStatusIndex = 0;
+  String? projectStatus = 'finished';
+  int projectStatusIndex = 2;
   bool isSearchByProject = false;
   bool isProjectLoading = false;
   bool isListAnimationFinished = false;
@@ -304,12 +304,15 @@ class _SearchPageState extends State<SearchPage> {
                           isPressed: onlyOnline,
                         ),
                         SizedBox(width: Layout.padding / 2),
-                        MyToggleBtn(
-                          svgPath: 'assets/icons/heart_small.svg',
-                          onPressed: toggleFavourites,
-                          isPressed: onlyFavourites,
-                        ),
-                        SizedBox(width: Layout.padding / 2),
+                        if (!isSearchByProject)
+                          Padding(
+                            padding: EdgeInsets.only(right: Layout.padding / 2),
+                            child: MyToggleBtn(
+                              svgPath: 'assets/icons/heart_small.svg',
+                              onPressed: toggleFavourites,
+                              isPressed: onlyFavourites,
+                            ),
+                          ),
                         Expanded(
                           child: !isSearchByProject
                               ? LevelSlider(
