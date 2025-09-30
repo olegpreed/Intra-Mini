@@ -254,18 +254,13 @@ class UserService {
     try {
       final response = await requestWithRetry(
           HttpMethod.get,
-          createUri(endpoint: 'me/scale_teams', queryParameters: {
+          createUri(endpoint: '/me/scale_teams', queryParameters: {
             'filter[scale_id]': '$scaleId',
           }),
           false);
       if (response.statusCode == 200) {
         projectId = json.decode(response.body)[0]['team']['project_id'];
-        return projectsByIds.entries
-            .firstWhere(
-              (element) => element.value == projectId,
-              orElse: () => const MapEntry<String, int>('Unknown', -1),
-            )
-            .key;
+        return projectsByIdsReversed[projectId] ?? 'Unknown';
       }
     } catch (e) {
       return 'Unknown';
