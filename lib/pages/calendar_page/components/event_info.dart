@@ -85,7 +85,7 @@ class _EventInfoState extends State<EventInfo> {
                 children: <TextSpan>[
                   TextSpan(
                     text:
-                        '(${widget.event.subscrCount}/${widget.event.maxPeople})',
+                        '(${widget.event.subscrCount}/${widget.event.maxPeople ?? '∞'})',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           color: context.myTheme.greyMain,
                         ),
