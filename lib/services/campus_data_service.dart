@@ -16,6 +16,18 @@ class Event {
   int? subscrCount;
   DateTime? beginAt;
   DateTime? endAt;
+  Event({
+    this.id,
+    this.name,
+    this.isExam = false,
+    this.description,
+    this.location,
+    this.kind,
+    this.maxPeople,
+    this.subscrCount,
+    this.beginAt,
+    this.endAt,
+  });
 }
 
 class ShopItem {

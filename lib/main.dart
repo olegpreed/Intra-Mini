@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:forty_two_planet/core/auth_check.dart';
 import 'package:forty_two_planet/core/home_layout.dart';
 import 'package:forty_two_planet/firebase_options.dart';
@@ -15,12 +16,29 @@ import 'package:forty_two_planet/utils/ui_uitls.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:ui';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> setupTimezone() async {
+  tz.initializeTimeZones();
+
+  TimezoneInfo tzInfo = await FlutterTimezone.getLocalTimezone();
+  String identifier = tzInfo.identifier;
+
+  final location = tz.getLocation(identifier);
+  tz.setLocalLocation(location);
+}
 
 void main() async {
-  WidgetsFlutterBinding
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding
       .ensureInitialized(); // necessary for async functions before runApp
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
@@ -37,6 +55,15 @@ void main() async {
   final themeProvider = SettingsProvider();
   final prefs = await SharedPreferences.getInstance();
   await themeProvider.loadASetting('themeMode', prefs);
+  await setupTimezone();
+  const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+  const iosSettings = DarwinInitializationSettings();
+  const settings = InitializationSettings(
+    android: androidSettings,
+    iOS: iosSettings,
+  );
+
+  await flutterLocalNotificationsPlugin.initialize(settings);
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => themeProvider),
     ChangeNotifierProvider(create: (context) => PageProvider()),

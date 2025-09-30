@@ -13,6 +13,7 @@ import 'package:forty_two_planet/services/campus_data_service.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/settings/user_settings.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
+import 'package:forty_two_planet/utils/fake_data_utils.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -50,6 +51,7 @@ class _CalendarPageState extends State<CalendarPage> {
         final events = await CampusDataService.fetchEvents(
             profileStore.userData.currentCampusId!, includeExams);
         campusStore.setEvents(events);
+        // campusStore.setEvents(fakeEvents);
       }
       if (isLoading || (!isLoading && !isEvents)) {
         final slotsData = await UserService.fetchSlots();

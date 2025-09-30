@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forty_two_planet/components/icon_text.dart';
+import 'package:forty_two_planet/pages/calendar_page/components/notify_button.dart';
+import 'package:forty_two_planet/pages/calendar_page/components/subscribe_btn.dart';
 import 'package:forty_two_planet/services/campus_data_service.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/settings/user_settings.dart';
@@ -7,7 +9,6 @@ import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:forty_two_planet/utils/text_utils.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
 import 'package:intl/intl.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -96,76 +97,49 @@ class _EventInfoState extends State<EventInfo> {
             ),
           ),
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: Layout.gutter),
         Stack(children: [
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: Layout.padding),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: !widget.event.isExam
-                        ? () => eventAction(isSubscribed)
-                        : () => launchUrl(
-                            Uri.parse(
-                                'https://profile.intra.42.fr/exams/${widget.event.id}'),
-                            mode: LaunchMode.inAppBrowserView),
-                    behavior: HitTestBehavior.translucent,
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      height: 30,
-                      constraints: BoxConstraints(
-                        minWidth: MediaQuery.of(context).size.width *
-                            0.3, // Set minimum width
-                      ),
-                      decoration: BoxDecoration(
-                        color: isSubscribed
-                            ? context.myTheme.fail.withOpacity(0.4)
-                            : context.myTheme.intra.withOpacity(0.4),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: isLoading
-                            ? FractionallySizedBox(
-                                heightFactor: 0.7,
-                                child: LoadingIndicator(
-                                  indicatorType: Indicator.lineSpinFadeLoader,
-                                  colors: [
-                                    isSubscribed
-                                        ? context.myTheme.fail
-                                        : context.myTheme.intra
-                                  ],
-                                ),
-                              )
-                            : Text(isSubscribed ? 'unsubscribe' : 'subscribe',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      color: isSubscribed
-                                          ? context.myTheme.fail
-                                          : context.myTheme.intra,
-                                      // : Theme.of(context).primaryColor,
-                                    )),
-                      ),
-                    ),
-                  ),
+                  SubscribeBtn(
+                      isLoading: isLoading,
+                      isExam: widget.event.isExam,
+                      isSubscribed: isSubscribed,
+                      onPressed: !widget.event.isExam
+                          ? () => eventAction(isSubscribed)
+                          : () => launchUrl(
+                              Uri.parse(
+                                  'https://profile.intra.42.fr/exams/${widget.event.id}'),
+                              mode: LaunchMode.inAppBrowserView)),
                   const SizedBox(width: 10),
-                  IconText(
-                      svgPath: 'assets/icons/clock.svg',
-                      text: getEventTime(
-                          widget.event.beginAt, widget.event.endAt)),
-                  const SizedBox(width: 10),
-                  IconText(
-                      svgPath: 'assets/icons/pin.svg',
-                      text: '${widget.event.location}'),
+                  NotifyButton(event: widget.event),
                 ],
               ),
-            ),
+              SizedBox(height: Layout.gutter),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: Layout.padding),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconText(
+                          svgPath: 'assets/icons/clock.svg',
+                          text: getEventTime(
+                              widget.event.beginAt, widget.event.endAt)),
+                      const SizedBox(width: 10),
+                      IconText(
+                          svgPath: 'assets/icons/pin.svg',
+                          text: '${widget.event.location}'),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ]),
         const SizedBox(height: 14),
