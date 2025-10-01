@@ -85,7 +85,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             child: AnimatedSlide(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeOut,
-              offset: (_isPageLoaded && !pageProvider._isSettingsPage) ? const Offset(0, 0) : const Offset(0, 1),
+              offset: (_isPageLoaded && !pageProvider._isSettingsPage)
+                  ? const Offset(0, 0)
+                  : const Offset(0, 1),
               child: MyNavBar(
                 selectedIndex: pageProvider.selectedIndex,
                 onItemTapped: (int index) {

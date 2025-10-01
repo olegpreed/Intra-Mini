@@ -20,26 +20,30 @@ class ShopItemDetail extends StatelessWidget {
           top: Layout.padding,
           left: Layout.padding,
           right: Layout.padding,
-          bottom: 110 + extraMargin),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(shopItem.name ?? 'Unknown item',
-              textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineSmall
-                  ?.copyWith(color: Theme.of(context).primaryColor)),
-          const SizedBox(height: 8),
-          Expanded(
-            child: Text(shopItem.description ?? 'No description available',
+          bottom: 80 + extraMargin),
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(shopItem.name ?? 'Unknown item',
+                textAlign: TextAlign.center,
                 style: Theme.of(context)
                     .textTheme
-                    .bodyMedium
+                    .headlineSmall
                     ?.copyWith(color: Theme.of(context).primaryColor)),
-          ),
-          ItemCounter(count: shopItem.quantity, onChanged: onChanged)
-        ],
+            const SizedBox(height: 8),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Text(shopItem.description ?? 'No description available',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: Theme.of(context).primaryColor)),
+              ),
+            ),
+            ItemCounter(count: shopItem.quantity, onChanged: onChanged)
+          ],
+        ),
       ),
     );
   }
