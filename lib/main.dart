@@ -18,7 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:ui';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -26,7 +26,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 Future<void> setupTimezone() async {
-  tz.initializeTimeZones();
+  tzdata.initializeTimeZones();
 
   TimezoneInfo tzInfo = await FlutterTimezone.getLocalTimezone();
   String identifier = tzInfo.identifier;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forty_two_planet/components/icon_text.dart';
+import 'package:forty_two_planet/main.dart';
 import 'package:forty_two_planet/pages/calendar_page/components/notify_button.dart';
 import 'package:forty_two_planet/pages/calendar_page/components/subscribe_btn.dart';
 import 'package:forty_two_planet/services/campus_data_service.dart';
@@ -22,6 +23,24 @@ class EventInfo extends StatefulWidget {
 
 class _EventInfoState extends State<EventInfo> {
   bool isLoading = false;
+  bool isNotified = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkIfNotified();
+  }
+
+  void checkIfNotified() async {
+    final pendingNotifications =
+        await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+
+    final exists = pendingNotifications.any((n) => n.id == widget.event.id);
+    if (!mounted) return;
+    setState(() {
+      isNotified = exists;
+    });
+  }
 
   String getEventTime(DateTime? beginAt, DateTime? endAt) {
     if (beginAt == null || endAt == null) {
@@ -116,7 +135,15 @@ class _EventInfoState extends State<EventInfo> {
                                   'https://profile.intra.42.fr/exams/${widget.event.id}'),
                               mode: LaunchMode.inAppBrowserView)),
                   const SizedBox(width: 10),
-                  NotifyButton(event: widget.event),
+                  NotifyButton(event: widget.event, isNotified: isNotified, onOk: () {
+                    setState(() {
+                      isNotified = true;
+                    });
+                  }, onCancel: () {
+                    setState(() {
+                      isNotified = false;
+                    });
+                  }),
                 ],
               ),
               SizedBox(height: Layout.gutter),
