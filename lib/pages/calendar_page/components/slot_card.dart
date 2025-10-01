@@ -4,6 +4,7 @@ import 'package:forty_two_planet/components/icon_text_slot.dart';
 import 'package:forty_two_planet/components/time_ago.dart';
 import 'package:forty_two_planet/main.dart';
 import 'package:forty_two_planet/pages/calendar_page/components/notify_button.dart';
+import 'package:forty_two_planet/pages/project_page/components/user_tag.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
@@ -132,11 +133,19 @@ class _SlotCardState extends State<SlotCard> {
                             text: widget.slot.projectName!),
                       ],
                       const SizedBox(height: 10),
-                      IconTextSlot(
-                          svgPath: widget.slot.bookedBy.length > 1
-                              ? 'assets/icons/people.svg'
-                              : 'assets/icons/person_sm.svg',
-                          text: widget.slot.bookedBy.join()),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        child: Wrap(
+                          spacing: Layout.gutter,
+                          runSpacing: Layout.gutter,
+                          children: List<Widget>.generate(
+                              widget.slot.bookedBy.length, (index) {
+                            return UserTag(
+                                user: widget.slot.bookedBy[index],
+                                isLeader: false);
+                          }),
+                        ),
+                      ),
                       const SizedBox(height: 10),
                       NotifyButton(
                           event: widget.slot,
@@ -151,7 +160,6 @@ class _SlotCardState extends State<SlotCard> {
                               isNotified = false;
                             });
                           }),
-                      const SizedBox(height: 10),
                     ],
                   ],
                 ),

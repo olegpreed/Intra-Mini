@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forty_two_planet/main.dart';
+import 'package:forty_two_planet/pages/settings_page/settings_page.dart';
 import 'package:forty_two_planet/services/campus_data_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
+import 'package:forty_two_planet/settings/user_settings.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
+import 'package:provider/provider.dart';
 import 'package:wheel_picker/wheel_picker.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -84,7 +87,9 @@ class _ModalNotificationState extends State<ModalNotification> {
     return AlertDialog(
       actionsAlignment: MainAxisAlignment.spaceBetween,
       contentPadding: const EdgeInsets.all(10),
-      backgroundColor: context.myTheme.greyMain,
+      backgroundColor: Provider.of<SettingsProvider>(context).isDarkMode
+          ? context.myTheme.greySecondary
+          : Theme.of(context).scaffoldBackgroundColor,
       title: Center(
           child: Text('Notify me',
               style: Theme.of(context).textTheme.headlineMedium)),
@@ -161,8 +166,8 @@ class _ModalNotificationState extends State<ModalNotification> {
         ),
         TextButton(
           style: TextButton.styleFrom(
-              foregroundColor: Theme.of(context).primaryColor,
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor),
+              foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+              backgroundColor: Theme.of(context).primaryColor),
           onPressed: () {
             if (widget.event.beginAt == null) {
               return;
