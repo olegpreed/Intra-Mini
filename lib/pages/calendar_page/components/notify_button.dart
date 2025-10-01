@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:forty_two_planet/main.dart';
 import 'package:forty_two_planet/pages/calendar_page/components/modal_notification.dart';
 import 'package:forty_two_planet/services/campus_data_service.dart';
+import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 
 class NotifyButton extends StatefulWidget {
@@ -12,7 +13,7 @@ class NotifyButton extends StatefulWidget {
       required this.isNotified,
       required this.onOk,
       required this.onCancel});
-  final Event event;
+  final dynamic event;
   final bool isNotified;
   final VoidCallback onOk;
   final VoidCallback onCancel;
@@ -22,13 +23,20 @@ class NotifyButton extends StatefulWidget {
 }
 
 class _NotifyButtonState extends State<NotifyButton> {
+
   @override
   Widget build(BuildContext context) {
+     int ?notificationId;
+  if (widget.event is Event) {
+    notificationId = widget.event.id;
+  } else if (widget.event is Slot) {
+    notificationId = widget.event.ids[0];
+  }
     return GestureDetector(
       onTap: () {
-        if (widget.isNotified && widget.event.id != null) {
+        if (widget.isNotified && notificationId != null) {
           flutterLocalNotificationsPlugin
-              .cancel(widget.event.id!)
+              .cancel(notificationId)
               .then((_) => widget.onCancel());
           return;
         }

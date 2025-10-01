@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:forty_two_planet/components/icon_text_slot.dart';
 import 'package:forty_two_planet/components/time_ago.dart';
+import 'package:forty_two_planet/main.dart';
+import 'package:forty_two_planet/pages/calendar_page/components/notify_button.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
@@ -19,6 +21,24 @@ class SlotCard extends StatefulWidget {
 
 class _SlotCardState extends State<SlotCard> {
   bool isDeleting = false;
+  bool isNotified = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkIfNotified();
+  }
+
+  void checkIfNotified() async {
+    final pendingNotifications =
+        await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+
+    final exists = pendingNotifications.any((n) => n.id == widget.slot.ids[0]);
+    if (!mounted) return;
+    setState(() {
+      isNotified = exists;
+    });
+  }
 
   String getTimeDifference(DateTime start, DateTime end) {
     Duration difference = end.difference(start);
@@ -117,7 +137,22 @@ class _SlotCardState extends State<SlotCard> {
                               ? 'assets/icons/people.svg'
                               : 'assets/icons/person_sm.svg',
                           text: widget.slot.bookedBy.join()),
-                    ]
+                      const SizedBox(height: 10),
+                      NotifyButton(
+                          event: widget.slot,
+                          isNotified: isNotified,
+                          onOk: () {
+                            setState(() {
+                              isNotified = true;
+                            });
+                          },
+                          onCancel: () {
+                            setState(() {
+                              isNotified = false;
+                            });
+                          }),
+                      const SizedBox(height: 10),
+                    ],
                   ],
                 ),
               ]),

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:forty_two_planet/main.dart';
 import 'package:forty_two_planet/services/campus_data_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:wheel_picker/wheel_picker.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -13,7 +14,7 @@ class ModalNotification extends StatefulWidget {
       required this.event,
       required this.dialogContext,
       required this.onOk});
-  final Event event;
+  final dynamic event;
   final BuildContext dialogContext;
   final VoidCallback onOk;
 
@@ -24,6 +25,7 @@ class ModalNotification extends StatefulWidget {
 class _ModalNotificationState extends State<ModalNotification> {
   int hoursBefore = 0;
   int minutesBefore = 0;
+  bool isSlot = false;
 
   String getTimeDifference(DateTime start, DateTime end) {
     Duration difference = end.difference(start);
@@ -78,6 +80,7 @@ class _ModalNotificationState extends State<ModalNotification> {
 
   @override
   Widget build(BuildContext context) {
+    isSlot = widget.event is Slot;
     return AlertDialog(
       actionsAlignment: MainAxisAlignment.spaceBetween,
       contentPadding: const EdgeInsets.all(10),
@@ -142,7 +145,8 @@ class _ModalNotificationState extends State<ModalNotification> {
             ],
           ),
           const SizedBox(height: 10),
-          const Text('before the event'),
+          Text(
+              'before the ${isSlot ? 'evaluation' : widget.event.isExam ? 'exam' : 'event'}'),
         ],
       ),
       actions: [
@@ -160,19 +164,37 @@ class _ModalNotificationState extends State<ModalNotification> {
               foregroundColor: Theme.of(context).primaryColor,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor),
           onPressed: () {
-            if (widget.event.id == null || widget.event.beginAt == null) {
+            if (widget.event.beginAt == null) {
               return;
             }
+            if (isSlot) {
+              if (widget.event.ids.isEmpty) {
+                return;
+              }
+              scheduleReminder(
+                id: widget.event.ids[0],
+                title: 'Get ready to evaluate 👻',
+                body:
+                    'in ${getTimeDifference(DateTime.now(), widget.event.beginAt!)}',
+                eventTime: widget.event.beginAt!,
+                remindBefore:
+                    Duration(hours: hoursBefore, minutes: minutesBefore),
+              );
+            } else {
+              if (widget.event.id == null) {
+                return;
+              }
+              scheduleReminder(
+                id: widget.event.id!,
+                title: widget.event.name ?? 'Event reminder',
+                body:
+                    '${widget.event.isExam ? 'Exam' : 'Event'} starts in ${getTimeDifference(DateTime.now(), widget.event.beginAt!)}',
+                eventTime: widget.event.beginAt!,
+                remindBefore:
+                    Duration(hours: hoursBefore, minutes: minutesBefore),
+              );
+            }
             widget.onOk();
-            scheduleReminder(
-              id: widget.event.id!,
-              title: widget.event.name ?? 'Event reminder',
-              body:
-                  '${widget.event.isExam ? 'Exam' : 'Event'} starts in ${getTimeDifference(DateTime.now(), widget.event.beginAt!)}',
-              eventTime: widget.event.beginAt!,
-              remindBefore:
-                  Duration(hours: hoursBefore, minutes: minutesBefore),
-            );
             Navigator.of(widget.dialogContext).pop();
           },
           child: const Text('OK'),
