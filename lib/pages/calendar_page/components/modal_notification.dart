@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forty_two_planet/main.dart';
-import 'package:forty_two_planet/pages/settings_page/settings_page.dart';
-import 'package:forty_two_planet/services/campus_data_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/settings/user_settings.dart';
