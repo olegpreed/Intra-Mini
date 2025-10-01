@@ -4,14 +4,14 @@ import 'package:forty_two_planet/pages/store_page/components/shop_item_detail.da
 import 'package:forty_two_planet/components/generic_header.dart';
 import 'package:forty_two_planet/pages/store_page/components/store_kart.dart';
 import 'package:forty_two_planet/services/campus_data_service.dart';
+import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
+import 'package:provider/provider.dart';
 
 class StorePage extends StatefulWidget {
-  const StorePage(
-      {super.key, required this.walletPoints, required this.campusId});
+  const StorePage({super.key, required this.walletPoints});
   final int walletPoints;
-  final int? campusId;
 
   @override
   State<StorePage> createState() => _StorePageState();
@@ -29,13 +29,13 @@ class _StorePageState extends State<StorePage> {
   }
 
   void _fetchStoreData() async {
-    if (widget.campusId == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        showErrorDialog('Campus ID is null');
-      });
+    final profileStore = Provider.of<MyProfileStore>(context, listen: false);
+    int? campusId = profileStore.userData.currentCampusId;
+    if (campusId == null) {
+      showErrorDialog('Campus ID is null');
       return;
     }
-    shopItems = await CampusDataService.fetchShopItems(widget.campusId!);
+    shopItems = await CampusDataService.fetchShopItems(campusId);
     if (!mounted) return;
     setState(() {
       isLoading = false;
@@ -66,7 +66,7 @@ class _StorePageState extends State<StorePage> {
             ),
             Expanded(
               child: GridView.builder(
-                  padding: EdgeInsets.only(bottom: 200),
+                  padding: const EdgeInsets.only(bottom: 200),
                   itemCount: isLoading ? 10 : shopItems.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       childAspectRatio: 0.85,

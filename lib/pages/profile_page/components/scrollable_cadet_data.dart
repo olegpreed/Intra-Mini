@@ -105,7 +105,6 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
                       padding: EdgeInsets.symmetric(horizontal: Layout.padding),
                       child: WidgetsRowOne(
                         cadetData: widget.cadetData,
-                        isLoading: widget.isLoading,
                         isShimmerFinished:
                             widget.cadetData.cursusLevels.isNotEmpty ||
                                 !widget.isLoading,

@@ -12,13 +12,9 @@ import 'package:provider/provider.dart';
 
 class WidgetsRowOne extends StatelessWidget {
   const WidgetsRowOne(
-      {super.key,
-      required this.cadetData,
-      required this.isShimmerFinished,
-      required this.isLoading});
+      {super.key, required this.cadetData, required this.isShimmerFinished});
   final UserData cadetData;
   final bool isShimmerFinished;
-  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +66,11 @@ class WidgetsRowOne extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            if (isShimmerFinished == false) return;
+            if (isShimmerFinished == false) {
+              return;
+            }
             Navigator.push(context, MaterialPageRoute(builder: ((context) {
-              return StorePage(
-                  walletPoints: cadetData.wallet,
-                  campusId: cadetData.currentCampusId);
+              return StorePage(walletPoints: cadetData.wallet);
             })));
           },
           child: BentoBox(
