@@ -87,7 +87,7 @@ class ProfileHeader extends StatelessWidget {
                           duration: const Duration(milliseconds: 300),
                           opacity: isLoading || isProjectsListExpanded ? 0 : 1,
                           child: Row(
-                            mainAxisAlignment: userData.isActive == true ||
+                            mainAxisAlignment: userData.isActive == false ||
                                     userData.isStaff == true
                                 ? MainAxisAlignment.spaceBetween
                                 : MainAxisAlignment.end,
