@@ -77,7 +77,7 @@ class CadetCard extends StatelessWidget {
                   Align(
                       alignment: Alignment.center,
                       child: OnlineTag(location: cadetData.location)),
-                if (cadetData.isActive == false)
+                if (cadetData.isActive == false && cadetData.location == null)
                   const Align(alignment: Alignment.center, child: FrozenTag()),
                 if (projectData != null)
                   Align(

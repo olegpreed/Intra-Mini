@@ -49,8 +49,11 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _fetchProfileData() async {
+    if (widget.cadetData.login == null) {
+      throw Exception('User login is null');
+    }
     _userData = await UserService.fetchProfile(
-        isHomeView: false, userId: widget.cadetData.login);
+        isHomeView: false, userId: widget.cadetData.login?.toLowerCase());
     if (!mounted) return;
     _userData.coalitionColor =
         await UserService.fetchCoalitionColor(_userData.login!);
