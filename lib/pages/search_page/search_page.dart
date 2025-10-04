@@ -304,25 +304,38 @@ class _SearchPageState extends State<SearchPage> {
                           isPressed: onlyOnline,
                         ),
                         SizedBox(width: Layout.padding / 2),
-                        if (!isSearchByProject)
-                          Padding(
-                            padding: EdgeInsets.only(right: Layout.padding / 2),
-                            child: MyToggleBtn(
-                              svgPath: 'assets/icons/heart_small.svg',
-                              onPressed: toggleFavourites,
-                              isPressed: onlyFavourites,
-                            ),
+                        Padding(
+                          padding: EdgeInsets.only(right: Layout.padding / 2),
+                          child: MyToggleBtn(
+                            svgPath: 'assets/icons/heart_small.svg',
+                            onPressed: toggleFavourites,
+                            isPressed: onlyFavourites,
                           ),
+                        ),
                         Expanded(
-                          child: !isSearchByProject
-                              ? LevelSlider(
-                                  changeLevelRange: changeLevelRange,
-                                  labels: labels,
-                                  levelValues: levelValues)
-                              : ProjectSliderStatus(
-                                  index: projectStatusIndex,
-                                  onPressed: onSelectedProjectStatus,
-                                ),
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 200),
+                            switchInCurve: Curves.easeOut,
+                            switchOutCurve: Curves.easeIn,
+                            transitionBuilder: (child, animation) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                            child: !isSearchByProject
+                                ? LevelSlider(
+                                    key: ValueKey('levelSlider'),
+                                    changeLevelRange: changeLevelRange,
+                                    labels: labels,
+                                    levelValues: levelValues,
+                                  )
+                                : ProjectSliderStatus(
+                                    key: ValueKey('projectSlider'),
+                                    index: projectStatusIndex,
+                                    onPressed: onSelectedProjectStatus,
+                                  ),
+                          ),
                         ),
                         SizedBox(width: Layout.padding / 2),
                         SortBtn(

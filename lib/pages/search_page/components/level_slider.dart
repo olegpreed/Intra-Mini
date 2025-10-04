@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:forty_two_planet/extended_widgets/custom_slider_thumb.dart';
+import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 
 class LevelSlider extends StatefulWidget {
@@ -23,41 +23,95 @@ class _LevelSliderState extends State<LevelSlider> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 35,
-      child: SliderTheme(
-        data: SliderThemeData(
-          overlayShape: SliderComponentShape.noOverlay,
-          activeTrackColor: Colors.transparent,
-          inactiveTrackColor: Colors.transparent,
-          thumbColor: Theme.of(context).cardColor,
-          valueIndicatorColor: context.myTheme.greySecondary,
-          valueIndicatorTextStyle: Theme.of(context).textTheme.bodyMedium,
-          trackHeight: 35,
-          rangeTrackShape: CustomRangeSliderTrackShape(
-              borderColor: Theme.of(context).scaffoldBackgroundColor),
-          overlayColor: Colors.transparent,
-          overlappingShapeStrokeColor: Colors.transparent,
-          rangeValueIndicatorShape:
-              const PaddleRangeSliderValueIndicatorShape(),
-          rangeThumbShape: CustomRangeSliderThumbShape(
-            thumbRadius: 18,
-            rangeValues: widget.levelValues,
-            myContext: context,
-            isThumbPressed: isPressed,
-            borderColor: Theme.of(context).scaffoldBackgroundColor,
-            textColor: context.myTheme.greySecondary,
+      child: FlutterSlider(
+          handlerAnimation: const FlutterSliderHandlerAnimation(
+            scale: 1.0,
           ),
-        ),
-        child: RangeSlider(
-          min: 0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(35),
+            color: Theme.of(context).cardColor,
+            border: Border.all(
+                color: Theme.of(context).scaffoldBackgroundColor, width: 2),
+          ),
+          jump: true,
+          handlerHeight: 30,
+          handlerWidth: 40,
+          tooltip: FlutterSliderTooltip(
+            custom: (value) => Container(
+              height: 40,
+              width: 40,
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  value.toString().substring(0, value.toString().indexOf('.')),
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                      ),
+                ),
+              ),
+            ),
+          ),
+          trackBar: FlutterSliderTrackBar(
+            inactiveTrackBar: BoxDecoration(
+              color: Theme.of(context).cardColor,
+            ),
+            activeTrackBar: BoxDecoration(
+              color: Theme.of(context).cardColor,
+            ),
+          ),
+          rightHandler: FlutterSliderHandler(
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                colors: [
+                  Theme.of(context).cardColor,
+                  Theme.of(context).cardColor.withAlpha(0),
+                ],
+                center: Alignment.center,
+                radius: 1,
+              ),
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Text(
+                widget.levelValues.end.toInt().toString(),
+                style: TextStyle(
+                  color: context.myTheme.greyMain,
+                ),
+              ),
+            ),
+          ),
+          handler: FlutterSliderHandler(
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                colors: [
+                  Theme.of(context).cardColor,
+                  Theme.of(context).cardColor.withAlpha(0),
+                ],
+                center: Alignment.center,
+                radius: 1,
+              ),
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Text(
+                widget.levelValues.start.toInt().toString(),
+                style: TextStyle(
+                  color: context.myTheme.greyMain,
+                ),
+              ),
+            ),
+          ),
+          rangeSlider: true,
+          values: [widget.levelValues.start, widget.levelValues.end],
           max: 21,
-          divisions: 21,
-          values: widget.levelValues,
-          labels: widget.labels,
-          onChangeStart: (value) => setState(() => isPressed = true),
-          onChangeEnd: (value) => setState(() => isPressed = false),
-          onChanged: widget.changeLevelRange,
-        ),
-      ),
+          min: 0,
+          onDragging: (handlerIndex, lowerValue, upperValue) {
+            widget.changeLevelRange(RangeValues(lowerValue, upperValue));
+          }),
     );
   }
 }
