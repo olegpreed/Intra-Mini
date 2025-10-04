@@ -68,36 +68,52 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       const CalendarPage(),
     ];
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          FadeIndexedStack(
-            // IndexedStack preserves the state of each page
-            beginOpacity: 0.6,
-            endOpacity: 1.0,
-            duration: const Duration(milliseconds: 130),
-            index: pageProvider.selectedIndex,
-            children: buildNavigatorsFromPages(pages),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: AnimatedSlide(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut,
-              offset: (_isPageLoaded && !pageProvider._isSettingsPage)
-                  ? const Offset(0, 0)
-                  : const Offset(0, 1),
-              child: MyNavBar(
-                selectedIndex: pageProvider.selectedIndex,
-                onItemTapped: (int index) {
-                  _onNavItemTapped(index, pageProvider.selectedIndex);
-                  pageProvider.setSelectedIndex(index);
-                },
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        final currentNavigator =
+            _navigatorKeys[pageProvider.selectedIndex].currentState;
+        if (currentNavigator != null && currentNavigator.canPop()) {
+          currentNavigator.pop();
+          return;
+        }
+        if (pageProvider.selectedIndex != 0) {
+          pageProvider.setSelectedIndex(0);
+          return;
+        }
+        SystemNavigator.pop();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Stack(
+          children: [
+            FadeIndexedStack(
+              // IndexedStack preserves the state of each page
+              beginOpacity: 0.6,
+              endOpacity: 1.0,
+              duration: const Duration(milliseconds: 130),
+              index: pageProvider.selectedIndex,
+              children: buildNavigatorsFromPages(pages),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: AnimatedSlide(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOut,
+                offset: (_isPageLoaded && !pageProvider._isSettingsPage)
+                    ? const Offset(0, 0)
+                    : const Offset(0, 1),
+                child: MyNavBar(
+                  selectedIndex: pageProvider.selectedIndex,
+                  onItemTapped: (int index) {
+                    _onNavItemTapped(index, pageProvider.selectedIndex);
+                    pageProvider.setSelectedIndex(index);
+                  },
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
