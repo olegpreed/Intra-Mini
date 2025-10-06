@@ -330,10 +330,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_earth_globe
-      sha256: "12938e2b3857f1a8ee5c8811b1a1ef2715837bdfc87aac46bdca059c2fe34e6b"
+      sha256: "293beedb820855dbe2ec08837f1292f7e0a6c61dcf45275fd331a458e478dcba"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.5"
+    version: "1.0.6"
   flutter_fadein:
     dependency: "direct main"
     description:
