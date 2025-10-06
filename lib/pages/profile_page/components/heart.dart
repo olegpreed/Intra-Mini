@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:forty_two_planet/services/favourites_service.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
@@ -52,7 +53,10 @@ class _HeartState extends State<Heart> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        HapticFeedback.lightImpact();
+        onTap();
+      },
       child: Padding(
         padding: EdgeInsets.only(right: Layout.gutter),
         child: AnimatedCrossFade(
