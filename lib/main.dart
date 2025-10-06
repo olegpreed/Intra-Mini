@@ -82,6 +82,31 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       navigatorKey: navigatorKey, // necessary for logout to work
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        final brightness = settings.get('themeMode') == ThemeMode.system
+            ? MediaQuery.of(context).platformBrightness
+            : (settings.get('themeMode') == ThemeMode.dark
+                ? Brightness.dark
+                : Brightness.light);
+        final style = SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: brightness == Brightness.dark
+              ? Brightness.light // Android
+              : Brightness.dark,
+          statusBarBrightness: brightness == Brightness.dark
+              ? Brightness.dark // iOS (note inversion)
+              : Brightness.light,
+        );
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          SystemChrome.setSystemUIOverlayStyle(style);
+        });
+
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: style,
+          child: child!,
+        );
+      },
       theme: AppTheme.lightTheme(),
       darkTheme: AppTheme.darkTheme(),
       themeMode: settings.get('themeMode'),
