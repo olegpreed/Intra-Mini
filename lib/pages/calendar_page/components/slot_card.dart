@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:forty_two_planet/components/icon_text_slot.dart';
 import 'package:forty_two_planet/components/time_ago.dart';
@@ -6,6 +7,7 @@ import 'package:forty_two_planet/main.dart';
 import 'package:forty_two_planet/pages/calendar_page/components/notify_button.dart';
 import 'package:forty_two_planet/pages/project_page/components/user_tag.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
+import 'package:forty_two_planet/settings/user_settings.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
 import 'package:intl/intl.dart';
@@ -169,7 +171,55 @@ class _SlotCardState extends State<SlotCard> {
           !isDeleting
               ? GestureDetector(
                   onTap: () {
-                    deleteSlot(widget.slot);
+                    HapticFeedback.lightImpact();
+                    if (!widget.slot.isBooked) {
+                      deleteSlot(widget.slot);
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              actionsAlignment: MainAxisAlignment.spaceBetween,
+                              contentPadding: const EdgeInsets.all(10),
+                              backgroundColor:
+                                  Provider.of<SettingsProvider>(context)
+                                          .isDarkMode
+                                      ? context.myTheme.greySecondary
+                                      : Theme.of(context)
+                                          .scaffoldBackgroundColor,
+                              title: Text(
+                                'Are you sure?',
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
+                                textAlign: TextAlign.center,
+                              ),
+                              actions: [
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                      foregroundColor: Theme.of(context)
+                                          .scaffoldBackgroundColor,
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                      backgroundColor: Colors.black,
+                                      foregroundColor: context.myTheme.fail),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    deleteSlot(widget.slot);
+                                  },
+                                  child: const Text('Delete'),
+                                ),
+                              ],
+                            );
+                          });
+                      return;
+                    }
                   },
                   child: SizedBox(
                     width: 30,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 class CreateSlotButton extends StatelessWidget {
@@ -29,6 +30,7 @@ class CreateSlotButton extends StatelessWidget {
             ),
             onPressed: () {
               if (!isLoading) {
+                HapticFeedback.lightImpact();
                 onPressed();
               }
             },

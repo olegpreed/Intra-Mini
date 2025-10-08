@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:forty_two_planet/components/pressable_scale.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 
 class AddSlotButton extends StatelessWidget {
@@ -8,9 +9,8 @@ class AddSlotButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: onTap,
+    return PressableScale(
+      onPressed: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 14),
         height: 44,
