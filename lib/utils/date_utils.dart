@@ -47,7 +47,6 @@ String formatDuration(DateTime start, DateTime end) {
   }
 }
 
-
 String timeAgoDetailed(DateTime dateTime) {
   final now = DateTime.now();
   final difference = now.difference(dateTime);
@@ -172,20 +171,21 @@ Duration _parseTimeToDuration(String time) {
   return Duration(hours: hours, minutes: minutes, seconds: seconds);
 }
 
-Duration calcAverageTime(
+Duration calcAverageWeekTime(
     List<Pair<Duration, Duration>> monthLogtime, DateTime month) {
   Duration totalLogtime = Duration.zero;
   DateTime now = DateTime.now();
-  for (final Pair<Duration, Duration> week in monthLogtime) {
-    totalLogtime += week.first;
+  int weeksLeft = 0;
+  if (month.year == now.year && month.month == now.month) {
+    DateTime firstDayOfNextMonth = DateTime(month.year, month.month + 1, 1);
+    weeksLeft = (firstDayOfNextMonth.difference(now).inDays / 7).floor();
   }
-  int daysPassed = 0;
-  if (month.month == now.month && month.year == now.year) {
-    daysPassed = now.day;
-  } else {
-    daysPassed = DateTime(month.year, month.month + 1, 0).day;
+  for (var logPair in monthLogtime) {
+    totalLogtime += logPair.first + logPair.second;
   }
-  return totalLogtime ~/ daysPassed;
+  int totalWeeks = monthLogtime.length - weeksLeft;
+  if (totalWeeks == 0) return Duration.zero;
+  return Duration(seconds: totalLogtime.inSeconds ~/ totalWeeks);
 }
 
 int getWeekNumber(DateTime date) {

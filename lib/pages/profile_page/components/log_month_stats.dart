@@ -21,7 +21,8 @@ class MonthStats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Duration averageLogtime = calcAverageTime(monthLogtime, month);
+    Duration averageWeektime = calcAverageWeekTime(monthLogtime, month);
+    int weekGoal = Provider.of<SettingsProvider>(context).get('logtimeGoal');
     return Row(children: [
       RotatedBox(
           quarterTurns: -1,
@@ -90,15 +91,22 @@ class MonthStats extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium
-                    ?.copyWith(color: context.myTheme.greyMain)),
+                    ?.copyWith(color: context.myTheme.greySecondary)),
             SizedBox(height: Layout.gutter / 2),
-            Text(
-                '${averageLogtime.inHours}h${averageLogtime.inMinutes.remainder(60)}m',
-                style: Theme.of(context).textTheme.headlineMedium),
-            Text('per day',
+            Text('${averageWeektime.inHours}',
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: weekGoal != 0
+                          ? averageWeektime.inHours >= weekGoal
+                              ? context.myTheme.success
+                              : context.myTheme.fail
+                          : averageWeektime.inHours == 0
+                              ? context.myTheme.greySecondary
+                              : Theme.of(context).primaryColor,
+                    )),
+            Text('hours',
                 style: Theme.of(context)
                     .textTheme
-                    .bodySmall
+                    .bodyMedium
                     ?.copyWith(color: context.myTheme.greySecondary)),
           ],
         ),
