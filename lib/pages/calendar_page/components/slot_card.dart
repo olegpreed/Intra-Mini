@@ -224,7 +224,7 @@ class _SlotCardState extends State<SlotCard> {
                   child: SizedBox(
                     width: 30,
                     height: 30,
-                    child: Align(
+                    child: Center(
                       child: SvgPicture.asset('assets/icons/x.svg',
                           colorFilter: ColorFilter.mode(
                             !widget.slot.isBooked
@@ -236,11 +236,17 @@ class _SlotCardState extends State<SlotCard> {
                   ),
                 )
               : SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: LoadingIndicator(
-                    indicatorType: Indicator.lineSpinFadeLoader,
-                    colors: [context.myTheme.greyMain],
+                  width: 30,
+                  height: 30,
+                  child: Center(
+                    child: SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: LoadingIndicator(
+                        indicatorType: Indicator.lineSpinFadeLoader,
+                        colors: [context.myTheme.greyMain],
+                      ),
+                    ),
                   ),
                 ),
         ],
