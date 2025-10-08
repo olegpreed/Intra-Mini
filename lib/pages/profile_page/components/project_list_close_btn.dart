@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:forty_two_planet/pages/profile_page/components/profile_projects.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
+import 'package:forty_two_planet/utils/ui_uitls.dart';
 import 'package:provider/provider.dart';
 
 class ProjectListCloseBtn extends StatelessWidget {
@@ -10,26 +12,29 @@ class ProjectListCloseBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      ProjectListState projectsListProvider =
+    ProjectListState projectsListProvider =
         Provider.of<ProjectListState>(context);
     return GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      projectsListProvider.collapse();
-                      onPressed();
-                    },
-                    child: Container(
-                      height: 40,
-                      width: 40,
-                      // color: Colors.amber,
-                      alignment: Alignment.centerRight,
-                      child: SvgPicture.asset(
-                        'assets/icons/x.svg',
-                        fit: BoxFit.none,
-                        colorFilter: ColorFilter.mode(
-                            context.myTheme.greySecondary, BlendMode.srcIn),
-                      ),
-                    ),
-                  );
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        HapticFeedback.lightImpact();
+        projectsListProvider.collapse();
+        onPressed();
+      },
+      child: Padding(
+        padding: EdgeInsets.only(right: Layout.padding),
+        child: Container(
+          height: 40,
+          width: 40,
+          alignment: Alignment.centerRight,
+          child: SvgPicture.asset(
+            'assets/icons/x.svg',
+            fit: BoxFit.none,
+            colorFilter: ColorFilter.mode(
+                context.myTheme.greySecondary, BlendMode.srcIn),
+          ),
+        ),
+      ),
+    );
   }
 }

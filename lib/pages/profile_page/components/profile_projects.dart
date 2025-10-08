@@ -92,49 +92,51 @@ class _ProfileProjectsState extends State<ProfileProjects> {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
           padding: EdgeInsets.only(
-              left: Layout.padding,
-              right: Layout.padding,
               bottom: !projectsListProvider.isExpanded ? 10 : 0),
           child: AnimatedOpacity(
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
             opacity: widget.isLoading ? 0 : 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: AnimatedCrossFade(
-                    crossFadeState: projectsListProvider.isExpanded
-                        ? CrossFadeState.showSecond
-                        : CrossFadeState.showFirst,
-                    duration: const Duration(milliseconds: 300),
-                    secondChild: SearchProjectBar(controller: searchController),
-                    firstChild: Text(widget.isLoading ? '' : 'Projects',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineLarge
-                            ?.copyWith(color: context.myTheme.greyMain)),
-                  ),
+            child: AnimatedCrossFade(
+              crossFadeState: projectsListProvider.isExpanded
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
+              duration: const Duration(milliseconds: 300),
+              secondChild: Padding(
+                padding: EdgeInsets.only(left: Layout.padding),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: SearchProjectBar(controller: searchController)),
+                    ProjectListCloseBtn(onPressed: onCloseList),
+                  ],
                 ),
-                AnimatedCrossFade(
-                  crossFadeState: projectsListProvider.isExpanded
-                      ? CrossFadeState.showSecond
-                      : CrossFadeState.showFirst,
-                  duration: const Duration(milliseconds: 300),
-                  secondChild: ProjectListCloseBtn(onPressed: onCloseList),
-                  firstChild: widget.isLoading
-                      ? Container()
-                      : CursusSwitcher(
-                          selectedCursus: _selectedCursus,
-                          onCursusChanged: (selectedCursus) {
-                            _onCursusChanged(selectedCursus);
-                            projectsListProvider
-                                .setSelectedCursus(_selectedCursus);
-                          },
-                          cursusNames: widget.userData.cursusNames,
-                        ),
+              ),
+              firstChild: Padding(
+                padding: EdgeInsets.symmetric(horizontal: Layout.padding),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(widget.isLoading ? '' : 'Projects',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineLarge
+                              ?.copyWith(color: context.myTheme.greyMain)),
+                    ),
+                    widget.isLoading
+                        ? Container()
+                        : CursusSwitcher(
+                            selectedCursus: _selectedCursus,
+                            onCursusChanged: (selectedCursus) {
+                              _onCursusChanged(selectedCursus);
+                              projectsListProvider
+                                  .setSelectedCursus(_selectedCursus);
+                            },
+                            cursusNames: widget.userData.cursusNames,
+                          ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
