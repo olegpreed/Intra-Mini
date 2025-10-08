@@ -43,99 +43,99 @@ Map<String, String> countryFlags = {
 
 Map<String, List<Color>?> countryColors = {
   '': null,
-  'Angola': [Color(0xFFd8241b), Color.fromARGB(255, 0, 0, 0)],
+  'Angola': [const Color(0xFFd8241b), const Color.fromARGB(255, 0, 0, 0)],
   'Armenia': [
-    Color(0xFFd90012),
-    Color(0xFF0033a0),
-    Color.fromARGB(255, 242, 149, 0)
+    const Color(0xFFd90012),
+    const Color(0xFF0033a0),
+    const Color.fromARGB(255, 242, 149, 0)
   ],
-  'Australia': [Color(0xFF00008B), Color(0xFFFF0000)],
-  'Austria': [Color(0xFFFF0000), Color(0xFFFFFFFF)],
+  'Australia': [const Color(0xFF00008B), const Color(0xFFFF0000)],
+  'Austria': [const Color(0xFFFF0000), const Color(0xFFFFFFFF)],
   'Belgium': [
-    Color(0xFF000000),
-    Color.fromARGB(255, 77, 61, 0),
-    Color(0xFFFF0000),
+    const Color(0xFF000000),
+    const Color.fromARGB(255, 77, 61, 0),
+    const Color(0xFFFF0000),
   ],
   'Brazil': [
-    Color(0xFF009739),
-    Color(0xFFFFCC00),
+    const Color(0xFF009739),
+    const Color(0xFFFFCC00),
   ],
-  'Canada': [Color(0xFFFFFFFF), Color(0xFFFF0000)],
-  'Czech Republic': [Color(0xFFFFFFFF), Color(0xFFFF0000), Color(0xFF11457E)],
-  'Finland': [Color(0xFFFFFFFF), Color(0xFF002F6C)],
-  'France': [Color(0xFF0055A4), Color(0xFFFFFFFF), Color(0xFFEF4135)],
-  'Germany': [Color(0xFF000000), Color(0xFFFF0000), Color(0xFFFFCC00)],
+  'Canada': [const Color(0xFFFFFFFF), const Color(0xFFFF0000)],
+  'Czech Republic': [const Color(0xFFFFFFFF), const Color(0xFFFF0000), const Color(0xFF11457E)],
+  'Finland': [const Color(0xFFFFFFFF), const Color(0xFF002F6C)],
+  'France': [const Color(0xFF0055A4), const Color(0xFFFFFFFF), const Color(0xFFEF4135)],
+  'Germany': [const Color(0xFF000000), const Color(0xFFFF0000), const Color(0xFFFFCC00)],
   'Italy': [
-    Color(0xFF008C45),
-    Color.fromARGB(255, 225, 255, 229),
-    Color(0xFFCD212A)
+    const Color(0xFF008C45),
+    const Color.fromARGB(255, 225, 255, 229),
+    const Color(0xFFCD212A)
   ],
-  'Japan': [Color(0xFFFFFFFF), Color(0xFFFF0000)],
+  'Japan': [const Color(0xFFFFFFFF), const Color(0xFFFF0000)],
   'Jordan': [
-    Color(0xFF000000),
-    Color(0xFF007A3D),
-    Color(0xFFFF0000),
+    const Color(0xFF000000),
+    const Color(0xFF007A3D),
+    const Color(0xFFFF0000),
   ],
   'Korea, Republic of': [
-    Color(0xFFFFFFFF),
-    Color(0xFFFF0000),
-    Color(0xFF0000FF)
+    const Color(0xFFFFFFFF),
+    const Color(0xFFFF0000),
+    const Color(0xFF0000FF)
   ],
-  'Lebanon': [Color(0xFFFFFFFF), Color(0xFFFF0000), Color(0xFF007A3D)],
-  'Luxembourg': [Color(0xFFFF0000), Color(0xFFFFFFFF), Color(0xFF00A2E8)],
-  'Madagascar': [Color(0xFFFFFFFF), Color(0xFFFF0000), Color(0xFF008000)],
-  'Malaysia': [Color(0xFF010066), Color(0xFFFF0000), Color(0xFFFFFFFF)],
+  'Lebanon': [const Color(0xFFFFFFFF), const Color(0xFFFF0000), const Color(0xFF007A3D)],
+  'Luxembourg': [const Color(0xFFFF0000), const Color(0xFFFFFFFF), const Color(0xFF00A2E8)],
+  'Madagascar': [const Color(0xFFFFFFFF), const Color(0xFFFF0000), const Color(0xFF008000)],
+  'Malaysia': [const Color(0xFF010066), const Color(0xFFFF0000), const Color(0xFFFFFFFF)],
   'Moldova, Republic of': [
-    Color(0xFF0033A0),
-    Color(0xFFFFCC00),
-    Color(0xFFDA291C)
+    const Color(0xFF0033A0),
+    const Color(0xFFFFCC00),
+    const Color(0xFFDA291C)
   ],
-  'Morocco': [Color(0xFFFF0000), Color(0xFF006233)],
-  'Netherlands': [Color(0xFFFF0000), Color(0xFFFFFFFF), Color(0xFF21468B)],
+  'Morocco': [const Color(0xFFFF0000), const Color(0xFF006233)],
+  'Netherlands': [const Color(0xFFFF0000), const Color(0xFFFFFFFF), const Color(0xFF21468B)],
   'Palestine, State of': [
-    Color(0xFF000000),
-    Color(0xFFFFFFFF),
-    Color(0xFF007A3D),
-    Color(0xFFFF0000)
+    const Color(0xFF000000),
+    const Color(0xFFFFFFFF),
+    const Color(0xFF007A3D),
+    const Color(0xFFFF0000)
   ],
-  'Poland': [Color(0xFFFFFFFF), Color(0xFFFF0000)],
+  'Poland': [const Color(0xFFFFFFFF), const Color(0xFFFF0000)],
   'Portugal': [
-    Color(0xFF006600),
-    Color(0xFFFF0000),
+    const Color(0xFF006600),
+    const Color(0xFFFF0000),
   ],
-  'Romania': [Color(0xFF002B7F), Color(0xFFFFCC00), Color(0xFFCE1126)],
+  'Romania': [const Color(0xFF002B7F), const Color(0xFFFFCC00), const Color(0xFFCE1126)],
   'Russian Federation': [
-    Color(0xFFFFFFFF),
-    Color(0xFF0000FF),
-    Color(0xFFFF0000)
+    const Color(0xFFFFFFFF),
+    const Color(0xFF0000FF),
+    const Color(0xFFFF0000)
   ],
-  'Singapore': [Color(0xFFFF0000), Color(0xFFFFFFFF)],
+  'Singapore': [const Color(0xFFFF0000), const Color(0xFFFFFFFF)],
   'South Africa': [
-    Color(0xFF007847),
-    Color(0xFFFFB612),
-    Color(0xFFDE3831),
-    Color(0xFF002395)
+    const Color(0xFF007847),
+    const Color(0xFFFFB612),
+    const Color(0xFFDE3831),
+    const Color(0xFF002395)
   ],
-  'Spain': [Color(0xFFFF0000), Color(0xFFFFCC00)],
-  'Switzerland': [Color(0xFFFFFFFF), Color(0xFFFF0000)],
-  'Thailand': [Color(0xFF000066), Color(0xFFFF0000)],
+  'Spain': [const Color(0xFFFF0000), const Color(0xFFFFCC00)],
+  'Switzerland': [const Color(0xFFFFFFFF), const Color(0xFFFF0000)],
+  'Thailand': [const Color(0xFF000066), const Color(0xFFFF0000)],
   'Turkey': [
-    Color(0xFFFF0000),
-    Color(0xFFFFFFFF),
+    const Color(0xFFFF0000),
+    const Color(0xFFFFFFFF),
   ],
-  'Ukraine': [Color(0xFF0057B7), Color(0xFFFFCC00)],
+  'Ukraine': [const Color(0xFF0057B7), const Color(0xFFFFCC00)],
   'United Arab Emirates': [
-    Color(0xFFFF0000),
-    Color(0xFF00732F),
-    Color(0xFF000000)
+    const Color(0xFFFF0000),
+    const Color(0xFF00732F),
+    const Color(0xFF000000)
   ],
   'United Kingdom': [
-    Color(0xFF00247D),
-    Color(0xFFCF142B),
+    const Color(0xFF00247D),
+    const Color(0xFFCF142B),
   ],
   'United States': [
-    Color(0xFF3C3B6E),
-    Color(0xFFFFFFFF),
-    Color(0xFFB22234),
+    const Color(0xFF3C3B6E),
+    const Color(0xFFFFFFFF),
+    const Color(0xFFB22234),
   ],
 };

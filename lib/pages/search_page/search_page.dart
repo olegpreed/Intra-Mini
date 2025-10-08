@@ -325,13 +325,13 @@ class _SearchPageState extends State<SearchPage> {
                             },
                             child: !isSearchByProject
                                 ? LevelSlider(
-                                    key: ValueKey('levelSlider'),
+                                    key: const ValueKey('levelSlider'),
                                     changeLevelRange: changeLevelRange,
                                     labels: labels,
                                     levelValues: levelValues,
                                   )
                                 : ProjectSliderStatus(
-                                    key: ValueKey('projectSlider'),
+                                    key: const ValueKey('projectSlider'),
                                     index: projectStatusIndex,
                                     onPressed: onSelectedProjectStatus,
                                   ),
