@@ -38,7 +38,7 @@ class ProfileHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ShimmerLoading(
-              isLoading: userData.imageUrlBig == null,
+              isLoading: userData.imageUrlBig == null && isLoading,
               child: Container(
                   height: double.infinity,
                   clipBehavior: Clip.hardEdge,
