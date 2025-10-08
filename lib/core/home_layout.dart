@@ -89,9 +89,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           children: [
             FadeIndexedStack(
               // IndexedStack preserves the state of each page
-              beginOpacity: 0.6,
+              beginOpacity: 0.75,
               endOpacity: 1.0,
-              duration: const Duration(milliseconds: 130),
               index: pageProvider.selectedIndex,
               children: buildNavigatorsFromPages(pages),
             ),
