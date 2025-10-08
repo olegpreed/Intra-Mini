@@ -134,15 +134,10 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: Layout.gutter),
-            child: AnimatedCrossFade(
-              alignment: Alignment.center,
+            child: AnimatedOpacity(
+              opacity: widget.isLoading ? 0 : 1,
               duration: const Duration(milliseconds: 300),
-              crossFadeState: widget.isLoading
-                  ? CrossFadeState.showFirst
-                  : CrossFadeState.showSecond,
-              firstChild:
-                  SizedBox(height: Layout.gutter / 1.5, width: double.infinity),
-              secondChild: SmoothPageIndicator(
+              child: SmoothPageIndicator(
                 controller: _pageController,
                 count: 4,
                 effect: ColorTransitionEffect(
