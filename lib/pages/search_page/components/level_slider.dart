@@ -17,7 +17,15 @@ class LevelSlider extends StatefulWidget {
 }
 
 class _LevelSliderState extends State<LevelSlider> {
-  bool isPressed = false;
+  double? _lastLower;
+  double? _lastUpper;
+
+  @override
+  void initState() {
+    super.initState();
+    _lastLower = widget.levelValues.start;
+    _lastUpper = widget.levelValues.end;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +118,15 @@ class _LevelSliderState extends State<LevelSlider> {
           max: 21,
           min: 0,
           onDragging: (handlerIndex, lowerValue, upperValue) {
-            widget.changeLevelRange(RangeValues(lowerValue, upperValue));
+            final lowerInt = lowerValue.round();
+            final upperInt = upperValue.round();
+
+            if (lowerInt != _lastLower?.round() ||
+                upperInt != _lastUpper?.round()) {
+              _lastLower = lowerValue;
+              _lastUpper = upperValue;
+              widget.changeLevelRange(RangeValues(lowerValue, upperValue));
+            }
           }),
     );
   }

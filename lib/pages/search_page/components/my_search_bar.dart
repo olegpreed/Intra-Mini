@@ -170,7 +170,9 @@ class _MySearchBarState extends State<MySearchBar> {
                       contentPadding: const EdgeInsets.all(0),
                       filled: true,
                       fillColor: Theme.of(context).scaffoldBackgroundColor,
-                      hintText: _isProjectSelected ? '' : 'Search',
+                      hintText: _isProjectSelected && widget.isSearchByProject
+                          ? ''
+                          : 'Search',
                       hintStyle:
                           Theme.of(context).textTheme.bodyMedium?.copyWith(
                                 color: context.myTheme.greyMain,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 
@@ -44,6 +45,7 @@ class _ProjectSliderStatusState extends State<ProjectSliderStatus> {
           return Expanded(
             child: GestureDetector(
               onTap: () {
+                HapticFeedback.lightImpact();
                 widget.onPressed(index);
                 setState(() {
                   _slidingIndex = index;

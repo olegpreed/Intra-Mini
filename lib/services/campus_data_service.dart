@@ -321,13 +321,17 @@ class CampusDataService {
     return favCadets;
   }
 
-  static Future<List<UserData>> fetchCampusCadets(int campusId, int pageNumber,
-      List<int> totalPages, RangeValues minMaxLevels) async {
+  static Future<List<UserData>> fetchCampusCadets(
+      int campusId,
+      int pageNumber,
+      List<int> totalPages,
+      RangeValues minMaxLevels,
+      bool lowLevelFirst) async {
     int cursusId = 21;
     bool hasCoalition = true;
     bool isActive = true;
     int pageSize = 100;
-    String sort = 'level';
+    String sort = lowLevelFirst ? 'level' : '-level';
     final response = await requestWithRetry(
         HttpMethod.get,
         createUri(endpoint: '/cursus/$cursusId/cursus_users', queryParameters: {

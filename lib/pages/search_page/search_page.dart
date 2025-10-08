@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:forty_two_planet/pages/search_page/components/cadet_card.dart';
 import 'package:forty_two_planet/pages/search_page/components/level_slider.dart';
 import 'package:forty_two_planet/pages/search_page/components/my_search_bar.dart';
@@ -26,7 +27,7 @@ class _SearchPageState extends State<SearchPage> {
   final TextEditingController controller = TextEditingController();
   bool onlyOnline = false;
   bool onlyFavourites = false;
-  bool newCadetsFirst = true;
+  bool lowLevelFirst = true;
   RangeValues levelValues = const RangeValues(0, 21);
   bool isLoading = false;
   bool isSearchingCadet = false;
@@ -62,6 +63,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void changeLevelRange(RangeValues newValues) {
+    HapticFeedback.lightImpact();
     Provider.of<SettingsProvider>(context, listen: false)
         .saveASetting('levelRange', newValues);
     setState(() {
@@ -71,12 +73,14 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void toggleOnline() {
+    HapticFeedback.lightImpact();
     setState(() {
       onlyOnline = !onlyOnline;
     });
   }
 
   void toggleFavourites() {
+    HapticFeedback.lightImpact();
     Provider.of<SettingsProvider>(context, listen: false)
         .saveASetting('onlyFavorites', !onlyFavourites);
     setState(() {
@@ -85,6 +89,10 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void toggleSort() {
+    if (isLoading || isSearchByProject) {
+      return;
+    }
+    HapticFeedback.lightImpact();
     _scrollController
         .animateTo(
       0,
@@ -93,7 +101,8 @@ class _SearchPageState extends State<SearchPage> {
     )
         .then((value) {
       setState(() {
-        newCadetsFirst = !newCadetsFirst;
+        lowLevelFirst = !lowLevelFirst;
+        cadets = cadets.reversed.toList();
         isListAnimationFinished = false;
       });
     });
@@ -207,7 +216,9 @@ class _SearchPageState extends State<SearchPage> {
                 profileStore.userData.currentCampusId!,
                 currentPage,
                 totalPages,
-                levelValues)
+                levelValues,
+                lowLevelFirst,
+              )
             : await CampusDataService.fetchFavouriteCadets(
                 currentPage, totalPages, profileStore.favouriteIds);
         currentPage++;
@@ -259,9 +270,6 @@ class _SearchPageState extends State<SearchPage> {
       return matchesSearch && matchesOnline && matchesLevel;
     }).toList();
 
-    if (!newCadetsFirst) {
-      filteredCadets = filteredCadets.reversed.toList();
-    }
     RangeLabels labels = RangeLabels(
       levelValues.start.toStringAsFixed(0),
       levelValues.end.toStringAsFixed(0),
@@ -340,7 +348,7 @@ class _SearchPageState extends State<SearchPage> {
                         SizedBox(width: Layout.padding / 2),
                         SortBtn(
                           onPressed: toggleSort,
-                          isAscending: newCadetsFirst,
+                          isAscending: lowLevelFirst,
                         ),
                       ],
                     ),
