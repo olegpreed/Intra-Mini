@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:forty_two_planet/core/home_layout.dart';
 import 'package:forty_two_planet/pages/load_page/components/rotating_logo.dart';
 import 'package:forty_two_planet/services/favourites_service.dart';
@@ -24,6 +25,7 @@ class _LoadPageState extends State<LoadPage> {
   }
 
   void load() async {
+    FlutterNativeSplash.remove();
     await fetchData();
     SettingsProvider settingsProvider =
         Provider.of<SettingsProvider>(context, listen: false);

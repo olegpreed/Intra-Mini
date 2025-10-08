@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:forty_two_planet/pages/load_page/load_page.dart';
 import 'package:forty_two_planet/pages/login_page/login_page.dart';
 import 'package:forty_two_planet/services/token_service.dart';
@@ -19,7 +18,6 @@ class AuthCheckState extends State<AuthCheck> {
   void initState() {
     super.initState();
     _checkForTokens();
-    FlutterNativeSplash.remove();
   }
 
   void _checkForTokens() async {
