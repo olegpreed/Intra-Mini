@@ -219,8 +219,8 @@ class _SearchPageState extends State<SearchPage> {
                 levelValues,
                 lowLevelFirst,
               )
-            : await CampusDataService.fetchFavouriteCadets(
-                currentPage, totalPages, profileStore.favouriteIds);
+            : await CampusDataService.fetchFavouriteCadets(currentPage,
+                totalPages, profileStore.favouriteIds, lowLevelFirst);
         currentPage++;
 
         if (mounted && isLoading) {

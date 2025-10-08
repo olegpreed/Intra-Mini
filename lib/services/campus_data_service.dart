@@ -281,10 +281,10 @@ class CampusDataService {
   }
 
   static Future<List<UserData>> fetchFavouriteCadets(
-      int pageNumber, List<int> totalPages, List<String> favouriteIds) async {
+      int pageNumber, List<int> totalPages, List<String> favouriteIds, bool lowLevelFirst) async {
     int cursusId = 21;
     List<UserData> favCadets = [];
-    String sort = 'level';
+    String sort = lowLevelFirst ? 'level' : '-level';
     int pageSize = 100;
     if (favouriteIds.isEmpty) {
       return favCadets;
