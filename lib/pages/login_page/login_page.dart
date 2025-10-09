@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:forty_two_planet/pages/load_page/load_page.dart';
 import 'package:forty_two_planet/pages/login_page/components/login_btn.dart';
 import 'package:forty_two_planet/pages/login_page/components/login_globe.dart';
@@ -16,6 +17,12 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  @override
+  void initState() {
+    super.initState();
+    FlutterNativeSplash.remove();
+  }
+
   void _login() async {
     try {
       if (await TokenService.requestAndSaveUserToken() &&
