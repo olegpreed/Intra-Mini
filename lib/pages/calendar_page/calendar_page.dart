@@ -215,7 +215,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                       for (var slot in filteredSlots)
                                         SlotCard(slot: slot)
                                     ],
-                                    Text('Slide to refresh',
+                                    Text('↓Slide to refresh↓',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall

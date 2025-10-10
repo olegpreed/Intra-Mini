@@ -404,47 +404,57 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
           Expanded(
-            child: RawScrollbar(
-              padding: EdgeInsets.only(
-                  right: 5,
-                  bottom: MediaQuery.of(context).padding.bottom + 10,
-                  top: 10),
-              thumbColor: context.myTheme.greyMain.withOpacity(0.3),
-              radius: const Radius.circular(30),
-              controller: _scrollController,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: Layout.padding),
-                child: ListView.builder(
-                  controller: _scrollController,
-                  padding: const EdgeInsets.only(top: 7, bottom: 200),
-                  itemCount: filteredCadets.length,
-                  itemBuilder: (context, index) {
-                    return TweenAnimationBuilder<double>(
-                      tween: Tween(begin: 0, end: 1),
-                      duration: Duration(
-                          milliseconds: isListAnimationFinished ? 0 : 500),
-                      onEnd: () {
-                        isListAnimationFinished = true;
-                      },
-                      builder: (context, opacity, child) {
-                        return Opacity(
-                          opacity: opacity,
-                          child: child,
-                        );
-                      },
-                      child: CadetCard(
-                        key: ValueKey(filteredCadets[index].id),
-                        cadetData: filteredCadets[index],
-                        projectData: isSearchByProject
-                            ? projectCadets[filteredCadets[index]]
-                            : null,
-                        projectStatus: isSearchByProject ? projectStatus : null,
+            child: isSearchByProject && projectName == null
+                ? Text(
+                    'Enter a project name in search',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).cardColor,
+                        ),
+                  )
+                : RawScrollbar(
+                    padding: EdgeInsets.only(
+                        right: 5,
+                        bottom: MediaQuery.of(context).padding.bottom + 10,
+                        top: 10),
+                    thumbColor: context.myTheme.greyMain.withOpacity(0.3),
+                    radius: const Radius.circular(30),
+                    controller: _scrollController,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: Layout.padding),
+                      child: ListView.builder(
+                        controller: _scrollController,
+                        padding: const EdgeInsets.only(top: 7, bottom: 200),
+                        itemCount: filteredCadets.length,
+                        itemBuilder: (context, index) {
+                          return TweenAnimationBuilder<double>(
+                            tween: Tween(begin: 0, end: 1),
+                            duration: Duration(
+                                milliseconds:
+                                    isListAnimationFinished ? 0 : 500),
+                            onEnd: () {
+                              isListAnimationFinished = true;
+                            },
+                            builder: (context, opacity, child) {
+                              return Opacity(
+                                opacity: opacity,
+                                child: child,
+                              );
+                            },
+                            child: CadetCard(
+                              key: ValueKey(filteredCadets[index].id),
+                              cadetData: filteredCadets[index],
+                              projectData: isSearchByProject
+                                  ? projectCadets[filteredCadets[index]]
+                                  : null,
+                              projectStatus:
+                                  isSearchByProject ? projectStatus : null,
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-              ),
-            ),
+                    ),
+                  ),
           ),
         ],
       ),
