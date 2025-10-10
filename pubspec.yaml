@@ -56,7 +56,7 @@ dependencies:
   transitioned_indexed_stack: ^1.0.2
   in_app_purchase: ^3.2.1
   google_fonts: ^6.2.1
-  flutter_launcher_icons: ^0.14.3
+  flutter_launcher_icons: ^0.14.4
   firebase_crashlytics: ^4.3.7
   firebase_analytics: ^11.5.0
   fullscreen_image_viewer: ^1.2.0
