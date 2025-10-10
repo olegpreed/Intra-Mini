@@ -213,75 +213,68 @@ class CampusDataService {
         DateTime.now().subtract(const Duration(days: 180)).toUtc();
     DateTime endAt = DateTime.now().toUtc();
     int pageNumber = 1;
-    int totalPages = 1;
+    campusId = 1;
     Map<UserData, SearchProjectData> cadetProjectMap = {};
-    while (pageNumber <= totalPages) {
-      final response = await requestWithRetry(
-          HttpMethod.get,
-          createUri(
-              endpoint: '/projects/$projectId/projects_users',
-              queryParameters: {
-                'filter[campus]': campusId.toString(),
-                'page[size]': pageSize.toString(),
-                'page[number]': pageNumber.toString(),
-                'filter[status]': projectStatus,
-                'filter[marked]':
-                    projectStatus == 'finished' ? 'true' : 'false',
-                'range[${projectStatus == 'finished' ? 'marked_at' : 'created_at'}]':
-                    '$beginAt,$endAt',
-              }),
-          false);
+    final response = await requestWithRetry(
+        HttpMethod.get,
+        createUri(
+            endpoint: '/projects/$projectId/projects_users',
+            queryParameters: {
+              'filter[campus]': campusId.toString(),
+              'page[size]': pageSize.toString(),
+              'page[number]': pageNumber.toString(),
+              'filter[status]': projectStatus,
+              'filter[marked]': projectStatus == 'finished' ? 'true' : 'false',
+              'range[${projectStatus == 'finished' ? 'marked_at' : 'created_at'}]':
+                  '$beginAt,$endAt',
+            }),
+        false);
 
-      if (pageNumber == 1) {
-        totalPages = getPagesNumberFromHeader(response);
-      }
+    List<dynamic> responseData = json.decode(response.body);
 
-      List<dynamic> responseData = json.decode(response.body);
-
-      for (var cadet in responseData) {
-        if (cadet['user']['staff?'] != true &&
-            cadet['user']['active?'] == true) {
-          UserData userData = UserData()
-            ..id = cadet['user']['id']
-            ..login = cadet['user']['login']
-            ..firstName = cadet['user']['first_name']
-            ..lastName = cadet['user']['last_name']
-            ..imageUrlSmall = cadet['user']['image']['versions']['small']
-            ..imageUrlBig = cadet['user']['image']['link']
-            ..wallet = cadet['user']['wallet']
-            ..location = cadet['user']['location']
-            ..evalPoints = cadet['user']['correction_point']
-            ..poolMonth = cadet['user']['pool_month']
-            ..poolYear = cadet['user']['pool_year'];
-          DateTime? projectStamp;
-          if (projectStatus == 'finished') {
-            projectStamp = DateTime.parse(cadet['marked_at']);
-          } else if (projectStatus == 'in_progress') {
-            projectStamp = DateTime.parse(cadet['created_at']);
-          }
-
-          SearchProjectData projectData = SearchProjectData()
-            ..teamId = cadet['current_team_id']
-            ..teamName = cadet['teams'].isNotEmpty &&
-                    cadet['teams'][0]['users'].length > 1
-                ? cadet['teams'][0]['name']
-                : null
-            ..timeStamp = projectStamp
-            ..finalMark =
-                projectStatus == 'finished' ? cadet['final_mark'] : null
-            ..isFailed =
-                projectStatus == 'finished' && cadet['validated?'] == false;
-
-          cadetProjectMap[userData] = projectData;
+    for (var cadet in responseData) {
+      if (cadet['user']['staff?'] != true && cadet['user']['active?'] == true) {
+        UserData userData = UserData()
+          ..id = cadet['user']['id']
+          ..login = cadet['user']['login']
+          ..firstName = cadet['user']['first_name']
+          ..lastName = cadet['user']['last_name']
+          ..imageUrlSmall = cadet['user']['image']['versions']['small']
+          ..imageUrlBig = cadet['user']['image']['link']
+          ..wallet = cadet['user']['wallet']
+          ..location = cadet['user']['location']
+          ..evalPoints = cadet['user']['correction_point']
+          ..poolMonth = cadet['user']['pool_month']
+          ..poolYear = cadet['user']['pool_year'];
+        DateTime? projectStamp;
+        if (projectStatus == 'finished') {
+          projectStamp = DateTime.parse(cadet['marked_at']);
+        } else if (projectStatus == 'in_progress') {
+          projectStamp = DateTime.parse(cadet['created_at']);
         }
+
+        SearchProjectData projectData = SearchProjectData()
+          ..teamId = cadet['current_team_id']
+          ..teamName =
+              cadet['teams'].isNotEmpty && cadet['teams'][0]['users'].length > 1
+                  ? cadet['teams'][0]['name']
+                  : null
+          ..timeStamp = projectStamp
+          ..finalMark = projectStatus == 'finished' ? cadet['final_mark'] : null
+          ..isFailed =
+              projectStatus == 'finished' && cadet['validated?'] == false;
+
+        cadetProjectMap[userData] = projectData;
       }
-      pageNumber++;
     }
     return cadetProjectMap;
   }
 
   static Future<List<UserData>> fetchFavouriteCadets(
-      int pageNumber, List<int> totalPages, List<String> favouriteIds, bool lowLevelFirst) async {
+      int pageNumber,
+      List<int> totalPages,
+      List<String> favouriteIds,
+      bool lowLevelFirst) async {
     int cursusId = 21;
     List<UserData> favCadets = [];
     String sort = lowLevelFirst ? 'level' : '-level';
