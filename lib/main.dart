@@ -64,6 +64,16 @@ void main() async {
   );
 
   await flutterLocalNotificationsPlugin.initialize(settings);
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.requestNotificationsPermission();
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.requestExactAlarmsPermission();
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => themeProvider),
     ChangeNotifierProvider(create: (context) => PageProvider()),
