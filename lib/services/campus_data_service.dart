@@ -213,7 +213,6 @@ class CampusDataService {
         DateTime.now().subtract(const Duration(days: 180)).toUtc();
     DateTime endAt = DateTime.now().toUtc();
     int pageNumber = 1;
-    campusId = 1;
     Map<UserData, SearchProjectData> cadetProjectMap = {};
     final response = await requestWithRetry(
         HttpMethod.get,
