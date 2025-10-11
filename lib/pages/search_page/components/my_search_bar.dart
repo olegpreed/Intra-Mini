@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:forty_two_planet/components/project_tag.dart';
 import 'package:forty_two_planet/data/project_ids.dart';
@@ -197,6 +198,7 @@ class _MySearchBarState extends State<MySearchBar> {
                               ? GestureDetector(
                                   behavior: HitTestBehavior.translucent,
                                   onTap: () {
+                                    HapticFeedback.lightImpact();
                                     widget.controller!.clear();
                                   },
                                   child: SvgPicture.asset(

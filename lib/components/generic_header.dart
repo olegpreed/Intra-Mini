@@ -9,25 +9,33 @@ class GenericHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Text(title, style: Theme.of(context).textTheme.headlineLarge),
-      GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            Navigator.of(context).pop();
-          },
-          child: Container(
-            width: 30,
-            height: 30,
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: SvgPicture.asset('assets/icons/back.svg',
-                fit: BoxFit.none,
-                colorFilter: ColorFilter.mode(
-                    context.myTheme.greySecondary, BlendMode.srcIn)),
-          )),
-    ]);
+    return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+              child: Text(title,
+                  // overflow: TextOverflow.fade,
+                  // maxLines: 1,
+                  // softWrap: false,
+                  style: Theme.of(context).textTheme.headlineLarge)),
+          GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: SvgPicture.asset('assets/icons/back.svg',
+                    fit: BoxFit.none,
+                    colorFilter: ColorFilter.mode(
+                        context.myTheme.greySecondary, BlendMode.srcIn)),
+              )),
+        ]);
   }
 }

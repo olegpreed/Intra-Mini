@@ -4,8 +4,9 @@ import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ClickableText extends StatelessWidget {
-  const ClickableText({super.key, required this.text});
+  const ClickableText({super.key, required this.text, required this.style});
   final String text;
+  final TextStyle style;
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +33,8 @@ class ClickableText extends StatelessWidget {
     // Add text spans for parts and URLs
     for (int i = 0; i < parts.length; i++) {
       // Add the non-link text
-      spans.add(TextSpan(
-          text: parts[i], style: Theme.of(context).textTheme.bodyMedium));
+      spans.add(
+          TextSpan(text: parts[i], style: style)); // Use the provided style
 
       // Add the link text
       if (i < matches.length) {
@@ -41,9 +42,9 @@ class ClickableText extends StatelessWidget {
         spans.add(
           TextSpan(
             text: url,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: accentColor,
-                ),
+            style: style.copyWith(
+              color: accentColor,
+            ),
             recognizer: TapGestureRecognizer()
               ..onTap = () async {
                 if (url != null) {

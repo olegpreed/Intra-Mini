@@ -135,15 +135,19 @@ class _EventInfoState extends State<EventInfo> {
                                   'https://profile.intra.42.fr/exams/${widget.event.id}'),
                               mode: LaunchMode.inAppBrowserView)),
                   const SizedBox(width: 10),
-                  NotifyButton(event: widget.event, isNotified: isNotified, onOk: () {
-                    setState(() {
-                      isNotified = true;
-                    });
-                  }, onCancel: () {
-                    setState(() {
-                      isNotified = false;
-                    });
-                  }),
+                  NotifyButton(
+                      event: widget.event,
+                      isNotified: isNotified,
+                      onOk: () {
+                        setState(() {
+                          isNotified = true;
+                        });
+                      },
+                      onCancel: () {
+                        setState(() {
+                          isNotified = false;
+                        });
+                      }),
                 ],
               ),
               SizedBox(height: Layout.gutter),
@@ -178,7 +182,9 @@ class _EventInfoState extends State<EventInfo> {
               child: Padding(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).padding.bottom + 90),
-                child: ClickableText(text: widget.event.description ?? ''),
+                child: ClickableText(
+                    text: widget.event.description ?? '',
+                    style: Theme.of(context).textTheme.bodyMedium!),
               ),
             ),
           ),

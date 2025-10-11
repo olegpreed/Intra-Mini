@@ -30,6 +30,18 @@ class Event {
   });
 }
 
+class JobOffer {
+  int? id;
+  String? title;
+  String? littleDescription;
+  String? bigDescription;
+  String? salary;
+  String? location;
+  String? email;
+  String? contractType;
+  DateTime? createdAt;
+}
+
 class ShopItem {
   int? id;
   String? name;
@@ -362,5 +374,45 @@ class CampusDataService {
     }).toList();
 
     return cadets;
+  }
+
+  static Future<List<JobOffer>> fetchJobOffers(int campusId) async {
+    List<JobOffer> jobOffers = [];
+    int pageNumber = 1;
+    int totalPages = 1;
+
+    while (pageNumber <= totalPages) {
+      final response = await requestWithRetry(
+          HttpMethod.get,
+          createUri(endpoint: '/offers', queryParameters: {
+            'page[number]': pageNumber.toString(),
+            'page[size]': '100',
+            'filter[campus_id]': campusId.toString(),
+          }),
+          false);
+      if (pageNumber == 1) {
+        totalPages = getPagesNumberFromHeader(response);
+      }
+
+      List<dynamic> responseData = json.decode(response.body);
+
+      List<JobOffer> offersData = responseData.map<JobOffer>((offer) {
+        return JobOffer()
+          ..id = offer['id']
+          ..title = offer['title']
+          ..littleDescription = offer['little_description']
+          ..bigDescription = offer['big_description']
+          ..salary = offer['salary']
+          ..location = offer['full_address']
+          ..email = offer['email']
+          ..contractType = offer['contract_type']
+          ..createdAt = DateTime.parse(offer['created_at']).toLocal();
+      }).toList();
+
+      jobOffers.addAll(offersData);
+      pageNumber++;
+    }
+
+    return jobOffers;
   }
 }

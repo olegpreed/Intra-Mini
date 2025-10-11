@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:forty_two_planet/pages/evals_page/evals_page.dart';
+import 'package:forty_two_planet/pages/offers_page/offers_page.dart';
 import 'package:forty_two_planet/pages/profile_page/components/bento_box.dart';
 import 'package:forty_two_planet/pages/profile_page/components/bento_icon.dart';
 import 'package:forty_two_planet/pages/profile_page/components/circular_progress.dart';
@@ -23,15 +24,25 @@ class WidgetsRowOne extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        BentoBox(
-          isShimmerFinished: isShimmerFinished,
-          content: FadeIn(
-            duration: const Duration(milliseconds: 300),
-            child: CircularProgress(
-              level:
-                  cadetData.cursusLevels[projectsListProvider.selectedCursus] ??
-                      0.0,
-              color: cadetData.coalitionColor,
+       GestureDetector(
+          onTap: () {
+            if (isShimmerFinished == false || cadetData.currentCampusId == null) {
+              return;
+            }
+            Navigator.push(context, MaterialPageRoute(builder: ((context) {
+              return OffersPage(campusId: cadetData.currentCampusId!);
+            })));
+          },
+          child: BentoBox(
+            isShimmerFinished: isShimmerFinished,
+            content: FadeIn(
+              duration: const Duration(milliseconds: 300),
+              child: CircularProgress(
+                level:
+                    cadetData.cursusLevels[projectsListProvider.selectedCursus] ??
+                        0.0,
+                color: cadetData.coalitionColor,
+              ),
             ),
           ),
         ),
