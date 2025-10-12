@@ -9,9 +9,10 @@ import 'package:provider/provider.dart';
 
 class ProfileWidgets extends StatelessWidget {
   const ProfileWidgets(
-      {super.key, required this.userData, required this.isLoading});
+      {super.key, required this.userData, required this.isLoading, required this.keys});
   final UserData userData;
   final bool isLoading;
+  final List<GlobalKey> keys;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class ProfileWidgets extends StatelessWidget {
       opacity: isProjectsListExpanded ? 0 : 1,
       child: Column(
         children: [
-          ScrollableCadetData(cadetData: userData, isLoading: isLoading),
+          ScrollableCadetData(cadetData: userData, isLoading: isLoading, keys: keys),
           ShimmerLoading(
             isLoading: isLoading,
             child: Padding(

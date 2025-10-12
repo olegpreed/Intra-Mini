@@ -17,7 +17,8 @@ import 'package:forty_two_planet/utils/ui_uitls.dart';
 import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+  const SearchPage({super.key, required this.showcaseKey});
+  final GlobalKey showcaseKey;
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -301,6 +302,7 @@ class _SearchPageState extends State<SearchPage> {
                       onSearch: searchCadet,
                       isSearchingCadet: isSearchingCadet,
                       isProjectLoading: isProjectLoading,
+                      showcaseKey: widget.showcaseKey,
                     ),
                     SizedBox(height: Layout.gutter * 2),
                     Row(

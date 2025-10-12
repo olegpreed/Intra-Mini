@@ -10,6 +10,7 @@ import 'package:forty_two_planet/pages/profile_page/components/profile_projects.
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({
@@ -17,10 +18,12 @@ class ProfileHeader extends StatelessWidget {
     required this.isLoading,
     required this.userData,
     required this.isHomeView,
+    required this.avatarKey,
   });
   final bool isLoading;
   final UserData userData;
   final bool isHomeView;
+  final GlobalKey avatarKey;
 
   @override
   Widget build(BuildContext context) {
@@ -39,20 +42,25 @@ class ProfileHeader extends StatelessWidget {
           children: [
             ShimmerLoading(
               isLoading: userData.imageUrlBig == null && isLoading,
-              child: Container(
-                  height: double.infinity,
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.circular(Layout.cellWidth / 4),
-                  ),
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: ProfileAvatar(
-                      imageUrl: userData.imageUrlBig,
-                      isHomeView: isHomeView,
+              child: Showcase(
+                key: avatarKey,
+                title: 'Profile Picture',
+                description: 'You can tap to zoom on it.',
+                child: Container(
+                    height: double.infinity,
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(Layout.cellWidth / 4),
                     ),
-                  )),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: ProfileAvatar(
+                        imageUrl: userData.imageUrlBig,
+                        isHomeView: isHomeView,
+                      ),
+                    )),
+              ),
             ),
             SizedBox(width: Layout.gutter),
             Expanded(

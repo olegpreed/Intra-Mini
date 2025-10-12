@@ -7,6 +7,7 @@ import 'package:forty_two_planet/settings/user_settings.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class MySearchBar extends StatefulWidget {
   const MySearchBar({
@@ -19,6 +20,7 @@ class MySearchBar extends StatefulWidget {
     required this.onSearch,
     required this.isSearchingCadet,
     required this.isProjectLoading,
+    required this.showcaseKey,
   });
   final TextEditingController? controller;
   final bool isSearchByProject;
@@ -28,6 +30,7 @@ class MySearchBar extends StatefulWidget {
   final void Function(String) onSearch;
   final bool isSearchingCadet;
   final bool isProjectLoading;
+  final GlobalKey showcaseKey;
 
   @override
   State<MySearchBar> createState() => _MySearchBarState();
@@ -271,29 +274,34 @@ class _MySearchBarState extends State<MySearchBar> {
                             FocusScope.of(context).unfocus();
                             widget.onChangeSearchType();
                           },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).cardColor,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  widget.isSearchByProject
-                                      ? 'by project'
-                                      : 'by cadet',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.copyWith(
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                ),
-                              ],
+                          child: Showcase(
+                            key: widget.showcaseKey,
+                            title: 'Press to switch to search by project',
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 4, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).cardColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    widget.isSearchByProject
+                                        ? 'by project'
+                                        : 'by cadet',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                  ),
+                                ],
+                              ),
                             ),
                           )),
                     ],

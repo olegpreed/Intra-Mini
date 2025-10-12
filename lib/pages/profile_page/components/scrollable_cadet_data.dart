@@ -11,9 +11,13 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ScrollableCadetData extends StatefulWidget {
   const ScrollableCadetData(
-      {super.key, required this.cadetData, required this.isLoading});
+      {super.key,
+      required this.cadetData,
+      required this.isLoading,
+      required this.keys});
   final UserData cadetData;
   final bool isLoading;
+  final List<GlobalKey> keys;
 
   @override
   State<ScrollableCadetData> createState() => _ScrollableCadetDataState();
@@ -108,6 +112,7 @@ class _ScrollableCadetDataState extends State<ScrollableCadetData> {
                         isShimmerFinished:
                             widget.cadetData.cursusLevels.isNotEmpty ||
                                 !widget.isLoading,
+                        keys: widget.keys,
                       )),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: Layout.padding),

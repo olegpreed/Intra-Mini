@@ -6,10 +6,17 @@ import 'package:forty_two_planet/pages/profile_page/profile_page.dart';
 import 'package:forty_two_planet/pages/search_page/search_page.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:transitioned_indexed_stack/transitioned_indexed_stack.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home(
+      {super.key,
+      required this.didFinishProfileTutorial,
+      required this.didFinishSearchTutorial});
+  final bool didFinishProfileTutorial;
+  final bool didFinishSearchTutorial;
 
   @override
   State<Home> createState() => _HomeState();
@@ -17,10 +24,26 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   bool _isPageLoaded = false;
+  final GlobalKey _searchSwitchKey = GlobalKey();
+  bool didFinishSearchTutorial = false;
 
   @override
   void initState() {
     super.initState();
+    ShowcaseView.register(
+      onComplete: (showcaseIndex, key) async {
+        final prefs = await SharedPreferences.getInstance();
+
+        if (showcaseIndex == 0 && key == _searchSwitchKey) {
+          setState(() {
+            didFinishSearchTutorial = true;
+          });
+          await prefs.setBool('didFinishSearchTutorial', true);
+        } else if (showcaseIndex == 3) {
+          await prefs.setBool('didFinishProfileTutorial', true);
+        }
+      },
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(milliseconds: 200), () {
         setState(() {
@@ -30,6 +53,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     });
   }
 
+  @override
+  void dispose() {
+    ShowcaseView.get().unregister();
+    super.dispose();
+  }
+
   final List<GlobalKey<NavigatorState>> _navigatorKeys = List.generate(
     3,
     (_) => GlobalKey<NavigatorState>(),
@@ -37,6 +66,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   void _onNavItemTapped(int index, int selectedIndex) {
     HapticFeedback.selectionClick();
+    if (index == 1 &&
+        (!widget.didFinishSearchTutorial && !didFinishSearchTutorial)) {
+      ShowcaseView.get().startShowCase([_searchSwitchKey]);
+    }
     if (index == selectedIndex) {
       _navigatorKeys[index].currentState?.popUntil((route) => route.isFirst);
       return;
@@ -63,8 +96,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       ProfilePage(
         isHomeView: true,
         cadetData: Provider.of<MyProfileStore>(context).userData,
+        didFinishProfileTutorial: widget.didFinishProfileTutorial,
       ),
-      const SearchPage(),
+      SearchPage(showcaseKey: _searchSwitchKey),
       const CalendarPage(),
     ];
 

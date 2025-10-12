@@ -8,15 +8,18 @@ import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
     super.key,
     required this.cadetData,
     required this.isHomeView,
+    this.didFinishProfileTutorial = false,
   });
   final UserData cadetData;
   final bool isHomeView;
+  final bool didFinishProfileTutorial;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -25,6 +28,10 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   bool _isLoading = true;
   UserData _userData = UserData();
+  final GlobalKey _avatarKey = GlobalKey();
+  final GlobalKey _levelKey = GlobalKey();
+  final GlobalKey _evalKey = GlobalKey();
+  final GlobalKey _walletKey = GlobalKey();
 
   @override
   void initState() {
@@ -46,6 +53,12 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       _isLoading = false;
     });
+    if (widget.isHomeView && !widget.didFinishProfileTutorial) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => ShowcaseView.get()
+            .startShowCase([_avatarKey, _levelKey, _evalKey, _walletKey]),
+      );
+    }
   }
 
   Future<void> _fetchProfileData() async {
@@ -87,6 +100,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   isLoading: _isLoading,
                   userData: _userData,
                   isHomeView: widget.isHomeView,
+                  avatarKey: _avatarKey,
                 ),
                 Expanded(
                   child: Stack(
@@ -94,6 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ProfileWidgets(
                         userData: _userData,
                         isLoading: _isLoading,
+                        keys: [_levelKey, _evalKey, _walletKey],
                       ),
                       Positioned.fill(
                           child: ShimmerLoading(

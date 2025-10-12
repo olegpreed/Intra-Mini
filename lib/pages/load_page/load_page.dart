@@ -7,6 +7,7 @@ import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/settings/user_settings.dart';
 import 'package:forty_two_planet/utils/cache_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoadPage extends StatefulWidget {
   const LoadPage({super.key});
@@ -38,13 +39,21 @@ class _LoadPageState extends State<LoadPage> {
       'assets/icons/eval.svg',
       'assets/icons/dropdown_arrow.svg',
     ]);
+    final prefs = await SharedPreferences.getInstance();
+    bool didFinishProfileTutorial =
+        prefs.getBool('didFinishProfileTutorial') ?? false;
+    bool didFinishSearchTutorial =
+        prefs.getBool('didFinishSearchTutorial') ?? false;
     setState(() {
       _isLoading = false;
     });
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const Home(),
+        pageBuilder: (context, animation, secondaryAnimation) => Home(
+          didFinishProfileTutorial: didFinishProfileTutorial,
+          didFinishSearchTutorial: didFinishSearchTutorial,
+        ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           animation = CurvedAnimation(
             parent: animation,
