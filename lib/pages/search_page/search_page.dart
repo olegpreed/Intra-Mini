@@ -409,7 +409,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
           Expanded(
             child: isSearchByProject && projectName == null
-                ? FadeIn(child: ProjectHintText())
+                ? const FadeIn(child: ProjectHintText())
                 : RawScrollbar(
                     padding: EdgeInsets.only(
                         right: 5,
