@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
@@ -24,7 +26,8 @@ class StoreKart extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text('${(resultPoints).toString()} ₳',
+              Text(
+                  '${(resultPoints).toString()} ${Platform.isAndroid ? "₩" : "₳"}',
                   style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                       color: resultPoints >= 0
                           ? context.myTheme.success

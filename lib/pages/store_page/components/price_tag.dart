@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 
@@ -21,7 +23,7 @@ class PriceTag extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                '$price ₳',
+                '$price ${Platform.isAndroid ? "₩" : "₳"}',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: isAffordable
                         ? context.myTheme.success
