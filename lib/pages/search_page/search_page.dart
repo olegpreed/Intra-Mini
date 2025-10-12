@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:forty_two_planet/pages/search_page/components/cadet_card.dart';
 import 'package:forty_two_planet/pages/search_page/components/level_slider.dart';
 import 'package:forty_two_planet/pages/search_page/components/my_search_bar.dart';
 import 'package:forty_two_planet/pages/search_page/components/my_toggle_btn.dart';
+import 'package:forty_two_planet/pages/search_page/components/project_hint_text.dart';
 import 'package:forty_two_planet/pages/search_page/components/project_status_slider.dart';
 import 'package:forty_two_planet/pages/search_page/components/refresh_button.dart';
 import 'package:forty_two_planet/components/sort_btn.dart';
@@ -407,13 +409,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
           Expanded(
             child: isSearchByProject && projectName == null
-                ? Text(
-                    'Enter a project name in search',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).cardColor,
-                        ),
-                  )
+                ? FadeIn(child: ProjectHintText())
                 : RawScrollbar(
                     padding: EdgeInsets.only(
                         right: 5,
