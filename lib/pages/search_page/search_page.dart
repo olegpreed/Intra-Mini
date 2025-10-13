@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
@@ -66,7 +68,9 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void changeLevelRange(RangeValues newValues) {
-    HapticFeedback.lightImpact();
+    if (!Platform.isAndroid) {
+      HapticFeedback.lightImpact();
+    }
     Provider.of<SettingsProvider>(context, listen: false)
         .saveASetting('levelRange', newValues);
     setState(() {

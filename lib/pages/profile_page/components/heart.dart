@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:forty_two_planet/components/pressable_scale.dart';
 import 'package:forty_two_planet/services/favourites_service.dart';
 import 'package:forty_two_planet/services/user_data_service.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
@@ -52,11 +52,8 @@ class _HeartState extends State<Heart> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        onTap();
-      },
+    return PressableScale(
+      onPressed: onTap,
       child: Padding(
         padding: EdgeInsets.only(right: Layout.gutter),
         child: AnimatedCrossFade(
@@ -67,8 +64,8 @@ class _HeartState extends State<Heart> {
           ),
           secondChild: SvgPicture.asset(
             'assets/icons/heart_empty.svg',
-            colorFilter:
-                ColorFilter.mode(Theme.of(context).cardColor, BlendMode.srcIn),
+            colorFilter: ColorFilter.mode(
+                context.myTheme.greySecondary, BlendMode.srcIn),
           ),
           crossFadeState: isFavorited
               ? CrossFadeState.showFirst

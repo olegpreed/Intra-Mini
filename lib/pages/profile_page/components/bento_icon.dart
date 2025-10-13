@@ -20,7 +20,7 @@ class BentoIcon extends StatelessWidget {
         child: SvgPicture.asset(
           iconPath,
           colorFilter: ColorFilter.mode(
-              color ?? context.myTheme.greyMain, BlendMode.srcIn),
+              color ?? context.myTheme.greySecondary, BlendMode.srcIn),
           fit: BoxFit.scaleDown,
           width: Layout.cellWidth / 5,
         ),

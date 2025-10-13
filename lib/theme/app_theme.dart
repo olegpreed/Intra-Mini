@@ -26,7 +26,7 @@ class AppTheme {
     const Color bg_0 = Color(0xFFF4F4F4);
     const Color bg_1 = Color(0xFFFFFFFF);
     const Color accent = Color(0xFF292D39);
-    const Color greyMain = Color(0xFF828282);
+    const Color greyMain = Color.fromARGB(255, 180, 180, 180);
     const Color greySecondary = Color(0xFFE1E1E1);
     const Color shimmer = Color.fromARGB(255, 240, 240, 240);
     const Color online = Color(0xFF7EFF93);

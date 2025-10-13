@@ -67,15 +67,16 @@ class _ModalNotificationState extends State<ModalNotification> {
       scheduledDate,
       const NotificationDetails(
         android: AndroidNotificationDetails(
-          'daily_reminder_channel_id',
-          'Daily Reminders',
-          channelDescription: 'Reminder to complete daily habits',
+          'events_channel',
+          'Event Reminders',
+          channelDescription:
+              'Reminder for upcoming events, exams, or evaluations',
           importance: Importance.max,
           priority: Priority.high,
         ),
         iOS: DarwinNotificationDetails(),
       ),
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
   }
 

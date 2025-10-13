@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:forty_two_planet/settings/user_settings.dart';
@@ -50,7 +52,9 @@ class _LogtimeSliderState extends State<LogtimeSlider> {
                 max: 60,
                 divisions: 60,
                 onChanged: (double value) {
-                  HapticFeedback.lightImpact();
+                  if (!Platform.isAndroid) {
+                    HapticFeedback.lightImpact();
+                  }
                   Provider.of<SettingsProvider>(context, listen: false)
                       .saveASetting('logtimeGoal', value.round());
                   setState(() {

@@ -56,7 +56,7 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   await themeProvider.loadASetting('themeMode', prefs);
   await setupTimezone();
-  const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+  const androidSettings = AndroidInitializationSettings('app_icon');
   const iosSettings = DarwinInitializationSettings();
   const settings = InitializationSettings(
     android: androidSettings,

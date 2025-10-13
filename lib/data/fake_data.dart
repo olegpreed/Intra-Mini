@@ -7,8 +7,8 @@ List<Event> fakeEvents = [
     name: 'Hackathon 2024',
     description: 'Join us for a 48-hour coding marathon!',
     subscrCount: 2,
-    beginAt: DateTime(2025, 10, 1),
-    endAt: DateTime(2025, 10, 2),
+    beginAt: DateTime(2025, 10, 14),
+    endAt: DateTime(2025, 10, 15),
     location: 'Campus Auditorium',
   ),
   Event(
@@ -16,8 +16,8 @@ List<Event> fakeEvents = [
     name: 'Tech Talk: AI Innovations',
     description: 'Explore the latest trends in AI technology.',
     subscrCount: 5,
-    beginAt: DateTime(2025, 10, 2),
-    endAt: DateTime(2025, 10, 5),
+    beginAt: DateTime(2025, 10, 13, 20, 0),
+    endAt: DateTime(2025, 10, 13, 21, 0),
     location: 'Room 101',
   ),
 ];

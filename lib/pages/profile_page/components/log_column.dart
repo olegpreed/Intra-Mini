@@ -36,7 +36,7 @@ class LogColumn extends StatelessWidget {
       logtime: logtimeThisMonth + logtimeOtherMonth,
       child: ShowCaseWrapper(
         title:
-            'This is your log time for this week.\nIt gets updated every day.\nThe maximum value is 60 hours.\nYou can tap on each column to see more details.',
+            'Each column represents one week.\nThe maximum logtime is 60 hours per week\nYou can tap on each column to see more details.',
         isShowcase: isCurrentWeek,
         showcaseKey: showcaseKey,
         child: Stack(
