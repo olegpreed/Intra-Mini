@@ -24,7 +24,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   bool _isPageLoaded = false;
-  final GlobalKey _searchSwitchKey = GlobalKey();
+  List<GlobalKey> searchPageKeys = List.generate(6, (_) => GlobalKey());
   bool didFinishSearchTutorial = false;
 
   @override
@@ -33,7 +33,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     ShowcaseView.register(
       onComplete: (showcaseIndex, key) async {
         final prefs = await SharedPreferences.getInstance();
-        if (showcaseIndex == 0 && key == _searchSwitchKey) {
+        if (showcaseIndex == 5 && key == searchPageKeys[5]) {
           setState(() {
             didFinishSearchTutorial = true;
           });
@@ -67,7 +67,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     HapticFeedback.selectionClick();
     if (index == 1 &&
         (!widget.didFinishSearchTutorial && !didFinishSearchTutorial)) {
-      ShowcaseView.get().startShowCase([_searchSwitchKey]);
+      ShowcaseView.get().startShowCase(searchPageKeys);
     }
     if (index == selectedIndex) {
       _navigatorKeys[index].currentState?.popUntil((route) => route.isFirst);
@@ -97,7 +97,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         cadetData: Provider.of<MyProfileStore>(context).userData,
         didFinishProfileTutorial: widget.didFinishProfileTutorial,
       ),
-      SearchPage(showcaseKey: _searchSwitchKey),
+      SearchPage(showcaseKeys: searchPageKeys),
       const CalendarPage(),
     ];
 

@@ -19,10 +19,11 @@ import 'package:forty_two_planet/settings/user_settings.dart';
 import 'package:forty_two_planet/theme/app_theme.dart';
 import 'package:forty_two_planet/utils/ui_uitls.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key, required this.showcaseKey});
-  final GlobalKey showcaseKey;
+  const SearchPage({super.key, required this.showcaseKeys});
+  final List<GlobalKey> showcaseKeys;
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -299,33 +300,47 @@ class _SearchPageState extends State<SearchPage> {
                 child: Column(
                   children: [
                     SizedBox(height: Layout.gutter * 2),
-                    MySearchBar(
-                      controller: controller,
-                      isSearchByProject: isSearchByProject,
-                      onSelected: onSelected,
-                      onChangeSearchType: switchSearch,
-                      onProjectClose: resetProjectFilter,
-                      onSearch: searchCadet,
-                      isSearchingCadet: isSearchingCadet,
-                      isProjectLoading: isProjectLoading,
-                      showcaseKey: widget.showcaseKey,
+                    Showcase(
+                      key: widget.showcaseKeys[4],
+                      title: 'Search for cadets by their intra name',
+                      child: MySearchBar(
+                        controller: controller,
+                        isSearchByProject: isSearchByProject,
+                        onSelected: onSelected,
+                        onChangeSearchType: switchSearch,
+                        onProjectClose: resetProjectFilter,
+                        onSearch: searchCadet,
+                        isSearchingCadet: isSearchingCadet,
+                        isProjectLoading: isProjectLoading,
+                        showcaseKey: widget.showcaseKeys[5],
+                      ),
                     ),
                     SizedBox(height: Layout.gutter * 2),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        MyToggleBtn(
-                          svgPath: 'assets/icons/comp.svg',
-                          onPressed: toggleOnline,
-                          isPressed: onlyOnline,
+                        Showcase(
+                          key: widget.showcaseKeys[0],
+                          title:
+                              'Show only cadets who are on site\n(does not make the search faster)',
+                          child: MyToggleBtn(
+                            svgPath: 'assets/icons/comp.svg',
+                            onPressed: toggleOnline,
+                            isPressed: onlyOnline,
+                          ),
                         ),
                         SizedBox(width: Layout.padding / 2),
                         Padding(
                           padding: EdgeInsets.only(right: Layout.padding / 2),
-                          child: MyToggleBtn(
-                            svgPath: 'assets/icons/heart_small.svg',
-                            onPressed: toggleFavourites,
-                            isPressed: onlyFavourites,
+                          child: Showcase(
+                            key: widget.showcaseKeys[1],
+                            title:
+                                'Show only cadets who are in your favorites\n(makes the search significantly faster)',
+                            child: MyToggleBtn(
+                              svgPath: 'assets/icons/heart_small.svg',
+                              onPressed: toggleFavourites,
+                              isPressed: onlyFavourites,
+                            ),
                           ),
                         ),
                         Expanded(
@@ -340,11 +355,15 @@ class _SearchPageState extends State<SearchPage> {
                               );
                             },
                             child: !isSearchByProject
-                                ? LevelSlider(
-                                    key: const ValueKey('levelSlider'),
-                                    changeLevelRange: changeLevelRange,
-                                    labels: labels,
-                                    levelValues: levelValues,
+                                ? Showcase(
+                                    key: widget.showcaseKeys[2],
+                                    title: 'Filter cadets by level range',
+                                    child: LevelSlider(
+                                      key: const ValueKey('levelSlider'),
+                                      changeLevelRange: changeLevelRange,
+                                      labels: labels,
+                                      levelValues: levelValues,
+                                    ),
                                   )
                                 : ProjectSliderStatus(
                                     key: const ValueKey('projectSlider'),
@@ -354,9 +373,13 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         ),
                         SizedBox(width: Layout.padding / 2),
-                        SortBtn(
-                          onPressed: toggleSort,
-                          isAscending: lowLevelFirst,
+                        Showcase(
+                          key: widget.showcaseKeys[3],
+                          title: 'Switch level sorting order',
+                          child: SortBtn(
+                            onPressed: toggleSort,
+                            isAscending: lowLevelFirst,
+                          ),
                         ),
                       ],
                     ),

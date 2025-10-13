@@ -43,7 +43,7 @@ class _EvalsPageState extends State<EvalsPage> {
           padding: EdgeInsets.symmetric(horizontal: Layout.padding),
           child: Column(children: [
             const GenericHeader(title: 'Evaluations'),
-            const SizedBox(height: 20),
+            SizedBox(height: Layout.gutter),
             Expanded(
               child: isLoading
                   ? Center(
