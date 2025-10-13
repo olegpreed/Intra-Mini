@@ -19,7 +19,7 @@ class MyToggleBtn extends StatelessWidget {
         onTap: onPressed,
         child: AnimatedContainer(
           alignment: Alignment.center,
-          duration: const Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 170),
           height: 35,
           width: 35,
           decoration: BoxDecoration(
