@@ -18,12 +18,12 @@ class ProfileHeader extends StatelessWidget {
     required this.isLoading,
     required this.userData,
     required this.isHomeView,
-    required this.avatarKey,
+    required this.keys,
   });
   final bool isLoading;
   final UserData userData;
   final bool isHomeView;
-  final GlobalKey avatarKey;
+  final List<GlobalKey> keys;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class ProfileHeader extends StatelessWidget {
             ShimmerLoading(
               isLoading: userData.imageUrlBig == null && isLoading,
               child: Showcase(
-                key: avatarKey,
+                key: keys[0],
                 title: 'Profile Picture',
                 description: 'You can tap to zoom on it.',
                 child: Container(
@@ -76,8 +76,12 @@ class ProfileHeader extends StatelessWidget {
                             firstName: userData.firstName,
                             lastName: userData.lastName),
                       ),
-                      CornerButton(
-                        isHomeView: isHomeView,
+                      Showcase(
+                        key: keys[1],
+                        title: 'This is the settings button',
+                        child: CornerButton(
+                          isHomeView: isHomeView,
+                        ),
                       ),
                     ],
                   ),

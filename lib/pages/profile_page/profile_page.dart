@@ -32,6 +32,10 @@ class _ProfilePageState extends State<ProfilePage> {
   final GlobalKey _levelKey = GlobalKey();
   final GlobalKey _evalKey = GlobalKey();
   final GlobalKey _walletKey = GlobalKey();
+  final GlobalKey _logBoxKey = GlobalKey();
+  final GlobalKey _logColumnKey = GlobalKey();
+  final GlobalKey _averageTimeKey = GlobalKey();
+  final GlobalKey _settingsKey = GlobalKey();
 
   @override
   void initState() {
@@ -55,8 +59,16 @@ class _ProfilePageState extends State<ProfilePage> {
     });
     if (widget.isHomeView && !widget.didFinishProfileTutorial) {
       WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ShowcaseView.get()
-            .startShowCase([_avatarKey, _levelKey, _evalKey, _walletKey]),
+        (_) => ShowcaseView.get().startShowCase([
+          _avatarKey,
+          _levelKey,
+          _evalKey,
+          _walletKey,
+          _logBoxKey,
+          _logColumnKey,
+          _averageTimeKey,
+          _settingsKey
+        ]),
       );
     }
   }
@@ -100,7 +112,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   isLoading: _isLoading,
                   userData: _userData,
                   isHomeView: widget.isHomeView,
-                  avatarKey: _avatarKey,
+                  keys: [_avatarKey, _settingsKey],
                 ),
                 Expanded(
                   child: Stack(
@@ -108,7 +120,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       ProfileWidgets(
                         userData: _userData,
                         isLoading: _isLoading,
-                        keys: [_levelKey, _evalKey, _walletKey],
+                        keys: [
+                          _levelKey,
+                          _evalKey,
+                          _walletKey,
+                          _logBoxKey,
+                          _logColumnKey,
+                          _averageTimeKey
+                        ],
                       ),
                       Positioned.fill(
                           child: ShimmerLoading(

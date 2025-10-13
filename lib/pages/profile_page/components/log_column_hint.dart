@@ -16,6 +16,11 @@ class LogColumnHint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hours = logtime.floor();
+    final minutes = ((logtime - hours) * 60).round();
+
+    final formatted = '${hours}h${minutes}m';
+
     return Tooltip(
       preferBelow: false,
       verticalOffset: 50,
@@ -36,7 +41,7 @@ class LogColumnHint extends StatelessWidget {
                 ),
           ),
           TextSpan(
-            text: '${logtime.toStringAsFixed(1)}h',
+            text: formatted,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
         ],

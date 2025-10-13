@@ -41,7 +41,8 @@ class WidgetsRowOne extends StatelessWidget {
           },
           child: Showcase(
             key: keys[0],
-            title: 'Tap to see job offers available for your campus',
+            title:
+                'Cadet Level\nTap to see job offers available for your campus',
             child: BentoBox(
               isShimmerFinished: isShimmerFinished,
               content: FadeIn(
@@ -67,7 +68,7 @@ class WidgetsRowOne extends StatelessWidget {
           },
           child: Showcase(
             key: keys[1],
-            title: 'Tap to see the latest feedbacks made by cadet',
+            title: 'Eval points\nTap to see the latest feedbacks made by cadet',
             child: BentoBox(
               isShimmerFinished: isShimmerFinished,
               content: FadeIn(
@@ -100,7 +101,7 @@ class WidgetsRowOne extends StatelessWidget {
           },
           child: Showcase(
             key: keys[2],
-            title: 'Tap to use the Intra Shop calculator',
+            title: 'Wallet points\nTap to use the Intra Shop calculator',
             child: BentoBox(
               isShimmerFinished: isShimmerFinished,
               content: FadeIn(

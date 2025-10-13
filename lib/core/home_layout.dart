@@ -33,13 +33,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     ShowcaseView.register(
       onComplete: (showcaseIndex, key) async {
         final prefs = await SharedPreferences.getInstance();
-
         if (showcaseIndex == 0 && key == _searchSwitchKey) {
           setState(() {
             didFinishSearchTutorial = true;
           });
           await prefs.setBool('didFinishSearchTutorial', true);
-        } else if (showcaseIndex == 3) {
+        } else if (showcaseIndex == 7) {
           await prefs.setBool('didFinishProfileTutorial', true);
         }
       },

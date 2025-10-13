@@ -14,101 +14,89 @@ class MonthStats extends StatelessWidget {
       {super.key,
       required this.month,
       required this.monthLogtime,
-      required this.isMe});
+      required this.isMe,
+      required this.keys});
   final DateTime month;
   final List<Pair<Duration, Duration>> monthLogtime;
   final bool isMe;
+  final List<GlobalKey> keys;
 
   @override
   Widget build(BuildContext context) {
     Duration averageWeektime = calcAverageWeekTime(monthLogtime, month);
     int weekGoal = Provider.of<SettingsProvider>(context).get('logtimeGoal');
     return Row(children: [
-      RotatedBox(
-          quarterTurns: -1,
-          child: Text('1 week',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(color: context.myTheme.greySecondary))),
-      SizedBox(width: Layout.gutter / 2),
       Expanded(
         child: SizedBox(
           height: Layout.cellWidth * 0.7,
-          child: Stack(clipBehavior: Clip.none, children: [
-            Positioned(
-              top: 0,
-              right: -Layout.cellWidth * 0.3,
-              child: Text('60h',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: context.myTheme.greySecondary)),
-            ),
-            Stack(alignment: Alignment.bottomCenter, children: [
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(monthLogtime.length, (indexWeek) {
-                    return LogColumn(
-                        month: month,
-                        indexWeek: indexWeek,
-                        monthLogtime: monthLogtime);
-                  })),
-              if (isMe)
-                IgnorePointer(
-                  child: ClipRRect(
-                    child: FractionallySizedBox(
-                      alignment: Alignment.centerLeft,
-                      widthFactor: 1.1,
-                      heightFactor: Provider.of<SettingsProvider>(context)
-                              .get('logtimeGoal') /
-                          60,
-                      child: DottedLine(
-                        alignment: WrapAlignment.start,
-                        direction: Axis.horizontal,
-                        lineLength: double.infinity,
-                        lineThickness: 3,
-                        dashLength: 8,
-                        dashGapLength: 4,
-                        dashRadius: 1,
-                        dashColor: context.myTheme.fail,
-                      ),
+          child: Stack(alignment: Alignment.bottomCenter, children: [
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: List.generate(monthLogtime.length, (indexWeek) {
+                  return LogColumn(
+                      showcaseKey: keys[0],
+                      month: month,
+                      indexWeek: indexWeek,
+                      monthLogtime: monthLogtime);
+                })),
+            if (isMe)
+              IgnorePointer(
+                child: ClipRRect(
+                  child: FractionallySizedBox(
+                    alignment: Alignment.centerLeft,
+                    widthFactor: 1.1,
+                    heightFactor: Provider.of<SettingsProvider>(context)
+                            .get('logtimeGoal') /
+                        60,
+                    child: DottedLine(
+                      alignment: WrapAlignment.start,
+                      direction: Axis.horizontal,
+                      lineLength: double.infinity,
+                      lineThickness: 3,
+                      dashLength: 8,
+                      dashGapLength: 4,
+                      dashRadius: 1,
+                      dashColor: context.myTheme.fail,
                     ),
                   ),
                 ),
-            ]),
+              ),
           ]),
         ),
       ),
-      Container(
-        margin: EdgeInsets.only(left: Layout.gutter * 2),
-        alignment: Alignment.center,
-        width: Layout.cellWidth,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(DateFormat('MMM').format(month),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: context.myTheme.greySecondary)),
-            SizedBox(height: Layout.gutter / 2),
-            Text('${averageWeektime.inHours}',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      color: weekGoal != 0
-                          ? averageWeektime.inHours >= weekGoal
-                              ? context.myTheme.success
-                              : context.myTheme.fail
-                          : averageWeektime.inHours == 0
-                              ? context.myTheme.greySecondary
-                              : Theme.of(context).primaryColor,
-                    )),
-            Text('hours',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: context.myTheme.greySecondary)),
-          ],
+      ShowCaseWrapper(
+        isShowcase: DateTime.now().month == month.month,
+        showcaseKey: keys[1],
+        title: 'This is your average log time per week for this month.',
+        child: Container(
+          alignment: Alignment.center,
+          width: Layout.cellWidth,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(DateFormat('MMM').format(month),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: context.myTheme.greySecondary)),
+              SizedBox(height: Layout.gutter / 2),
+              Text('${averageWeektime.inHours}',
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color: weekGoal != 0
+                            ? averageWeektime.inHours >= weekGoal
+                                ? context.myTheme.success
+                                : context.myTheme.fail
+                            : averageWeektime.inHours == 0
+                                ? context.myTheme.greySecondary
+                                : Theme.of(context).primaryColor,
+                      )),
+              Text('hours',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: context.myTheme.greySecondary)),
+            ],
+          ),
         ),
       ),
     ]);
