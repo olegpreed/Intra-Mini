@@ -123,14 +123,17 @@ class _RefreshButtonState extends State<RefreshButton>
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.17,
-                          child: Text(
-                            widget.isLoading ? 'Cancel' : 'Refresh',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineMedium
-                                ?.copyWith(
-                                  color: Theme.of(context).primaryColor,
-                                ),
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              widget.isLoading ? 'Cancel' : 'Refresh',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium
+                                  ?.copyWith(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                            ),
                           ),
                         ),
                       ],
