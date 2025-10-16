@@ -31,11 +31,13 @@ class _OffersPageState extends State<OffersPage> {
     try {
       final fetchedOffers =
           await CampusDataService.fetchJobOffers(widget.campusId);
+      if (!mounted) return;
       setState(() {
         offers = fetchedOffers;
         isLoading = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         isLoading = false;
       });
@@ -72,7 +74,8 @@ class _OffersPageState extends State<OffersPage> {
                                 itemCount: offers.length,
                                 itemBuilder: (context, index) {
                                   final offer = offers[index];
-                                  return OfferCard(offer: offer, translator: translator);
+                                  return OfferCard(
+                                      offer: offer, translator: translator);
                                 },
                               ),
                       ))
